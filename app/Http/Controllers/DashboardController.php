@@ -42,5 +42,6 @@ class DashboardController extends Controller
         'paymentmba' => $paymentmba,
         'paymentmbafee' => $paymentmbafee,
     ]);
+    
     }
 }
