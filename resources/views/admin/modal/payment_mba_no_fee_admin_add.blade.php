@@ -27,9 +27,7 @@
         .form-check-input,
         .form-control {
             border-radius: 6px;
-        }
-
-        .btn-primary {
+        }  .btn-primary {
             width: 100%;
             border-radius: 6px;
         }
