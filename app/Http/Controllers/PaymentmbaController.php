@@ -91,7 +91,7 @@ class PaymentmbaController extends Controller
         // Validasi data
         $validated = $request->validate([
             'wilayah_id' => 'required|integer|exists:wilayah,id',
-            'mitra_agg' => 'required|string',
+           'mitra_agg' => 'nullable|string',
             'mitra_id' => 'required|integer|exists:mitra,id',
             'Kode_pengajuan' => 'required|string|max:255',
             'Pengajuan_integrasi' => 'required|string|in:Development,SIT',
