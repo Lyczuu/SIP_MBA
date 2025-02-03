@@ -2,6 +2,7 @@
 
 use App\Models\paymentmbafee;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Btc0Controller;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\DashboardController;
@@ -45,6 +46,14 @@ Route::put('/update_nofee{id}', [paymentmbafeeController::class, 'update'])->nam
 //am wilayah componen
 // fee admin
 //no fee admin
+
+
+
+// BTC0
+Route::get('/candle0', [Btc0Controller::class, 'index'])->name('index.index0');
+Route::get('/tablelist0', [Btc0Controller::class, 'table'])->name('index.tablelist0');
+
+
 
 
 
