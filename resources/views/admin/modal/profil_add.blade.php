@@ -5,8 +5,13 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
+  <title>Users / Profile - NiceAdmin Bootstrap Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{{asset ('V-TAX/img/favicon.png')}}" rel="icon">
+  <link href="{{asset ('V-TAX/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -24,28 +29,9 @@
   <!-- Template Main CSS File -->
   <link href="{{asset ('V-TAX/css/style.css')}}" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
-  </header><!-- End Header -->
-
-      </li><!-- End Components Nav -->
-
-
-
-  <main id="main" class="main">
-
-    <div class="pagetitle">
-      <h1>Profile</h1>
-
-    </div><!-- End Page Title -->
 
     <section class="section profile">
       <div class="row">
@@ -54,10 +40,9 @@
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="{{asset ('V-TAX/img/ni ger.jpg')}}" alt="Profile" class="rounded-circle">
-              <h2>{{ auth()->user()->username }}</h2>
-             <h2>{{ auth()->user()->role->nama_role }}</h2>
-          </a><!-- End Profile Iamge Icon -->
+              <img src="{{asset ('V-TAX/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
+              <h2>{{ auth()->user()->full_name }}</h2>
+              <h3>{{ auth()->user()->role->nama_role }}</h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -97,7 +82,7 @@
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                   <h5 class="card-title">About</h5>
-                  <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
+                  <p class="small fst-italic">{{ auth()->user()->role->keterangan }}</p>
 
                   <h5 class="card-title">Profile Details</h5>
 
@@ -145,7 +130,7 @@
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="assets/img/profile-img.jpg" alt="Profile">
+                        <img src="{{asset ('V-TAX/img/profile-img.jpg')}}" alt="Profile">
                         <div class="pt-2">
                           <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                           <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
@@ -342,7 +327,7 @@
   <script src="{{asset ('V-TAX/vendor/php-email-form/validate.js')}}"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="{{asset ('V-TAX/js/main.js')}}"></script>
 
 </body>
 

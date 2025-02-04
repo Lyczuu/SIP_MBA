@@ -30,7 +30,10 @@ class paymentmbafee extends Model
         'fees_id',
         'user_id',
     ];
-
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
     public function jenisPajak()
     {
         return $this->belongsTo(jenis_pajak::class, 'jenis_pajak_id');

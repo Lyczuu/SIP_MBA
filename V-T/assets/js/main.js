@@ -33,7 +33,7 @@
   }
 
   /**
-   * Easy on scroll event listener 
+   * Easy on scroll event listener
    */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)
@@ -53,9 +53,38 @@
    */
   if (select('.search-bar-toggle')) {
     on('click', '.search-bar-toggle', function(e) {
-      select('.search-bar').classList.toggle('search-bar-show')
-    })
+      select('.search-bar').classList.toggle('search-bar-show');
+    });
   }
+
+  const searchInput = select('.search-bar input'); // Pastikan ada input di dalam .search-bar untuk pencarian
+
+  searchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase(); // Ambil nilai pencarian dan ubah menjadi huruf kecil
+    const tableRows = select('.datatable tbody').children; // Ambil semua baris di tabel
+
+    // Loop untuk mengecek setiap baris
+    Array.from(tableRows).forEach(row => {
+      let matchFound = false; // Variabel untuk melacak apakah ada kecocokan
+
+      // Loop untuk mengecek setiap kolom dalam baris
+      Array.from(row.cells).forEach(cell => {
+        const cellText = cell.textContent.toLowerCase(); // Ambil teks dari sel dan ubah menjadi huruf kecil
+        if (cellText.includes(searchTerm)) {
+          matchFound = true; // Jika ditemukan kecocokan, set matchFound ke true
+        }
+      });
+
+      // Tampilkan atau sembunyikan baris berdasarkan apakah ada kecocokan
+      if (matchFound) {
+        row.style.display = ''; // Tampilkan baris
+      } else {
+        row.style.display = 'none'; // Sembunyikan baris
+      }
+    });
+  });
+
+
 
   /**
    * Navbar links active state on scroll
@@ -300,7 +329,7 @@
         }
       ]
     });
-  })
+   })
 
   /**
    * Autoresize echart charts

@@ -1,3 +1,10 @@
+@extends('layout.am_wilayahfeelayout')
+
+@section('title', 'pengajuan')
+
+@section('content')
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -76,3 +83,4 @@
     </div>
 </body>
 </html>
+@endsection

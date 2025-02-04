@@ -12,10 +12,8 @@
                 {{ Session::get('message') }}
             </div>
         @endif
-
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -40,25 +38,281 @@
   <!-- Template Main CSS File -->
   <link href="{{asset ('V-TAX/css/style.css')}}" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+
 </head>
 
 <body>
-
 
     <section class="section">
         <div class="row">
           <div class="col-lg-12">
 
+            <section class="section dashboard">
+                <div class="row">
+
+                <!-- Customers Card -->
+
+
+                      <div class="col-xxl-4 col-xl-6">
+
+                        <div class="card info-card customers-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">Integrasi Mitra Feebased </span></h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="ps-3">
+                                <span class="badge bg-warning">Belum Validasi</span> <span class="badge bg-warning" >5</span></td> | <span class="badge bg-success" onclick="window.location.href='/admin/dashboard'" style="cursor: pointer;">Diterima</span> <span class="badge bg-success">8</span></td> | <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">Ditolak</span> <span class="badge bg-danger">8</span></td>
+
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-xxl-4 col-xl-6">
+
+                        <div class="card info-card customers-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">Integrasi Mitra Non Feebased </span></h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="ps-3">
+                                <span class="badge bg-warning">Belum Validasi</span> <span class="badge bg-warning">5</span></td> | <span class="badge bg-success">Diterima</span> <span class="badge bg-success">8</span></td> | <span class="badge bg-danger">Ditolak</span> <span class="badge bg-danger">8</span></td>
+
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Sales Card -->
+                      <div class="col-xxl-4 col-md-4">
+                        <div class="card info-card sales-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">AM Wilayah 1</h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>145</h6>
+                                <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </div><!-- End Sales Card -->
+
+                              <!-- Sales Card -->
+                      <div class="col-xxl-4 col-md-4">
+                        <div class="card info-card sales-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">AM Wilayah 2</h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>145</h6>
+                                <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </div><!-- End Sales Card -->
+
+                      <!-- Revenue Card -->
+                      <div class="col-xxl-4 col-md-4">
+                        <div class="card info-card revenue-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">AM Wilayah 3</h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>$3,264</h6>
+                                <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div><!-- End Revenue Card -->
+
+                      <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card revenue-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">AM Wilayah 4</h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>$3,264</h6>
+                                <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div><!-- End Revenue Card -->
+
+                                  <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card revenue-card">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">AM Kerja Sama</h5>
+
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>$3,264</h6>
+                                <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div><!-- End Revenue Card -->
+
+
+                      <!-- Recent Sales -->
+                      <div class="col-12">
+                        <div class="card recent-sales overflow-auto">
+
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                              </li>
+
+                              <li><a class="dropdown-item" href="#">Today</a></li>
+                              <li><a class="dropdown-item" href="#">This Month</a></li>
+                              <li><a class="dropdown-item" href="#">This Year</a></li>
+                            </ul>
+                          </div>
+
+
+
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">data tabel </h5>
+                <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
                 <p>data tabel No fee admin dan fee admin </p>
 
                 <!-- Table with stripped rows -->
@@ -74,6 +328,7 @@
                       <th>Total fee</th>
                       <th>Fee mba</th>
                       <th>Fee mitra</th>
+                      <th>Status</th>
                       <th>Wilayah</th>
                       <th>Jenis mitra</th>
                       <th>Jenis transaksi</th>
@@ -98,11 +353,12 @@
                       @foreach($paymentmbafee as $key => $list)
                     <tr>
                       <td>{{ $list->kode_pengajuan }}</td>
-                      <td>{{ $list->username }}</td>
+                      <td>{{ $list->user->username }}</td>
                       <td>{{ $list->jenis_pajak_id }}</td>
                       <td>{{ $list->fees->total_fee }}</td>
                       <td>{{ $list->fees->fee_mba }}</td>
                       <td>{{ $list->fees->fee_mitra }}</td>
+                      <td><span class="badge bg-success">Diterima</span></td>
                       <td>{{ $list->wilayah->nama_wilayah }}</td>
                       <td>{{ $list->mitra->nama_mitra }}</td>
                       <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>

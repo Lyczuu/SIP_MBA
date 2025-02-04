@@ -80,8 +80,11 @@ class PaymentmbafeeController extends Controller
         Log::info('Memulai proses penyimpanan data.');
 
         // Tambahkan kode pengajuan ke request
+        $latestPayment = PaymentMba::latest('id')->first();
+        $kodePengajuan = 'AMK-' . str_pad(($latestPayment ? $latestPayment->id + 1 : 1), 5, '0', STR_PAD_LEFT);
+
         $request->merge([
-            'Kode_pengajuan' => strtoupper(Str::random(10)),
+            'Kode_pengajuan' => $kodePengajuan,
         ]);
 
         $validated = $request->validate([
@@ -128,12 +131,15 @@ class PaymentmbafeeController extends Controller
             ]);
 
             Log::info('Data Fees berhasil disimpan.', ['fee_id' => $fee->id]);
+            //mengambil id sebelumnya
+            $latestPayment = PaymentMba::latest('id')->first();
+            $kodePengajuan = 'AM-' . str_pad(($latestPayment ? $latestPayment->id + 1 : 1), 5, '0', STR_PAD_LEFT);
 
             // Simpan data ke tabel payment_mba
             $payment = PaymentMba::create([
                 'wilayah_id' => $validated['wilayah_id'],
                 'mitra_id' => $validated['mitra_id'],
-                'Kode_pengajuan' => $validated['Kode_pengajuan'],
+                'Kode_pengajuan' => $kodePengajuan,
                 'Pengajuan_integrasi' => $validated['Pengajuan_integrasi'],
                 'Cutoff' => $validated['Cutoff'],
                 'Settlement' => $validated['Settlement'],
@@ -151,6 +157,24 @@ class PaymentmbafeeController extends Controller
                 'jenis_pajak_id' => $validated['jenis_pajak'],
                 'fees_id' => $fee->id,
                 'user_id' => $userId,
+            ]);
+            $prefix = '';
+
+            if (Auth::id() == 2) {
+                $prefix = 'AM1-';
+            } elseif (Auth::id() == 3) {
+                $prefix = 'AM2-';
+            } elseif (Auth::id() == 4) {
+                $prefix = 'AM3-';
+            } elseif (Auth::id() == 5) {
+                $prefix = 'AM4-';
+            } elseif (Auth::id() == 6) {
+                $prefix = 'AMK-';
+            } else {
+                $prefix = 'AMK-'; // Default prefix if user_id does not match
+            }
+            $payment->update([
+                'Kode_pengajuan' => $prefix . str_pad($payment->id, 5, '0', STR_PAD_LEFT),
             ]);
             Log::info('Request Data:', $request->all());
 

@@ -32,7 +32,6 @@ class PaymentmbaController extends Controller
         $data['fees'] = fees::all();
 
         return view('admin.payment_mba_admin', $data);
-
     }
 
 
@@ -45,7 +44,7 @@ class PaymentmbaController extends Controller
         $jenis_transaksi = jenis_transaksi::all();
         $fees = fees::all();
 
-        return view('admin.payment_mba_admin',  compact('wilayah','mitra','jenis_pajak','jenis_transaksi','fees'));
+        return view('admin.payment_mba_admin',  compact('wilayah', 'mitra', 'jenis_pajak', 'jenis_transaksi', 'fees'));
     }
     /**
      * Show the form for creating a new resource.
@@ -54,7 +53,7 @@ class PaymentmbaController extends Controller
 
     {
 
-            $jenisPajak = jenis_pajak::all(); //tabel di model
+        $jenisPajak = jenis_pajak::all(); //tabel di model
 
 
         // Kirim data ke view
@@ -84,14 +83,18 @@ class PaymentmbaController extends Controller
         logger()->info('User ID:', ['user_id' => Auth::id()]);
 
         // Generate kode pengajuan dan tambahkan ke request
+        $latestPayment = PaymentMba::latest('id')->first();
+        $kodePengajuan = 'AMK-' . str_pad(($latestPayment ? $latestPayment->id + 1 : 1), 5, '0', STR_PAD_LEFT);
+
         $request->merge([
-            'Kode_pengajuan' => strtoupper(Str::random(10)),
+            'Kode_pengajuan' => $kodePengajuan,
         ]);
+
 
         // Validasi data
         $validated = $request->validate([
             'wilayah_id' => 'required|integer|exists:wilayah,id',
-           'mitra_agg' => 'nullable|string',
+            'mitra_agg' => 'nullable|string',
             'mitra_id' => 'required|integer|exists:mitra,id',
             'Kode_pengajuan' => 'required|string|max:255',
             'Pengajuan_integrasi' => 'required|string|in:Development,SIT',
@@ -113,11 +116,11 @@ class PaymentmbaController extends Controller
             'WAG_KORDINASI_PAYMENT' => 'required|string|max:255',
             'WAG_KORDINASI_REKON' => 'required|string|max:255',
         ]);
-          // Log input yang diterima
-          Log::info('Data request:', $request->all());
+        // Log input yang diterima
+        Log::info('Data request:', $request->all());
 
-          // Log untuk memastikan mitra_agg terisi
-          Log::info('Data mitra_agg:', ['mitra_agg' => $validated['mitra_agg']]);
+        // Log untuk memastikan mitra_agg terisi
+        Log::info('Data mitra_agg:', ['mitra_agg' => $validated['mitra_agg']]);
 
         $validated['jenis_pajak'] = json_encode($validated['jenis_pajak']);
 
@@ -141,12 +144,16 @@ class PaymentmbaController extends Controller
 
             $fee = Fees::create($feeData);
 
+
+            // Ambil ID terakhir dan buat kode_pengajuan baru
+            $latestPayment = PaymentMba::latest('id')->first();
+            $kodePengajuan = 'AM-' . str_pad(($latestPayment ? $latestPayment->id + 1 : 1), 5, '0', STR_PAD_LEFT);
+
             // Simpan data ke tabel payment_mba
             $data = PaymentMba::create([
                 'wilayah_id' => $validated['wilayah_id'],
                 'mitra_id' => $validated['mitra_id'],
-                'Kode_pengajuan' => $validated['Kode_pengajuan'],
-                'Kode_pengajuan' => $validated['Kode_pengajuan'] ?? strtoupper(Str::random(10)),
+                'Kode_pengajuan' => $kodePengajuan,
                 'Pengajuan_integrasi' => $validated['Pengajuan_integrasi'],
                 'Cutoff' => $validated['Cutoff'],
                 'Settlement' => $validated['Settlement'],
@@ -164,6 +171,24 @@ class PaymentmbaController extends Controller
                 'mitra_agg' => $validated['mitra_agg'],
                 'jenis_pajak_id' => $validated['jenis_pajak'],
                 'user_id' => Auth::id(), // Simpan ID jenis pajak
+            ]);
+            $prefix = '';
+
+            if (Auth::id() == 2) {
+                $prefix = 'AM1-';
+            } elseif (Auth::id() == 3) {
+                $prefix = 'AM2-';
+            } elseif (Auth::id() == 4) {
+                $prefix = 'AM3-';
+            } elseif (Auth::id() == 5) {
+                $prefix = 'AM4-';
+            } elseif (Auth::id() == 6) {
+                $prefix = 'AMK-';
+            } else {
+                $prefix = 'AMK-'; // Default prefix if user_id does not match
+            }
+            $data->update([
+                'Kode_pengajuan' => $prefix . str_pad($data->id, 5, '0', STR_PAD_LEFT),
             ]);
             logger()->info('Data PaymentMba berhasil disimpan.', ['payment_id' => $data->id]);
 
