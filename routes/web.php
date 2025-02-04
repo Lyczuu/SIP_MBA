@@ -1,17 +1,19 @@
 <?php
 
 
+use App\Models\paymentmba;
+use App\Models\belumvalidasi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Btc0Controller;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\ditolakController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\ditolakController;
-use App\Http\Controllers\jenispengajuanController;
 use App\Http\Controllers\PaymentmbaController;
+use App\Http\Controllers\BelumvalidasiController;
 use App\Http\Controllers\PaymentmbafeeController;
-use App\Models\paymentmba;
+use App\Http\Controllers\jenispengajuanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,7 +41,12 @@ Route::get('/berhasil', function () { return view('berhasil'); })->name('berhasi
 Route::get('/generate-Kode-pengajuan', [PaymentmbafeeController::class, 'generateKodepengajuan']);
 Route::get('/admin/payment_mba_no_fee_admin', [PaymentmbafeeController::class, 'showAlerts'])->name('admin.payment_mba_no_fee_admin');
 
+//di tolak
 Route::get('/ditolak', [ditolakController::class, 'index'])->name('ditolak');
+
+//di proses
+Route::get('/belumvalidasi', [BelumvalidasiController::class, 'index'])->name('belumvalidasi')->middleware('auth');
+
 Route::get('/admin/pengajuan', [jenispengajuanController::class, 'index'])->name('admin.pengajuan');
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware('auth');
 Route::get('/admin/profil', [ProfilController::class, 'index'])->name('admin.profil');
