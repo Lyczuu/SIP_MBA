@@ -40,7 +40,6 @@
                         &nbsp;
                             <h4 class="">Data Diajukan</h4>
                             <br>
-                            &nbsp;
                             <a href="{{route('index.tablelist0')}}" class="card-title"><button type="button" class="btn btn-warning"><i
                                 class="bi bi-plus-lg"></i> Diajukan</button></a>
 
@@ -50,30 +49,28 @@
 
 
                             <a href="{{route('index.tbsetuju0')}}" class="card-title"><button type="button" class="btn btn-success"><i
-                                        class="bi bi-plus-lg"></i> Disetujui</button></a>
+                                        class="bi bi-plus-lg"></i> Diterima</button></a>
                             <br>
 
                             <!-- Table with stripped rows -->
-                            <div class="table-responsive">
-                            <table class="table datatable">
+                            <table class="table  datatable">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Kode Pengajuan</th>
-                                        <th>Nama AM</th>
-                                        <th>diajukan</th>
-                                        <th>Status</th>
+                                        <th>
+                                            <b>N</b>ame
+                                        </th>
+                                        <th>Ext.</th>
+                                        <th>City</th>
+                                        <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1</td>
-                                        <td>Kode Pengajuan</td>
-                                        <td>Nama AM</td>
-                                        <td>diajukan</td>
-
-                                        <td><span class="badge bg-warning">Diproses</span></td>
+                                        <td>Unity Pugh</td>
+                                        <td>9958</td>
+                                        <td>Curicó</td>
+                                        <td>2005/02/11</td>
                                         <td>
                                             <div class="text-center">
                                                 <a href="{{route('index.detail0')}}"><button type="button" class="btn btn-dark btn-sm">Detail</button></a>
@@ -81,13 +78,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>2</td>
-                                        <td>Kode Pengajuan</td>
-                                        <td>Nama AM</td>
-                                        <td>diajukan</td>
-
-
-                                        <td><span class="badge bg-warning">Diproses</span></td>
+                                        <td>Theodore Duran</td>
+                                        <td>8971</td>
+                                        <td>Dhanbad</td>
+                                        <td>1999/04/07</td>
                                         <td>
                                             <div class="text-center">
                                                 <a href="{{route('index.detail0')}}"><button type="button" class="btn btn-dark btn-sm">Detail</button></a>
@@ -96,7 +90,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
                             <!-- End Table with stripped rows -->
 
                         </div>

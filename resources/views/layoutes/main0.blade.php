@@ -212,20 +212,20 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="btc/assets/img/Default-avatar.png" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">Mr.Kevin69</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6>Mr.Kevin69</h6>
+              <span>Kevin Firman Maulana</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{{route('index.user0')}}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -235,7 +235,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{{route('index.user0')}}">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
@@ -244,12 +244,7 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
+
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -283,44 +278,48 @@
         </a>
       </li><!-- End Dashboard Nav -->
 
+
       <li class="nav-item">
-
         <a  class=" nav-link @yield('side1')" href="{{ route('index.tablelist0') }}">
-
           <i class="bi bi-clipboard-data"></i>
           <span>Table list</span>
         </a>
       </li>
-
-
+      {{-- end table list --}}
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a  class=" nav-link @yield('side2')" href="{{ route('index.input0') }}">
+          <i class="bi bi-journal-plus"></i>
+          <span>Input</span>
         </a>
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="forms-elements.html">
-              <i class="bi bi-circle"></i><span>Form Elements</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-layouts.html">
-              <i class="bi bi-circle"></i><span>Form Layouts</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-editors.html">
-              <i class="bi bi-circle"></i><span>Form Editors</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-validation.html">
-              <i class="bi bi-circle"></i><span>Form Validation</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Forms Nav -->
+      </li>
+      {{-- end input --}}
+
+      <li class="nav-item">
+        <a  class=" nav-link @yield('side3')" href="{{ route('index.mitra0') }}">
+          <i class="bi bi-bank"></i>
+          <span>Mitra</span>
+        </a>
+      </li>
+      {{-- end mitra --}}
+
+      <li class="nav-item">
+        <a  class=" nav-link @yield('side4')" href="{{ route('index.wilayah0') }}">
+          <i class="bi bi-map"></i>
+          <span>Wilayah</span>
+        </a>
+      </li>
+      {{-- end wilayah --}}
+
+      <li class="nav-item">
+        <a  class=" nav-link @yield('side5')" href="{{ route('index.pengguna0') }}">
+          <i class="bi bi-person"></i>
+          <span>Pengguna</span>
+        </a>
+      </li>
+      {{-- end Pengguna --}}
+
+
 
 
 

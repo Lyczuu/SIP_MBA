@@ -77,6 +77,18 @@ Route::put('/update_nofee{id}', [paymentmbafeeController::class, 'update'])->nam
 // BTC0
 Route::get('/candle0', [Btc0Controller::class, 'index'])->name('index.index0');
 Route::get('/tablelist0', [Btc0Controller::class, 'table'])->name('index.tablelist0');
+Route::get('/tableditolak0', [Btc0Controller::class, 'tbtlk'])->name('index.tbtolak0');
+Route::get('/tabledisetujui0', [Btc0Controller::class, 'tbstj'])->name('index.tbsetuju0');
+Route::get('/input0', [Btc0Controller::class, 'input'])->name('index.input0');
+Route::get('/user0', [Btc0Controller::class, 'user'])->name('index.user0');
+Route::get('/detail0', [Btc0Controller::class, 'detail'])->name('index.detail0');
+Route::get('/mitra0', [Btc0Controller::class, 'mitra'])->name('index.mitra0');
+Route::get('/wilayah0', [Btc0Controller::class, 'wilayah'])->name('index.wilayah0');
+Route::get('/pengguna0', [Btc0Controller::class, 'pengguna'])->name('index.pengguna0');
+Route::get('/tambahpengguna0', [Btc0Controller::class, 'penggunaadd'])->name('index.penggunaadd0');
+Route::get('/detailpengguna0', [Btc0Controller::class, 'detailuser'])->name('index.detailuser0');
+
+
 
 
 
