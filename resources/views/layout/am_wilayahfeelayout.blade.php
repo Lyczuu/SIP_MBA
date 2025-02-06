@@ -234,7 +234,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.profil') }}">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
@@ -280,16 +280,14 @@
         </a>
       </li><!-- End Dashboard Nav -->
 
+      <li class="nav-heading"></li>
+
       <li class="nav-item">
-        <a class="nav-link " href="{{ route('admin.pengajuan') }}">
+        <a class="nav-link collapsed" href="{{ route('admin.pengajuan') }}">
           <i class="bi bi-stack"></i>
-          <span>Pengajuan</span>
+          <span>pengajuan</span>
         </a>
-      </li><!-- End Dashboard Nav -->
-
-
-
-
+      </li><!-- End Profile Page Nav -->
 
       <li class="nav-heading">Pages</li>
 
@@ -348,34 +346,9 @@
 
   <main id="main" class="main">
 
+
     </div><!-- End Page Title -->
-
-    <section class="section dashboard">
-      <div class="row">
-        @yield('content')
-        <!-- Left side columns -->
-        <div class="col-lg-8">
-          <div class="row">
-
-              </div>
-
-              </div>
-
-
-
-
-
-
-          </div>
-        </div><!-- End Left side columns -->
-
-        <!-- Right side columns -->
-        <div class="col-lg-4">
-        </div><!-- End Right side columns -->
-
-      </div>
-    </section>
-
+    @yield('content')
   </main><!-- End #main -->
 
 

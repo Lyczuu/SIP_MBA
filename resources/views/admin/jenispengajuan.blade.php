@@ -63,6 +63,17 @@
     </script>
 </head>
 <body>
+
+    <div class="pagetitle">
+        <h1>Pengajuan</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item active">Jenis pengajuan</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+
     <div class="container">
         <h1>Jenis Kemitraan <span style="color: red;">*</span></h1>
         <p>

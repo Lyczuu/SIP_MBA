@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +26,9 @@
         .form-check-input,
         .form-control {
             border-radius: 6px;
-        }  .btn-primary {
+        }
+
+        .btn-primary {
             width: 100%;
             border-radius: 6px;
         }
@@ -54,6 +55,7 @@
             </ul>
         </div>
     @endif
+
 
     <div class="container mt-5">
         <h3>Form Integrasi Payment MBA No Fee Base(admin)</h3>
@@ -234,6 +236,8 @@
                     });
                 });
             });
+
+         
         </script>
 
 

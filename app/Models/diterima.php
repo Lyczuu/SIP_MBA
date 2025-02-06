@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class belumvalidasi extends Model
+class diterima extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'payment_mba';
     protected $fillable = [
         'wilayah_id',

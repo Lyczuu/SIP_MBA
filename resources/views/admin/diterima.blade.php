@@ -1,10 +1,10 @@
 @extends('layout.am_wilayahfeelayout')
 
-@section('title', 'belumvalidasi')
+@section('title', 'diterima')
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="mb-4">Halaman Belum validasi</h1>
+        <h1 class="mb-4">Halaman Diterima</h1>
 
         {{-- Jika ada pesan status --}}
         @if (Session::has('status'))
@@ -85,7 +85,7 @@
                       <td>{{ $list->fees->total_fee }}</td>
                       <td>{{ $list->fees->fee_mba }}</td>
                       <td>{{ $list->fees->fee_mitra }}</td>
-                      <td>{{ $list->status }}</td>
+                      <td><span class="badge bg-success">Diterima</span></td>
                       <td>{{ $list->wilayah->nama_wilayah }}</td>
                       <td>{{ $list->mitra->nama_mitra }}</td>
                       <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
@@ -121,9 +121,7 @@
     </main><!-- End #main -->
 
 
-
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
 
 
 </body>

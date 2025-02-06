@@ -58,7 +58,7 @@
 
     <div class="container mt-5">
         <h3>Form Integrasi Payment MBA Fee Based (admin)</h3>
-        <form action="/ajukan" method="post" enctype="multipart/form-data">
+        <form  action="/ajukan" method="post" enctype="multipart/form-data">
             @csrf
             <!-- Dropdown Wilayah -->
             <div class="mb-3">
@@ -103,13 +103,8 @@
                 <div>
                     @foreach ($jenis_pajak as $jak)
                         <div class="form-check">
-                            <input
-                                type="checkbox"
-                                name="jenis_pajak[]"
-                                value="{{ $jak->id }}"
-                                class="form-check-input"
-                                id="jenis_pajak_{{ $jak->id }}"
-                            >
+                            <input type="checkbox" name="jenis_pajak[]" value="{{ $jak->id }}"
+                                class="form-check-input" id="jenis_pajak_{{ $jak->id }}">
                             <label class="form-check-label" for="jenis_pajak_{{ $jak->id }}">
                                 {{ $jak->nama_jenis_pajak }}
                             </label>
@@ -119,30 +114,30 @@
             </div>
 
 
-           <!-- Jenis Transaksi -->
-           <div class="mb-3">
-            <label class="form-label">Jenis Transaksi <span class="text-danger">*</span></label>
-            <div>
-                @foreach ($jenis_transaksi as $transaksi)
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="transaksi_id"
-                            id="transaksi_{{ $transaksi->id }}" value="{{ $transaksi->id }}" required>
-                        <label class="form-check-label" for="transaksi_{{ $transaksi->id }}">
-                            {{ $transaksi->nama_jenis_transaksi }}
-                        </label>
-                    </div>
-                @endforeach
+            <!-- Jenis Transaksi -->
+            <div class="mb-3">
+                <label class="form-label">Jenis Transaksi <span class="text-danger">*</span></label>
+                <div>
+                    @foreach ($jenis_transaksi as $transaksi)
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="transaksi_id"
+                                id="transaksi_{{ $transaksi->id }}" value="{{ $transaksi->id }}" required>
+                            <label class="form-check-label" for="transaksi_{{ $transaksi->id }}">
+                                {{ $transaksi->nama_jenis_transaksi }}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
 
-        <div class="mb-3" id="aggregator-input-container" style="display: none;">
-            <label for="aggregator-info" class="form-label">Informasi Tambahan untuk AGGREGATOR</label>
-            <input type="text" name="mitra_agg" id="mitra_agg" class="form-control"
-                value="{{ old('mitra_agg') }}" placeholder="Masukkan ya atau tidak">
-            @error('mitra_agg')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
+            <div class="mb-3" id="aggregator-input-container" style="display: none;">
+                <label for="aggregator-info" class="form-label">Informasi Tambahan untuk AGGREGATOR</label>
+                <input type="text" name="mitra_agg" id="mitra_agg" class="form-control"
+                    value="{{ old('mitra_agg') }}" placeholder="Masukkan ya atau tidak">
+                @error('mitra_agg')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
 
 
@@ -234,6 +229,7 @@
 
             <!-- Submit -->
             <button type="submit" class="btn btn-primary">Ajukan</button>
+
         </form>
     </div>
     <script>
@@ -242,6 +238,7 @@
             const jenisTransaksiRadios = document.querySelectorAll('input[name="transaksi_id"]');
             const aggregatorInputContainer = document.getElementById('aggregator-input-container');
             const aggregatorInputField = document.getElementById('aggregator-info');
+
 
             // Tambahkan event listener untuk setiap radio button
             jenisTransaksiRadios.forEach(radio => {
@@ -258,6 +255,7 @@
             });
         });
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -283,6 +281,11 @@
             });
         });
     </script>
+
+
+
+
+
 </body>
 
 </html>

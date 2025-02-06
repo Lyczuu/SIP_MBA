@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('payment_mba', function (Blueprint $table) {
-            $table->string('mitra_agg')->nullable()->change();
-
+            $table->integer('status')->nullable()->change();
         });
     }
 
@@ -23,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('payment_mba', function (Blueprint $table) {
-           
+
         });
     }
 };

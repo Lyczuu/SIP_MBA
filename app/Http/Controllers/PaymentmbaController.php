@@ -195,7 +195,7 @@ class PaymentmbaController extends Controller
             // Commit transaksi
             DB::commit();
 
-            return redirect()->route('success.page')->with('success', 'Data berhasil disimpan.');
+             return redirect()->route('success.page')->with('success', 'Data berhasil disimpan.');
         } catch (\Throwable $e) {
             // Rollback jika terjadi error
             DB::rollBack();

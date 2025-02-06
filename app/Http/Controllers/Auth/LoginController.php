@@ -33,13 +33,13 @@ if (Auth::attempt($credentials)) {
     // Redirect based on user role
     switch ($level) {
         case 1: // Admin
-            return redirect()->intended('/admin/home');
+            return redirect()->intended('/admin/dashboard');
 
         case 2: // AM Wilayah
-            return redirect()->intended('admin/home');
+            return redirect()->intended('admin/dashboard');
 
         case 3: // AM Wilayah 2
-            return redirect()->intended('/admin/home');
+            return redirect()->intended('/admin/dashboard');
 
     }
 }

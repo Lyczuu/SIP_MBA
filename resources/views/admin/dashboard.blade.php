@@ -4,7 +4,6 @@
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="mb-4">Halaman Dashboard</h1>
 
         {{-- Jika ada pesan status --}}
         @if (Session::has('status'))
@@ -22,26 +21,19 @@
   <meta content="" name="keywords">
 
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="{{asset ('V-TAX/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-  <link href="{{asset ('V-TAX/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
-  <link href="{{asset ('V-TAX/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
-  <link href="{{asset ('V-TAX/vendor/quill/quill.snow.css')}}" rel="stylesheet">
-  <link href="{{asset ('V-TAX/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
-  <link href="{{asset ('V-TAX/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
-  <link href="{{asset ('V-TAX/vendor/simple-datatables/style.css')}}" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="{{asset ('V-TAX/css/style.css')}}" rel="stylesheet">
-
-
 </head>
 
 <body>
+
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
 
     <section class="section">
         <div class="row">
@@ -75,7 +67,8 @@
 
                             <div class="d-flex align-items-center">
                               <div class="ps-3">
-                                <span class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">Belum Validasi</span> <span class="badge bg-warning" >5</span></td> | <span class="badge bg-success" onclick="window.location.href='/admin/dashboard'" style="cursor: pointer;">Diterima</span> <span class="badge bg-success">8</span></td> | <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">Ditolak</span> <span class="badge bg-danger">8</span></td>
+                                <span class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">Belum Validasi</span> <span id="notif-belumvalidasi" class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">0</span></td> | <span class="badge bg-success" onclick="window.location.href='/diterima'" style="cursor: pointer;">Diterima</span> <span class="badge bg-success" onclick="window.location.href='/diterima'" style="cursor: pointer;">8</span></td> | <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">Ditolak</span> <span id="notif-ditolak" class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">0</span></td>
+
 
                               </div>
                             </div>
@@ -106,7 +99,7 @@
 
                             <div class="d-flex align-items-center">
                               <div class="ps-3">
-                                <span class="badge bg-warning">Belum Validasi</span> <span class="badge bg-warning">5</span></td> | <span class="badge bg-success">Diterima</span> <span class="badge bg-success">8</span></td> | <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">Ditolak</span> <span class="badge bg-danger">8</span></td>
+                                <span class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">Belum Validasi</span> <span id="notif-belumvalidasi" class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">0</span></td> | <span class="badge bg-success" onclick="window.location.href='/diterima'" style="cursor: pointer;">Diterima</span> <span class="badge bg-success" onclick="window.location.href='/diterima'" style="cursor: pointer;">8</span></td> | <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">Ditolak</span> <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">8</span></td>
 
                               </div>
                             </div>
@@ -137,7 +130,7 @@
 
                             <div class="d-flex align-items-center">
                               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-cart"></i>
+                                <i class="bi bi-graph-up"></i>
                               </div>
                               <div class="ps-3">
                                 <h6>145</h6>
@@ -173,7 +166,7 @@
 
                             <div class="d-flex align-items-center">
                               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-currency-dollar"></i>
+                                <i class="bi bi-graph-up"></i>
                               </div>
                               <div class="ps-3">
                                 <h6>$3,264</h6>
@@ -254,7 +247,7 @@
                       <td>{{ $list->fees->total_fee }}</td>
                       <td>{{ $list->fees->fee_mba }}</td>
                       <td>{{ $list->fees->fee_mitra }}</td>
-                      <td><span class="badge bg-success">Diterima</span></td>
+                      <td>{{ $list->status}}</td>
                       <td>{{ $list->wilayah->nama_wilayah }}</td>
                       <td>{{ $list->mitra->nama_mitra }}</td>
                       <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
@@ -293,18 +286,6 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Vendor JS Files -->
-  <script src="{{asset ('V-TAX/vendor/apexcharts/apexcharts.min.js')}}"></script>
-  <script src="{{asset ('V-TAX/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-  <script src="{{asset ('V-TAX/vendor/chart.js/chart.umd.js')}}"></script>
-  <script src="{{asset ('V-TAX/vendor/echarts/echarts.min.js')}}"></script>
-  <script src="{{asset ('V-TAX/vendor/quill/quill.js')}}"></script>
-  <script src="{{asset ('V-TAX/vendor/simple-datatables/simple-datatables.js')}}"></script>
-  <script src="{{asset ('V-TAX/vendor/tinymce/tinymce.min.js')}}"></script>
-  <script src="{{asset ('V-TAX/vendor/php-email-form/validate.js')}}"></script>
-
-  <!-- Template Main JS File -->
-  <script src="{{asset ('V-TAX/js/main.js')}}"></script>
 
 </body>
 

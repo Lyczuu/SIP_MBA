@@ -3,11 +3,13 @@
 
 use App\Models\paymentmba;
 use App\Models\belumvalidasi;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Btc0Controller;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ditolakController;
+use App\Http\Controllers\DiterimaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PaymentmbaController;
@@ -37,7 +39,7 @@ Route::get('/admin/payment_mba_admin', [PaymentmbaController::class, 'showAlerts
 //payment mba no fee admin
 Route::get('/admin/payment_mba_no_fee_admin', [PaymentmbafeeController::class, 'index'])->name('payment_mba_no_fee_admin');
 Route::post('/submit', [PaymentmbafeeController::class, 'store'])->name('submit');
-Route::get('/berhasil', function () { return view('berhasil'); })->name('berhasil.page');
+// Route::get('/success', function () { return view('success'); })->name('.page');
 Route::get('/generate-Kode-pengajuan', [PaymentmbafeeController::class, 'generateKodepengajuan']);
 Route::get('/admin/payment_mba_no_fee_admin', [PaymentmbafeeController::class, 'showAlerts'])->name('admin.payment_mba_no_fee_admin');
 
@@ -46,9 +48,21 @@ Route::get('/ditolak', [ditolakController::class, 'index'])->name('ditolak');
 
 //di proses
 Route::get('/belumvalidasi', [BelumvalidasiController::class, 'index'])->name('belumvalidasi')->middleware('auth');
+Route::get('/api/get-belumvalidasi-count', function () {$count = DB::table('payment_mba')->count(); return response()->json(['count' => $count]);});// Gantilah 'ditolak' dengan nama tabel yang benar
 
+//diterima
+Route::get('/diterima', [DiterimaController::class, 'index'])->name('diterima')->middleware('auth');
+
+//jenis pengajuan
 Route::get('/admin/pengajuan', [jenispengajuanController::class, 'index'])->name('admin.pengajuan');
+
+//dashboard
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware('auth');
+// Route::match(['get', 'post'], '/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware('auth');
+
+Route::get('/api/get-ditolak-count', function () {$count = DB::table('ditolak')->count(); return response()->json(['count' => $count]);});// Gantilah 'ditolak' dengan nama tabel yang benar
+Route::get('/api/get-diterima-count', function () {$count = DB::table('diterima')->count(); return response()->json(['count' => $count]);});// Gantilah 'ditolak' dengan nama tabel yang benar
+
 Route::get('/admin/profil', [ProfilController::class, 'index'])->name('admin.profil');
 
 // Route::get('/generate-kode-pengajuan', [PaymentmbaController::class, 'generateKodePengajuan']);

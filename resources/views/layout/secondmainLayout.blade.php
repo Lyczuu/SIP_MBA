@@ -7,24 +7,6 @@
     <title>@yield('title')</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/home') ? 'active' :''}}" aria-current="page" href="/admin/home"></a>
-            </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/kategori') ? 'active' : ''}}" aria-current="page" href="/admin/kategori">Kategori</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/barang') ? 'active' : ''}}" aria-current="page" href="/admin/barang">Barang</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/transaksi') ? 'active' : ''}}" aria-current="page" href="/admin/transaksi">Transaksi</a>
-            </li> --}}
-            {{-- <li class="na-item">
-                <a class="nav-link" href="/logout">Logout</a> --}}
-        </ul>
-    </nav>
     <div class="container">
         @yield('content')
     </div>
