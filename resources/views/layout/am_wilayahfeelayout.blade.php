@@ -254,7 +254,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="{{ route('login') }}">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -281,23 +281,13 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Pengajuan</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link " href="{{ route('admin.pengajuan') }}">
+          <i class="bi bi-stack"></i>
+          <span>Pengajuan</span>
         </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ route('admin.payment_mba_admin') }}">
-                <i class="bi bi-circle"></i><span>FEE BASED (ADMIN)</span>
-              </a>
-          </li>
-          <li>
-            <a href="{{ route('admin.payment_mba_no_fee_admin') }}">
-                <i class="bi bi-circle"></i><span>NO FEE BASED (ADMIN)</span>
-              </a>
+      </li><!-- End Dashboard Nav -->
 
-          </li>
-        </ul>
-      </li><!-- End Components Nav -->
+
 
 
 
@@ -388,15 +378,6 @@
 
   </main><!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>PAYMENT INTEGRASI SYSTEM</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-
-    </div>
-  </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

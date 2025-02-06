@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class paymentmbafee extends Model
+class belumvalidasi extends Model
 {
-    //
     protected $table = 'payment_mba';
     protected $fillable = [
         'wilayah_id',
@@ -34,14 +33,18 @@ class paymentmbafee extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+
     public function jenisPajak()
     {
         return $this->belongsTo(jenis_pajak::class, 'jenis_pajak_id');
     }
+
     public function fees()
     {
-        return $this->belongsTo(fees::class, 'fees_id');
+        return $this->belongsTo(Fees::class, 'fees_id');
     }
+
     public function jenis_transaksi()
     {
         return $this->belongsTo(jenis_transaksi::class, 'transaksi_id');
