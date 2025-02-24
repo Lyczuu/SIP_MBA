@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class DatajenispajakController extends Controller
 {
@@ -39,8 +40,10 @@ class DatajenispajakController extends Controller
             'nama_jenis_pajak' => $validated['nama_jenis_pajak'],
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil ditambahkan!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Simpan');
+        return redirect('/datajenispajak');
+
     }
 
     /**
@@ -77,8 +80,10 @@ class DatajenispajakController extends Controller
             'nama_jenis_pajak' => $validated['nama_jenis_pajak'],
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil diperbarui!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Ubah');
+        return redirect('/datajenispajak');
+
     }
 
     /**
@@ -88,6 +93,9 @@ class DatajenispajakController extends Controller
     {
         $jenis_pajak = jenis_pajak::findOrFail($id);
         $jenis_pajak->delete();
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di hapus');
         return redirect('/datajenispajak');
+
     }
 }

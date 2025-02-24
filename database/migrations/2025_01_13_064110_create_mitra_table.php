@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('mitra', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_mitra', 255);
+            $table->string('nama_mitra', 255)->unique();
+            $table->string('flag_agg', 255)->default('0');
+            $table->string('flag_bank', 255)->default('0');
             $table->timestamps();
         });
     }

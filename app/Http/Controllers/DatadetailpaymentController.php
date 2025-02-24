@@ -14,6 +14,7 @@ use App\Models\jenis_transaksi;
 use App\Models\datadetailpayment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class DatadetailpaymentController extends Controller
 {
@@ -90,7 +91,10 @@ class DatadetailpaymentController extends Controller
                 );
             }
 
-            return redirect()->back()->with('success', 'Data berhasil diperbarui.');
+            Session::flash('status','success');
+            Session::flash('message','Data Berhasil Di Validasi');
+            return redirect('/datadiajukan');
+
         });
     }
 

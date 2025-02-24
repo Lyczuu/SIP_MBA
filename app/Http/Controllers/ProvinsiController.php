@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\provinsi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ProvinsiController extends Controller
 {
@@ -42,8 +43,9 @@ class ProvinsiController extends Controller
             'kode_prov' => $validated['kode_prov'],
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Wilayah berhasil ditambahkan!');
+        Session::flash('status','success');
+        Session::flash('message','Data berhasil di Simpan');
+        return redirect('/dataprovinsi');
     }
 
     /**
@@ -65,16 +67,38 @@ class ProvinsiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, provinsi $provinsi)
+    public function update(Request $request, $id)
     {
-        //
+         // Validasi input
+         $validated = $request->validate([
+            'nama_provinsi' => 'required|string|max:255',
+            'kode_prov' => 'required|string|max:255',
+
+        ]);
+
+        // Cari data mitra berdasarkan ID
+        $provinsi = provinsi::findOrFail($id);
+
+        // Update data mitra
+        $provinsi->update([
+            'nama_provinsi' => $validated['nama_provinsi'],
+            'kode_prov' => $validated['kode_prov'],
+        ]);
+
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Ubah');
+        return redirect('/dataprovinsi');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(provinsi $provinsi)
+    public function destroy($id)
     {
-        //
+        $provinsi = provinsi::findOrFail($id);
+        $provinsi->delete();
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Hapus');
+        return redirect('/dataprovinsi');
     }
 }

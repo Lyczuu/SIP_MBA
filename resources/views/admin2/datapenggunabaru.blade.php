@@ -41,6 +41,25 @@
             </nav>
         </div><!-- End Page Title -->
 
+
+        <!-- Modal -->
+        @if (Session::has('status'))
+            <div id="flash-message" class="alert alert-success" role="alert">
+                {{ Session::get('message') }}
+            </div>
+        @endif
+
+        <script>
+            // Hilangkan flash message setelah 3 detik (3000 ms)
+            setTimeout(() => {
+                const flashMessage = document.getElementById('flash-message');
+                if (flashMessage) {
+                    flashMessage.style.transition = 'opacity 0.5s ease';
+                    flashMessage.style.opacity = '0';
+                    setTimeout(() => flashMessage.remove(), 500); // Hapus dari DOM setelah fade-out
+                }
+            }, 3000); // Ubah angka ini untuk durasi yang berbeda
+        </script>
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
@@ -101,11 +120,8 @@
                                                             data-bs-target="#Editdatapengguna{{ $list->id }}">
                                                             <i class="bi bi-pencil-square"></i> Edit
                                                         </button>
-                                                            <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                                                data-bs-target="#addwilayahtousers">
-                                                                <i class="bi bi-crosshair2"> </i>
-                                                            </button>
-                                                            <button onclick="window.location='{{ route('user.wilayah') }}'" class="btn btn-primary">+</button>
+                                                        <button onclick="window.location='{{ route('user.wilayah') }}'"
+                                                            class="bi bi-crosshair2"></button>
 
 
                                                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
@@ -115,7 +131,6 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @include('admin2.modal.add_wilayah_to_datapengguna')
                                             @include('admin2.modal.edit_datapengguna')
                                             @include('admin2.modal.delete_datapengguna')
                                         @endforeach

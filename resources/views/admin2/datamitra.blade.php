@@ -40,6 +40,24 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+        <!-- Modal -->
+        @if (Session::has('status'))
+            <div id="flash-mitra" class="alert alert-success" role="alert">
+                {{ Session::get('message') }}
+            </div>
+        @endif
+
+        <script>
+            // Hilangkan flash message setelah 3 detik (3000 ms)
+            setTimeout(() => {
+                const flashMessage = document.getElementById('flash-mitra');
+                if (flashMessage) {
+                    flashMessage.style.transition = 'opacity 0.5s ease';
+                    flashMessage.style.opacity = '0';
+                    setTimeout(() => flashMessage.remove(), 500); // Hapus dari DOM setelah fade-out
+                }
+            }, 3000); // Ubah angka ini untuk durasi yang berbeda
+        </script>
 
         <section class="section">
             <div class="row">
@@ -53,7 +71,7 @@
                             <br>
                             &nbsp;
 
-                             <!-- Tambah Modal -->
+                            <!-- Tambah Modal -->
                             {{-- button modal --}}
                             <a class="card-title">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -65,44 +83,46 @@
                             @include('admin2.modal.add_datamitra')
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">
-                            <table class="table  datatable">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Mitra</th>
-                                        <th>Flag agg</th>
-                                        <th>Flag bank</th>
-                                        <th>Dibuat</th>
-                                        <th>Diubah</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($mitra as $key => $list)
-                                    <tr>
-                                      <td>{{ $list->nama_mitra }}</td>
-                                      <td>{{ $list->flag_agg }}</td>
-                                      <td>{{ $list->flag_bank }}</td>
-                                      <td>{{ $list->created_at }}</td>
-                                      <td>{{ $list->updated_at }}</td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#Editmitra{{$list->id}}">
-                                                <i class="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapusmitra{{$list->id}}">
-                                                <i class="bi bi-trash"></i> Delete
-                                            </button>
-                                        </div>
-                                    </td>
+                                <table class="table  datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Mitra</th>
+                                            <th>Flag agg</th>
+                                            <th>Flag bank</th>
+                                            <th>Dibuat</th>
+                                            <th>Diubah</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($mitra as $key => $list)
+                                            <tr>
+                                                <td>{{ $list->nama_mitra }}</td>
+                                                <td>{{ $list->flag_agg }}</td>
+                                                <td>{{ $list->flag_bank }}</td>
+                                                <td>{{ $list->created_at }}</td>
+                                                <td>{{ $list->updated_at }}</td>
+                                                <td>
+                                                    <div class="d-flex gap-2">
+                                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#Editmitra{{ $list->id }}">
+                                                            <i class="bi bi-pencil-square"></i> Edit
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#hapusmitra{{ $list->id }}">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </td>
 
-                                    </tr>
-                                    @include('admin2.modal.edit_datamitra')
-                                    @include('admin2.modal.delete_datamitra')
-                                    @endforeach
+                                            </tr>
+                                            @include('admin2.modal.edit_datamitra')
+                                            @include('admin2.modal.delete_datamitra')
+                                        @endforeach
 
-                                </tbody>
-                            </table>
-                        </div>
+                                    </tbody>
+                                </table>
+                            </div>
                             <!-- End Table with stripped rows -->
 
                         </div>

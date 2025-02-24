@@ -10,6 +10,7 @@ use App\Models\Penggunabaru;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class PenggunabaruController extends Controller
 {
@@ -21,7 +22,7 @@ class PenggunabaruController extends Controller
         $user = User::all();
         $role = role::all();
         $wilayah = wilayah::all();
-        return view('admin2.datapenggunabaru', compact('user','role','wilayah'));
+        return view('admin2.datapenggunabaru', compact('user', 'role', 'wilayah'));
     }
 
     /**
@@ -36,7 +37,7 @@ class PenggunabaruController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-      {
+    {
         // Validasi input
         $request->validate([
             'username' => 'required|string|max:255|unique:users',
@@ -59,8 +60,9 @@ class PenggunabaruController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Pengguna berhasil ditambahkan!');
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data Berhasil Di Simpan');
+        return redirect('/penggunabaru');
     }
 
     /**
@@ -82,9 +84,39 @@ class PenggunabaruController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Penggunabaru $penggunabaru)
+    public function update(Request $request, $id)
     {
-        //
+
+        $user = User::findOrFail($id);
+
+        // Validasi input
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'full_name' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
+            'role_id' => 'required',
+            'password' => 'nullable|min:6|max:8|confirmed', // Password opsional
+        ]);
+
+        // Update data
+        $user->username = $request->username;
+        $user->full_name = $request->full_name;
+        $user->alamat = $request->alamat;
+        $user->phone_number = $request->phone_number;
+        $user->email = $request->email;
+        $user->role_id = $request->role_id;
+
+        // Cek apakah user mengisi password baru
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password); // Hash password baru
+        }
+
+        $user->save();
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data Berhasil Di Ubah');
+        return redirect('/penggunabaru');
     }
 
     /**
@@ -94,7 +126,8 @@ class PenggunabaruController extends Controller
     {
         $user = user::findOrFail($id);
         $user->delete();
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data Berhasil Di Hapus');
         return redirect('/penggunabaru');
-
     }
 }

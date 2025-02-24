@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
-            $table->string('Total_Fee', 255);
-            $table->string('Fee_mba', 255);
-            $table->string('Fee_mitra', 255);
+            $table->string('total_fee', 255)->default('0');
+            $table->string('fee_mba', 255)->default('0');
+            $table->string('fee_mitra', 255)->default('0');
             $table->timestamps();
         });
     }

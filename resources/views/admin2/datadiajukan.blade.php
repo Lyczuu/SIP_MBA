@@ -40,7 +40,24 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+        <!-- Modal -->
+        @if (Session::has('status'))
+            <div id="flash-mitra" class="alert alert-success" role="alert">
+                {{ Session::get('message') }}
+            </div>
+        @endif
 
+        <script>
+            // Hilangkan flash message setelah 3 detik (3000 ms)
+            setTimeout(() => {
+                const flashMessage = document.getElementById('flash-mitra');
+                if (flashMessage) {
+                    flashMessage.style.transition = 'opacity 0.5s ease';
+                    flashMessage.style.opacity = '0';
+                    setTimeout(() => flashMessage.remove(), 500); // Hapus dari DOM setelah fade-out
+                }
+            }, 3000); // Ubah angka ini untuk durasi yang berbeda
+        </script>
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
@@ -92,23 +109,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($paymentmba->filter(function($item) {
-                                            return (
-                                                $item->status == 0  // status belum divalidasi
-                                            );
-                                        }) as $key => $list)
+                                        @foreach ($paymentmba->filter(function ($item) {
+            return $item->status == 0; // status belum divalidasi
+        }) as $key => $list)
                                             <tr>
                                                 <td> {{ $list->kode_pengajuan }}</td>
                                                 <td> {{ $list->user->username }}</td>
                                                 <td> {{ $list->mitra->nama_mitra }}</td>
                                                 <td> {{ $list->wilayah->nama_wilayah }}</td>
-                                                <td> {{ $list->jenis_pajak_nama}}</td>
+                                                <td> {{ $list->jenis_pajak_nama }}</td>
                                                 <td> {{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                 <td> {{ $list->wag_kordinasi_payment }}</td>
 
                                                 <td>
                                                     <div class="d-flex gap-2">
-                                                        <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#Editpayment{{ $list->id }}">
+                                                        <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#Editpayment{{ $list->id }}">
                                                             <i class="bi bi-pencil-square"></i> Detail
                                                         </button>
                                                     </div>

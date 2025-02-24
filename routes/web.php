@@ -49,7 +49,7 @@ Route::get('/admin/home', [AdminController::class, 'index'])->name('admin_home')
 
 //payment mba fee admin
 Route::get('/admin/payment_mba_admin', [PaymentmbaController::class, 'index'])->name('payment_mba_admin');
-Route::post('/ajukan', [PaymentmbaController::class, 'store'])->name('ajukan');
+Route::post('/jukan', [PaymentmbaController::class, 'store'])->name('jukan');
 Route::get('/success', function () { return view('success'); })->name('success.page');
 Route::get('/generate-Kode-pengajuan', [PaymentmbaController::class, 'generateKodepengajuan']);
 //di tolak
@@ -123,7 +123,6 @@ Route::get('/datadisetujui', [DatadisetujuiController::class, 'index'])->name('d
 
 //data detail
 Route::get('/datadetail', [DatadetailpaymentController::class, 'index'])->name('data.detail')->middleware('auth');
-
 Route::put('/payment/validate/{id}', [DatadetailpaymentController::class, 'update'])->name('payment.update')->middleware('auth');
 
 //data edit payment
@@ -166,6 +165,8 @@ Route::post('/datapengajuan', [DatapengajuanintegrasiController::class, 'store']
 
 //Pegguna baru
 Route::get('/penggunabaru', [PenggunabaruController::class, 'index'])->name('pengguna.baru')->middleware('auth');
+Route::post('/grit', [PenggunabaruController::class,'store'])->name('grit')->middleware('auth');
+Route::put('/update_pengguna{id}', [PenggunabaruController::class, 'update'])->name('update_pengguna');
 Route::delete('/datapenggunabaru_delete{id}',[PenggunabaruController::class, 'destroy'])->name('datapenggunabaru_delete');
 
 //UserWilayah
@@ -178,7 +179,11 @@ Route::get('/get-wilayah-by-provinsi', [UserwilayahController::class, 'getWilaya
 //data provinsi
 Route::get('/dataprovinsi',[ProvinsiController::class,'index'])->name('data.provinsi')->middleware('auth');
 Route::post('/godaw',[ProvinsiController::class,'store'])->name('godaw')->middleware('auth');
-// Route::get('dataprovinsi',[ProvinsiController::class,'index'])->name('data.provinsi')->middleware('auth');
+Route::put('/update_provinsi{id}', [ProvinsiController::class, 'update'])->name('update_provinsi');
+Route::delete('/dataprovinsi_delete{id}', [ProvinsiController::class, 'destroy'])->name('dataprovinsi_delete');
+
+
+
 //data user detail
 Route::get('/detailpengguna', [PenggunadetailController::class, 'index'])->name('data.detailpengguna')->middleware('auth');
 

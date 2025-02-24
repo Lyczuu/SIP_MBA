@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PengajuanIntegrasi;
 use Illuminate\Http\Request;
+use App\Models\PengajuanIntegrasi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class DatapengajuanintegrasiController extends Controller
 {
@@ -40,8 +41,9 @@ class DatapengajuanintegrasiController extends Controller
             'nama_pengajuan_integrasi' => $validated['nama_pengajuan_integrasi'],
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil ditambahkan!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Simpan');
+        return redirect('/datapengajuanintegrasi');
     }
 
     /**
@@ -78,8 +80,9 @@ class DatapengajuanintegrasiController extends Controller
             'nama_pengajuan_integrasi' => $validated['nama_pengajuan_integrasi'],
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil diperbarui!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Ubah');
+        return redirect('/datapengajuanintegrasi');
     }
 
     /**
@@ -89,6 +92,8 @@ class DatapengajuanintegrasiController extends Controller
     {
         $pengajuan_integrasi =pengajuanintegrasi::findOrFail($id);
         $pengajuan_integrasi->delete();
-        return redirect('/datapengajuanintegrasi')->with('success', 'Data berhasil dihapus!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Hapus');
+        return redirect('/datapengajuanintegrasi');
     }
 }

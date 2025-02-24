@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Form harus berada di dalam modal-content -->
-            <form action="/submit" method="post" enctype="multipart/form-data">
+            <form action="/grit" method="post" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Header Modal -->

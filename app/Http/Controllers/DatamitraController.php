@@ -45,8 +45,10 @@ class DatamitraController extends Controller
             'flag_bank' => $request->flag_bank,
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil ditambahkan!');
+        Session::flash('status','success');
+        Session::flash('message','Data berhasil di Simpan');
+        return redirect('/datamitra');
+
     }
 
     /**
@@ -87,8 +89,9 @@ class DatamitraController extends Controller
             'flag_bank' => $request->flag_bank,
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil diperbarui!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Ubah');
+        return redirect('/datamitra');
     }
 
     /**
@@ -98,6 +101,8 @@ class DatamitraController extends Controller
     {
         $mitra = mitra::findOrFail($id);
         $mitra->delete();
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Hapus');
         return redirect('/datamitra');
     }
 }

@@ -11,13 +11,13 @@ class fees extends Model
     use HasFactory;
 
     protected $table = 'fees';
-    protected $fillable = ['Total_Fee', 'Fee_mba', 'Fee_mitra'];
+    protected $fillable = ['total_fee', 'fee_mba', 'fee_mitra'];
 
     //default value 0
     protected $attributes = [
-        'Total_Fee' => 0,
-        'Fee_mba' => 0,
-        'Fee_mitra' => 0,
+        'total_fee' => 0,
+        'fee_mba' => 0,
+        'fee_mitra' => 0,
     ];
 
 
@@ -32,9 +32,9 @@ class fees extends Model
 
         static::creating(function ($model) {
             // Menjamin untuk nilai default diterapkan jika tidak ada nilai yang diberikan
-            $model->Total_Fee = $model->Total_Fee ?? 0;
-            $model->Fee_mba = $model->Fee_mba ?? 0;
-            $model->Fee_mitra = $model->Fee_mitra ?? 0;
+            $model->total_fee = $model->total_fee ?? 0;
+            $model->fee_mba = $model->fee_mba ?? 0;
+            $model->fee_mitra = $model->fee_mitra ?? 0;
         });
     }
 

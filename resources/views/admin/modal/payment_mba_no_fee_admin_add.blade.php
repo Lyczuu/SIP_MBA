@@ -56,15 +56,6 @@
         </div>
     @endif
 
-    <div class="pagetitle">
-        <h1>Pengajuan</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.pengajuan') }}">Home</a></li>
-                <li class="breadcrumb-item active">Form Integrasi Payment MBA No Fee Based (admin)</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
 
     <div class="card">
         <div class="card-body">

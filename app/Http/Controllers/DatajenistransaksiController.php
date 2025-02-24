@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\jenis_transaksi;
 use Illuminate\Http\Request;
+use App\Models\jenis_transaksi;
+use Illuminate\Support\Facades\Session;
 
 class DatajenistransaksiController extends Controller
 {
@@ -39,8 +40,10 @@ class DatajenistransaksiController extends Controller
             'nama_jenis_transaksi' => $validated['nama_jenis_transaksi'],
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil ditambahkan!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Simpan');
+        return redirect('/datajenistransaksi');
+
     }
 
     /**
@@ -77,8 +80,10 @@ class DatajenistransaksiController extends Controller
             'nama_jenis_transaksi' => $validated['nama_jenis_transaksi'],
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil diperbarui!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Ubah');
+        return redirect('/datajenistransaksi');
+
     }
 
     /**
@@ -88,6 +93,9 @@ class DatajenistransaksiController extends Controller
     {
         $jenis_transaksi =jenis_transaksi::findOrFail($id);
         $jenis_transaksi->delete();
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Hapus');
         return redirect('/datajenistransaksi');
+
     }
 }

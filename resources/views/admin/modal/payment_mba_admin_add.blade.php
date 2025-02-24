@@ -55,19 +55,11 @@
             </ul>
         </div>
     @endif
-    <div class="pagetitle">
-        <h1>Pengajuan</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.pengajuan') }}">Home</a></li>
-                <li class="breadcrumb-item active">Form Integrasi Payment MBA Fee Based (admin)</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
+
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Form Integrasi Payment MBA Fee Based (admin)</h5>
-            <form class="row g-3" action="/ajukan" method="post" enctype="multipart/form-data">
+            <form class="row g-3" action="/jukan" method="post" enctype="multipart/form-data">
                 @csrf
 
 
@@ -256,7 +248,7 @@
                     <label class="fees-label mb-3"><strong>Fees<span class="text-danger">*</span></strong></label>
                     <div class="col-4">
                         <label class="form-label">Total_Fee </label>
-                        <input type="text" class="form-control" name="fees" placeholder="Masukan Total fee"
+                        <input type="text" class="form-control" name="total_fee" placeholder="Masukan Total fee"
                             required>
                     </div>
                     <div class="col-4">

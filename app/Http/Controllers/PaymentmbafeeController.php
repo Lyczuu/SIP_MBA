@@ -186,7 +186,11 @@ class PaymentmbafeeController extends Controller
             Log::info('Data PaymentMba berhasil disimpan.', ['payment_id' => $payment->id]);
 
             DB::commit();
-            return redirect()->route('success.page')->with('success', 'Data berhasil disimpan.');
+
+            Session::flash('status','success');
+            Session::flash('message','Data Berhasil Di Ajukan');
+            return redirect('/admin/payment_mba_no_fee_admin');
+
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error("Terjadi kesalahan saat menyimpan data: {$e->getMessage()}", [

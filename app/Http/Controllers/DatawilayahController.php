@@ -6,6 +6,7 @@ use App\Models\wilayah;
 use App\Models\provinsi;
 use App\Models\datawilayah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class DatawilayahController extends Controller
 {
@@ -46,8 +47,9 @@ class DatawilayahController extends Controller
             'kode_area' => $request->kode_area,
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Data wilayah berhasil ditambahkan!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Simpan');
+        return redirect('/datawilayah');
     }
     /**
      * Display the specified resource.
@@ -87,8 +89,9 @@ class DatawilayahController extends Controller
             'kode_area' => $validated['kode_area'],
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Mitra berhasil diperbarui!');
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Ubah');
+        return redirect('/datawilayah');
     }
 
     /**
@@ -98,6 +101,8 @@ class DatawilayahController extends Controller
     {
         $wilayah = wilayah::findOrFail($id);
         $wilayah->delete();
+        Session::flash('status','success');
+        Session::flash('message','Data Berhasil Di Hapus');
         return redirect('/datawilayah');
     }
 }

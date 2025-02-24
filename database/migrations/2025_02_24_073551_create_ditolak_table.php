@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('alasan_penolakan');
             $table->unsignedBigInteger('ditolak_oleh');
             $table->timestamp('tanggal_ditolak')->useCurrent();
-           
+
 
             // Foreign Keys
             $table->foreign('pengajuan_id')->references('id')->on('payment_mba')->onDelete('cascade');
