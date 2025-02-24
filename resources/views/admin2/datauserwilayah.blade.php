@@ -51,12 +51,13 @@
 
 
                             <!-- Table with stripped rows -->
-                            <form action="{{ route('assign.wilayah') }}" method="POST">
+                            <form class="row g-3" action="{{ route('assign.wilayah') }}" method="POST">
                                 @csrf
 
                                 <!-- Pilih user yang ingin diberikan wilayah -->
+                               
                                 <label for="user_id">Pilih User:</label>
-                                <select name="user_id" id="user_id" class="form-control">
+                                <select name="user_id" id="user_id" class="col-4">
                                     @foreach ($user as $u)
                                         <option value="{{ $u->id }}">{{ $u->username }}</option>
                                     @endforeach
@@ -66,7 +67,7 @@
 
                                 <!-- Pilih Provinsi untuk Filter -->
                                 <label for="kode_prov">Pilih Provinsi:</label>
-                                <select name="kode_prov" id="kode_prov" class="form-control">
+                                <select name="kode_prov" id="kode_prov" class="col-4">
                                     <option value="">Semua Provinsi</option>
                                     @foreach ($provinsi as $p)
                                         <option value="{{ $p->kode_prov }}">{{ $p->nama_provinsi }}</option>

@@ -75,129 +75,127 @@
                 <input type="hidden" name="jenis_pengajuan" value="1">
 
                 <!-- Dropdown Wilayah -->
-                    <div class="col-6">
-                        <label for="wilayah" class="form-label">Nama Wilayah</label>
-                        <select id="wilayah" name="wilayah_id" class="form-select" required>
-                            @foreach ($wilayah as $w)
-                                <option value="{{ $w->id }}">{{ $w->nama_wilayah }}</option>
-                            @endforeach
-                        </select>
+                <div class="col-6">
+                    <label for="wilayah" class="form-label">Nama Wilayah</label>
+                    <select id="wilayah" name="wilayah_id" class="form-select" required>
+                        @foreach ($wilayah as $w)
+                            <option value="{{ $w->id }}">{{ $w->nama_wilayah }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+
+
+                <!-- Pilihan Jenis Transaksi -->
+                <div class="col-3 mb-4">
+                    <label class="form-label">Jenis Transaksi <span class="text-danger">*</span></label>
+                    <div>
+                        @foreach ($jenis_transaksi as $transaksi)
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="transaksi_id"
+                                    id="transaksi_{{ $transaksi->id }}" value="{{ $transaksi->id }}"
+                                    data-jenis="{{ $transaksi->nama_jenis_transaksi }}" required>
+                                <label class="form-check-label" for="transaksi_{{ $transaksi->id }}">
+                                    {{ $transaksi->nama_jenis_transaksi }}
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
+                </div>
+
+                {{-- aggregator --}}
+                <div class="col-6" id="aggregator-input-container" style="display: none;">
+                    <label for="mitra_agg" class="form-label">Informasi Tambahan untuk AGGREGATOR</label>
+                    <select name="mitra_agg" id="mitra_agg" class="form-control">
+                        <option value="">-- Pilih agg --</option>
+                        @foreach ($mitras as $m)
+                            <option value="{{ $m->id }}" {{ old('mitra_agg') == $m->id ? 'selected' : '' }}>
+                                {{ $m->nama_mitra }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('mitra_agg')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                {{-- end aggregator --}}
 
 
+                <!-- Dropdown Mitra -->
+                <div class="col-6 mb-4">
+                    <label for="mitra" class="form-label">Nama Mitra</label>
+                    <select id="mitra" name="mitra_id" class="form-select" required>
+                        <option value="">-- Pilih Mitra --</option>
+                        @foreach ($mitra as $m)
+                            <option value="{{ $m->id }}" data-flag-bank="{{ $m->flag_bank }}">
+                                {{ $m->nama_mitra }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
+                <br>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const jenisTransaksiRadios = document.querySelectorAll('input[name="transaksi_id"]');
+                        const mitraDropdown = document.getElementById('mitra');
+                        const aggregatorInputContainer = document.getElementById('aggregator-input-container');
 
-                    <!-- Pilihan Jenis Transaksi -->
-                    <div class="col-3 mb-4">
-                        <label class="form-label">Jenis Transaksi <span class="text-danger">*</span></label>
-                        <div>
-                            @foreach ($jenis_transaksi as $transaksi)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="transaksi_id"
-                                        id="transaksi_{{ $transaksi->id }}" value="{{ $transaksi->id }}"
-                                        data-jenis="{{ $transaksi->nama_jenis_transaksi }}" required>
-                                    <label class="form-check-label" for="transaksi_{{ $transaksi->id }}">
-                                        {{ $transaksi->nama_jenis_transaksi }}
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
+                        // Simpan semua data opsi mitra sebelum difilter
+                        const allMitraOptions = Array.from(mitraDropdown.querySelectorAll('option')).slice(1);
 
-                    {{-- aggregator --}}
-                    <div class="col-6" id="aggregator-input-container" style="display: none;">
-                        <label for="mitra_agg" class="form-label">Informasi Tambahan untuk AGGREGATOR</label>
-                        <select name="mitra_agg" id="mitra_agg" class="form-control">
-                            <option value="">-- Pilih agg --</option>
-                            @foreach ($mitras as $m)
-                                <option value="{{ $m->id }}"
-                                    {{ old('mitra_agg') == $m->id ? 'selected' : '' }}>
-                                    {{ $m->nama_mitra }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('mitra_agg')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    {{-- end aggregator --}}
+                        jenisTransaksiRadios.forEach(radio => {
+                            radio.addEventListener('change', function() {
+                                let selectedType = this.nextElementSibling.textContent.trim();
 
+                                // Reset dropdown dan tambahkan semua opsi mitra
+                                mitraDropdown.innerHTML = '<option value="">-- Pilih Mitra --</option>';
 
-                    <!-- Dropdown Mitra -->
-                    <div class="col-6 mb-4">
-                        <label for="mitra" class="form-label">Nama Mitra</label>
-                        <select id="mitra" name="mitra_id" class="form-select" required>
-                            <option value="">-- Pilih Mitra --</option>
-                            @foreach ($mitra as $m)
-                                <option value="{{ $m->id }}" data-flag-bank="{{ $m->flag_bank }}">
-                                    {{ $m->nama_mitra }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <br>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const jenisTransaksiRadios = document.querySelectorAll('input[name="transaksi_id"]');
-                            const mitraDropdown = document.getElementById('mitra');
-                            const aggregatorInputContainer = document.getElementById('aggregator-input-container');
-
-                            // Simpan semua data opsi mitra sebelum difilter
-                            const allMitraOptions = Array.from(mitraDropdown.querySelectorAll('option')).slice(1);
-
-                            jenisTransaksiRadios.forEach(radio => {
-                                radio.addEventListener('change', function() {
-                                    let selectedType = this.nextElementSibling.textContent.trim();
-
-                                    // Reset dropdown dan tambahkan semua opsi mitra
-                                    mitraDropdown.innerHTML = '<option value="">-- Pilih Mitra --</option>';
-
-                                    if (selectedType === 'AGGREGATOR') {
-                                        // Jika memiih jenis transaksi  AGGREGATOR, filter hanya mitra dengan flag_bank = 1
-                                        allMitraOptions.forEach(option => {
-                                            if (option.dataset.flagBank == 1) {
-                                                mitraDropdown.appendChild(option);
-                                            }
-                                        });
-                                        aggregatorInputContainer.style.display =
-                                        'block'; // Tampilkan input tambahan
-                                    } else {
-                                        // Jika jenis transaksi selain AGGREGATOR, tampilkan semua mitra
-                                        allMitraOptions.forEach(option => {
+                                if (selectedType === 'AGGREGATOR') {
+                                    // Jika memiih jenis transaksi  AGGREGATOR, filter hanya mitra dengan flag_bank = 1
+                                    allMitraOptions.forEach(option => {
+                                        if (option.dataset.flagBank == 1) {
                                             mitraDropdown.appendChild(option);
-                                        });
-                                        aggregatorInputContainer.style.display =
+                                        }
+                                    });
+                                    aggregatorInputContainer.style.display =
+                                        'block'; // Tampilkan input tambahan
+                                } else {
+                                    // Jika jenis transaksi selain AGGREGATOR, tampilkan semua mitra
+                                    allMitraOptions.forEach(option => {
+                                        mitraDropdown.appendChild(option);
+                                    });
+                                    aggregatorInputContainer.style.display =
                                         'none'; // Sembunyikan input tambahan aggregator
-                                    }
-                                });
+                                }
                             });
                         });
-                        </script>
+                    });
+                </script>
 
 
-                    {{-- jenis pajak --}}
+                {{-- jenis pajak --}}
 
-                    <div class="col-6 mb-4">
-                        <label class="form-label">Jenis Pajak <span class="text-danger">*</span></label>
-                        <div>
-                            @foreach ($jenis_pajak as $jak)
-                                <div class="form-check">
-                                    <input type="checkbox" name="jenis_pajak[]" value="{{ $jak->id }}"
-                                        class="form-check-input" id="jenis_pajak_{{ $jak->id }}">
-                                    <label class="form-check-label" for="jenis_pajak_{{ $jak->id }}">
-                                        {{ $jak->nama_jenis_pajak }}
-                                    </label>
-                                </div>
-                            @endforeach
+                <div class="col-6 mb-4">
+                    <label class="form-label">Jenis Pajak <span class="text-danger">*</span></label>
+                    <div>
+                        @foreach ($jenis_pajak as $jak)
+                            <div class="form-check">
+                                <input type="checkbox" name="jenis_pajak[]" value="{{ $jak->id }}"
+                                    class="form-check-input" id="jenis_pajak_{{ $jak->id }}">
+                                <label class="form-check-label" for="jenis_pajak_{{ $jak->id }}">
+                                    {{ $jak->nama_jenis_pajak }}
+                                </label>
+                            </div>
+                        @endforeach
 
-                        </div>
                     </div>
-                    {{-- end jenis pajak --}}
+                </div>
+                {{-- end jenis pajak --}}
 
 
-                    <!-- Pengajuan Integrasi -->
-                    <div class="row">
+                <!-- Pengajuan Integrasi -->
+                <div class="row">
                     <div class="col-4 mb-4">
                         <label class="form-label">Pengajuan Integrasi</label>
                         <div class="d-flex justify-content-between">

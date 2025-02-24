@@ -40,6 +40,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Wilayah::class, 'user_wilayah', 'user_id', 'wilayah_id');
     }
+    
 
 
     /**

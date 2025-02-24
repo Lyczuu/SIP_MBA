@@ -25,7 +25,13 @@ class PaymentmbafeeController extends Controller
      */
     public function index()
     {
-        $wilayah = wilayah::all();
+        $user = Auth::user(); // Ambil user yang sedang login
+
+        if (!$user) {
+            abort(403, 'User tidak ditemukan atau tidak memiliki akses.');
+        }
+
+        $wilayah = $user->wilayah; // Ambil wilayah sesuai dengan user yang login
         $mitra = mitra::all();
         $jenis_pajak = jenis_pajak::all();
         $jenis_transaksi = jenis_transaksi::all();

@@ -15,6 +15,7 @@ use App\Models\pengajuanintegrasi;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentmbaController extends Controller
@@ -24,7 +25,13 @@ class PaymentmbaController extends Controller
      */
     public function index()
     {
-        $wilayah = wilayah::all();
+        $user = Auth::user(); // Ambil user yang sedang login
+
+        if (!$user) {
+            abort(403, 'User tidak ditemukan atau tidak memiliki akses.');
+        }
+
+        $wilayah = $user->wilayah; // Ambil wilayah sesuai dengan user yang login
         $mitra = mitra::all();
         $jenis_pajak = jenis_pajak::all();
         $mitras = Mitra::where('flag_agg', 1)->get();
@@ -32,7 +39,7 @@ class PaymentmbaController extends Controller
         $fees = fees::all();
         $pengajuanintegrasi = pengajuanintegrasi::all();
 
-        return view('admin.payment_mba_admin', compact('wilayah', 'mitra', 'jenis_pajak', 'jenis_transaksi', 'fees', 'pengajuanintegrasi','mitras'));
+        return view('admin.payment_mba_admin', compact('wilayah', 'mitra', 'jenis_pajak', 'jenis_transaksi', 'fees', 'pengajuanintegrasi', 'mitras'));
     }
 
 
