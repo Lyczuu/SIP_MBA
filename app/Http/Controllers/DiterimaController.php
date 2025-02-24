@@ -6,10 +6,11 @@ use App\Models\fees;
 use App\Models\mitra;
 use App\Models\wilayah;
 use App\Models\diterima;
-use App\Models\jenis_transaksi;
-use App\Models\jenis_pajak;
 use App\Models\paymentmba;
+use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
+use App\Models\jenis_transaksi;
+use Illuminate\Support\Facades\Auth;
 
 class DiterimaController extends Controller
 {
@@ -18,14 +19,14 @@ class DiterimaController extends Controller
      */
     public function index()
     {
-        $data['paymentmba'] = paymentmba::all();
-        $data['wilayah'] = wilayah::get();
-        $data['mitra'] = mitra::get();
-        $data['jenis_pajak'] = jenis_pajak::all();
-        $data['jenis_transaksi'] = jenis_transaksi::all();
-        $data['fees'] = fees::all();
-
-        return view('admin.diterima', $data);
+        $paymentmba = PaymentMba::all()->map(function ($item) {
+            $jenisPajakIds = explode(',', $item->jenis_pajak_id);
+            $item->jenis_pajak_nama = jenis_pajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+            return $item;
+        });
+        $user = Auth::user();
+        $paymentmba = PaymentMBA::where('user_id', $user->id)->get();
+        return view('admin.diterima', compact('paymentmba'));
     }
 
     /**
@@ -47,7 +48,7 @@ class DiterimaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(diterima $diterima)
+    public function show()
     {
         //
     }
@@ -55,7 +56,7 @@ class DiterimaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(diterima $diterima)
+    public function edit()
     {
         //
     }
@@ -63,7 +64,7 @@ class DiterimaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, diterima $diterima)
+    public function update()
     {
         //
     }
@@ -71,7 +72,7 @@ class DiterimaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(diterima $diterima)
+    public function destroy()
     {
         //
     }

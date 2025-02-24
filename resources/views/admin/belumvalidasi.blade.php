@@ -1,10 +1,10 @@
 @extends('layout.am_wilayahfeelayout')
-
-@section('title', 'belumvalidasi')
+@section('side0', 'collapsed')
+@section('side1', 'active')
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="mb-4">Halaman Belum validasi</h1>
+        {{-- <h1 class="mb-4">Halaman Belum validasi</h1> --}}
 
         {{-- Jika ada pesan status --}}
         @if (Session::has('status'))
@@ -34,76 +34,90 @@
             <section class="section dashboard">
                 <div class="row">
 
-
+                    <div class="pagetitle">
+                        <h1>Halaman belum divalidasi</h1>
+                        <nav>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                                <li class="breadcrumb-item active">belum divalidasi</li>
+                            </ol>
+                        </nav>
+                    </div><!-- End Page Title -->
 
 
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
-                <p>data tabel No fee admin dan fee admin </p>
+                  <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
+                  <button type="button" class="btn btn-info  @yield('side2')" onclick="window.location.href='{{ route('admin.pengajuan') }}'">+ Pengajuan</button>
 
-                <!-- Table with stripped rows -->
-                <div class="table-responsive">
-                <table class="table datatable">
-                  <thead>
+                  <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                    <li class="nav-item flex-fill" role="presentation">
+                        <a class="nav-link w-50 {{ Request::routeIs('belumvalidasi') ? 'active' : '' }}"
+                            id="belumvalidasi-tab" href="{{ route('belumvalidasi') }}" role="tab"
+                            aria-controls="belumvalidasi"
+                            aria-selected="{{ Request::routeIs('belumvalidasi') ? 'true' : 'false' }}">
+                            Diajukan
+                        </a>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <a class="nav-link w-50 {{ Request::routeIs('ditolak') ? 'active' : '' }}"
+                            id="ditolak-tab" href="{{ route('ditolak') }}" role="tab"
+                            aria-controls="ditolak"
+                            aria-selected="{{ Request::routeIs('ditolak') ? 'true' : 'false' }}">
+                            Ditolak
+                        </a>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <a class="nav-link w-50 {{ Request::routeIs('diterima') ? 'active' : '' }}"
+                            id="diterima-tab" href="{{ route('diterima') }}" role="tab"
+                            aria-controls="diterima"
+                            aria-selected="{{ Request::routeIs('diterima') ? 'true' : 'false' }}">
+                            Disetujui
+                        </a>
+                    </li>
+                </ul>
+
+        <!-- Table with stripped rows -->
+        <div class="table-responsive">
+            <table class="table datatable">
+                <thead>
                     <tr>
                       <th>Kode Pengajuan</th>
                       <th>
                         <b>N</b>ame
                       </th>
+                      <th>Nama mitra</th>
+                      <th>Nama wilayah</th>
                       <th>Jenis pajak</th>
-                      <th>Total fee</th>
-                      <th>Fee mba</th>
-                      <th>Fee mitra</th>
-                      <th>Status</th>
-                      <th>Wilayah</th>
-                      <th>Jenis mitra</th>
-                      <th>Jenis transaksi</th>
-                      <th>Mitra agg</th>
-                      <th>Cutt off</th>
-                      <th>Settlement</th>
-                      <th>nomor registrasi legal</th>
-                      <th>Pengajuan integrasi</th>
+                      <th>Nama Jenis transaksi</th>
                       <th>Wag kordinasi payment</th>
-                      <th>Wag kordinasi rekon</th>
-                      <th>Pic payment mitra</th>
-                      <th>telepon payment mitra</th>
-                      <th>Pic rekon mitra</th>
-                      <th>telepon rekon mitra</th>
-                      <th>Pic dinas</th>
-                      <th>telepon Dinas</th>
-                      <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
-                      <th>Completion</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
-                      @foreach($paymentmba as $key => $list)
+                    @foreach($paymentmba->filter(function($item) {
+                        return (
+                            $item->status == 0 && // status 0 = belum divalidasi
+                            $item->jenis_pengajuan == 1
+                        );
+                    }) as $key => $list)
+                        <tr>
                     <tr>
                       <td>{{ $list->kode_pengajuan }}</td>
                       <td>{{ $list->user->username }}</td>
-                      <td>{{ $list->jenis_pajak_id }}</td>
-                      <td>{{ $list->fees->total_fee }}</td>
-                      <td>{{ $list->fees->fee_mba }}</td>
-                      <td>{{ $list->fees->fee_mitra }}</td>
-                      <td>{{ $list->status }}</td>
-                      <td>{{ $list->wilayah->nama_wilayah }}</td>
                       <td>{{ $list->mitra->nama_mitra }}</td>
+                      <td>{{ $list->wilayah->nama_wilayah }}</td>
+                      <td>{{ $list->jenis_pajak->nama_jenis_pajak }}</td>
                       <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                      <td>{{ $list->mitra_agg }}</td>
-                      <td>{{ $list->cutoff }}</td>
-                      <td>{{ $list->settlement }}</td>
-                      <td>{{ $list->nomor_registrasi_legal }}</td>
-                      <td>{{ $list->pengajuan_integrasi }}</td>
                       <td>{{ $list->wag_kordinasi_payment }}</td>
-                      <td>{{ $list->wag_kordinasi_rekon }}</td>
-                      <td>{{ $list->pic_payment_mitra }}</td>
-                      <td>{{ $list->telepon_payment_mitra }}</td>
-                      <td>{{ $list->pic_rekon_mitra }}</td>
-                      <td>{{ $list->telepon_rekon_mitra }}</td>
-                      <td>{{ $list->pic_dinas }}</td>
-                      <td>{{ $list->telepon_dinas }}</td>
-                      <td>2005/02/11</td>
-                      <td>37%</td>
+                      <td>
+                        <div class="col-3">
+                            <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#Editpayment{{ $list->id }}">
+                                <i class="bi bi-pencil-square"></i> Detail
+                            </button>
+                        </div>
+                    </td>
+@include('admin.modal.detaildiajukan')
                     </tr>
                     @endforeach
                   </tbody>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\paymentmba;
 use Illuminate\Http\Request;
 
 class jenispengajuanController extends Controller
@@ -10,4 +11,6 @@ class jenispengajuanController extends Controller
     {
         return view('admin.jenispengajuan');
     }
+
+
 }

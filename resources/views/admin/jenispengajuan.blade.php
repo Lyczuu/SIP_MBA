@@ -1,5 +1,11 @@
 @extends('layout.am_wilayahfeelayout')
 
+@section('side0', 'collapsed')
+
+@section('side2', 'active')
+
+
+
 @section('title', 'pengajuan')
 
 @section('content')
@@ -68,7 +74,7 @@
         <h1>Pengajuan</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('belumvalidasi') }}">Home</a></li>
             <li class="breadcrumb-item active">Jenis pengajuan</li>
           </ol>
         </nav>
@@ -81,17 +87,18 @@
             <strong>Non Feebased</strong>: Payment melalui Bank Pembangunan Daerah, contoh: BJB, SUMSELBABEL, NTT.
         </p>
         <div class="options">
-            <label class="option">
+            <label class="option  @yield('side3')">
                 <input type="radio" name="kemitraan" value="fee-based" onchange="handleSelection()">
                 Fee Based (Admin)
             </label><br>
-            <label class="option">
+            <label class="option @yield('side4')">
                 <input type="radio" name="kemitraan" value="non-fee-based" onchange="handleSelection()">
                 Non Fee Based (tanpa admin)
             </label>
         </div>
         <button id="nextButton" class="next-button">Berikutnya</button>
     </div>
+
 </body>
 </html>
 @endsection

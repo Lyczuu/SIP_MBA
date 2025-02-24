@@ -1,5 +1,9 @@
 @extends('layout.am_wilayahfeelayout')
 
+@section('side0', 'collapsed')
+@section('side3', 'active')
+@section('side2', 'collapsed')
+
 @section('title', 'payment_mba_admin')
 
 @section('content')

@@ -1,5 +1,12 @@
 @extends('layout.am_wilayahfeelayout')
 
+@section('side0', 'collapsed')
+@section('side1', 'collapsed')
+@section('side2', 'collapsed')
+@section('side3', 'collapsed')
+@section('side8', 'collapsed')
+@section('side9', 'collapsed')
+
 @section('title', 'profil')
 
 @section('content')

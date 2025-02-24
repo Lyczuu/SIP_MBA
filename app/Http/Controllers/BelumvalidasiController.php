@@ -6,11 +6,12 @@ use App\Models\fees;
 use App\Models\mitra;
 use App\Models\wilayah;
 use App\Models\paymentmba;
-use App\Models\jenis_transaksi;
 use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
 use App\Models\belumvalidasi;
+use App\Models\jenis_transaksi;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class BelumvalidasiController extends Controller
 {
@@ -19,14 +20,15 @@ class BelumvalidasiController extends Controller
      */
     public function index()
     {
-        $data['paymentmba'] = paymentmba::all();
-        $data['wilayah'] = wilayah::get();
-        $data['mitra'] = mitra::get();
-        $data['jenis_pajak'] = jenis_pajak::all();
-        $data['jenis_transaksi'] = jenis_transaksi::all();
-        $data['fees'] = fees::all();
+        $paymentmba = paymentmba::all()->map(function ($item) {
+            $jenisPajakIds = explode(',', $item->jenis_pajak_id);
+            $item->jenis_pajak_nama = jenis_pajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+            return $item;
+        });
+        $user = Auth::user();
+        $paymentmba = PaymentMBA::where('user_id', $user->id)->get();
 
-        return view('admin.belumvalidasi', $data);
+        return view('admin.belumvalidasi', compact('paymentmba'));
     }
 
     /**

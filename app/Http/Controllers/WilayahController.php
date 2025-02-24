@@ -16,7 +16,7 @@ class WilayahController extends Controller
     {
         //
         $data['wilayah'] = wilayah::all();
-        return view('admin.payment_mba', $data);
+        return view('admin.payment_mba_admin', $data);
     }
 
     /**

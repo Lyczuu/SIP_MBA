@@ -31,4 +31,8 @@ class ditolak extends Model
         return $this->belongsTo(User::class, 'ditolak_oleh');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'ditolak_oleh');
+    }
 }

@@ -13,7 +13,7 @@ class jenis_pajak extends Model
     protected $table = 'jenis_pajak';
     protected $fillable = ['nama_jenis_pajak'];
 
-    public function paymentMbas()
+    public function paymentMba()
     {
         return $this->hasMany(PaymentMba::class, 'jenis_pajak_id');
     }

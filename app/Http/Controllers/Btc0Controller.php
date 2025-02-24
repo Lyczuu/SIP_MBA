@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ditolak;
+use App\Models\wilayah;
+use App\Models\paymentmba;
+use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Btc0Controller extends Controller
 {
@@ -11,63 +16,20 @@ class Btc0Controller extends Controller
      */
     public function index()
     {
-        return view('bahan0.homeadmin0');
+        $paymentmba = PaymentMba::all()->map(function ($item) {
+            $jenisPajakIds = explode(',', $item->jenis_pajak_id);
+            $item->jenis_pajak_nama = jenis_pajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+            return $item;
+        });
+        $ditolak = ditolak::with('user')->get();
+        $user = Auth::user();
+        $paymentmbafee = PaymentMBA::where('user_id', $user->id)->get();
+        return view('admin2.homeadmin0', compact('paymentmba', 'paymentmbafee', 'user', 'ditolak'));
+
     }
 
-    public function table()
-    {
-        return view('bahan0.tablelist0');
-    }
 
-    public function input()
-    {
-        return view('bahan0.input0');
-    }
 
-    public function user()
-    {
-        return view('bahan0.userprofile0');
-    }
-
-    public function tbtlk()
-    {
-        return view('bahan0.tableditolak0');
-    }
-
-    public function tbstj()
-    {
-        return view('bahan0.tabledisetujui0');
-    }
-
-    public function detail()
-    {
-        return view('bahan0.detailpayment0');
-    }
-
-    public function pengguna()
-    {
-        return view('bahan0.userlist0');
-    }
-
-    public function mitra()
-    {
-        return view('bahan0.mitra0');
-    }
-
-    public function wilayah()
-    {
-        return view('bahan0.wilayah0');
-    }
-
-    public function penggunaadd()
-    {
-        return view('bahan0.usertambah0');
-    }
-
-    public function detailuser()
-    {
-        return view('bahan0.userdetail0');
-    }
 
     /**
      * Show the form for creating a new resource.

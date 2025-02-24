@@ -9,26 +9,28 @@ class paymentmbafee extends Model
     //
     protected $table = 'payment_mba';
     protected $fillable = [
-        'wilayah_id',
-        'mitra_id',
-        'Kode_pengajuan', // Tambahkan ini
-        'Pengajuan_integrasi',
-        'mitra_agg',
-        'Cutoff',
-        'Settlement',
-        'Nomor_Registrasi_Legal',
-        'PIC_Payment_Mitra',
-        'telepon_payment_mitra',
-        'PIC_Rekon_Mitra',
-        'telepon_rekon_mitra',
-        'PIC_Dinas',
-        'telepon_dinas',
-        'transaksi_id',
-        'WAG_KORDINASI_PAYMENT',
-        'WAG_KORDINASI_REKON',
-        'jenis_pajak_id',
-        'fees_id',
         'user_id',
+        'kode_pengajuan', // Tambahkan ini
+        'transaksi_id',
+        'jenis_pajak_id',
+        'wilayah_id',
+        'fees_id',
+        'mitra_id',
+        'pengajuan_integrasi_id',
+        'jenis_pengajuan',
+        'mitra_agg',
+        'cutoff',
+        'status',
+        'settlement',
+        'nomor_registrasi_legal',
+        'wag_kordinasi_payment',
+        'wag_kordinasi_rekon',
+        'pic_payment_mitra',
+        'telepon_payment_mitra',
+        'pic_rekon_mitra',
+        'telepon_rekon_mitra',
+        'pic_dinas',
+        'telepon_dinas',
     ];
     public function user()
     {

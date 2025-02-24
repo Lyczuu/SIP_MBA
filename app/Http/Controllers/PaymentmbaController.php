@@ -9,9 +9,9 @@ use App\Models\mitra;
 use App\Models\wilayah;
 use App\Models\paymentmba;
 use App\Models\jenis_pajak;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\jenis_transaksi;
+use App\Models\pengajuanintegrasi;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -24,28 +24,19 @@ class PaymentmbaController extends Controller
      */
     public function index()
     {
-        $data['paymentmba'] = paymentmba::all();
-        $data['wilayah'] = wilayah::get();
-        $data['mitra'] = mitra::get();
-        $data['jenis_pajak'] = jenis_pajak::all();
-        $data['jenis_transaksi'] = jenis_transaksi::all();
-        $data['fees'] = fees::all();
-
-        return view('admin.payment_mba_admin', $data);
-    }
-
-
-
-    public function showAlerts()
-    {
-        $wilayah = Wilayah::all();
+        $wilayah = wilayah::all();
         $mitra = mitra::all();
         $jenis_pajak = jenis_pajak::all();
+        $mitras = Mitra::where('flag_agg', 1)->get();
         $jenis_transaksi = jenis_transaksi::all();
         $fees = fees::all();
+        $pengajuanintegrasi = pengajuanintegrasi::all();
 
-        return view('admin.payment_mba_admin',  compact('wilayah', 'mitra', 'jenis_pajak', 'jenis_transaksi', 'fees'));
+        return view('admin.payment_mba_admin', compact('wilayah', 'mitra', 'jenis_pajak', 'jenis_transaksi', 'fees', 'pengajuanintegrasi','mitras'));
     }
+
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -59,6 +50,7 @@ class PaymentmbaController extends Controller
         // Kirim data ke view
         return view('admin.payment_mba_admin', compact('jenisPajak', 'jenis_transaksi'));
     }
+
     public function __construct()
     {
         $this->middleware('auth')->only(['store']); // Hanya metode 'store' yang dilindungi oleh auth
@@ -84,38 +76,51 @@ class PaymentmbaController extends Controller
 
         // Generate kode pengajuan dan tambahkan ke request
         $latestPayment = PaymentMba::latest('id')->first();
-        $kodePengajuan = 'AMK-' . str_pad(($latestPayment ? $latestPayment->id + 1 : 1), 5, '0', STR_PAD_LEFT);
+        $kode_pengajuan = 'AMK-' . str_pad(($latestPayment ? $latestPayment->id + 1 : 1), 5, '0', STR_PAD_LEFT);
 
         $request->merge([
-            'Kode_pengajuan' => $kodePengajuan,
+            'kode_pengajuan' => $kode_pengajuan,
         ]);
 
+        Log::info('Request data:', $request->all());
 
         // Validasi data
         $validated = $request->validate([
             'wilayah_id' => 'required|integer|exists:wilayah,id',
             'mitra_agg' => 'nullable|string',
             'mitra_id' => 'required|integer|exists:mitra,id',
-            'Kode_pengajuan' => 'required|string|max:255',
-            'Pengajuan_integrasi' => 'required|string|in:Development,SIT',
-            'jenis_pajak' => 'required|array|min:1', // Pastikan ini adalah array
-            'jenis_pajak.*' => 'integer|exists:jenis_pajak,id',
-            'transaksi_id' => 'required|integer|exists:jenis_transaksi,id', // Validasi tiap ID harus ada di tabel jenis_pajak
-            'Cutoff' => 'required|string|max:255',
-            'Settlement' => 'required|string|max:255',
-            'Nomor_Registrasi_Legal' => 'required|string|max:255',
+            'kode_pengajuan' => 'required|string|max:255',
+            'pengajuan_integrasi_id' => 'required|integer|exists:pengajuan_integrasi,id',
+            'transaksi_id' => 'required|integer|exists:jenis_transaksi,id',
+            'jenis_pajak' => 'array|required', // Wajib diisi sebagai array
+            'jenis_pajak.*' => 'exists:jenis_pajak,id', // Pastikan ID valid di tabel jenis_pajak
+            'cutoff' => 'required|string|max:255',
+            'jenis_pengajuan' => 'required|string|max:255',
+            'settlement' => 'required|string|max:255',
+            'nomor_registrasi_legal' => 'required|string|max:255',
             'fees' => 'required|numeric',
-            'Fee_mba' => 'required|numeric',
-            'Fee_mitra' => 'required|numeric',
-            'PIC_Payment_Mitra' => 'required|string|max:255',
+            'fee_mba' => 'required|numeric',
+            'fee_mitra' => 'required|numeric',
+            'pic_payment_mitra' => 'required|string|max:255',
             'telepon_payment_mitra' => 'required|string',
-            'PIC_Rekon_Mitra' => 'required|string|max:255',
+            'pic_rekon_mitra' => 'required|string|max:255',
             'telepon_rekon_mitra' => 'required|string',
-            'PIC_Dinas' => 'required|string|max:255',
+            'pic_dinas' => 'required|string|max:255',
             'telepon_dinas' => 'required|string',
-            'WAG_KORDINASI_PAYMENT' => 'required|string|max:255',
-            'WAG_KORDINASI_REKON' => 'required|string|max:255',
+            'wag_kordinasi_payment' => 'required|string|max:255',
+            'wag_kordinasi_rekon' => 'required|string|max:255',
         ]);
+        $jenisPajakStr = isset($validated['jenis_pajak']) ? implode(',', $validated['jenis_pajak']) : null;
+
+
+        if (!$request->has('transaksi_id')) {
+            Log::error('transaksi_id tidak terkirim dalam request!');
+        }
+        // dd($request);
+
+        // Cek apakah pengajuan_integrasi_id ada
+        Log::info('Pengajuan Integrasi ID:', ['pengajuan_integrasi_id' => $validated['pengajuan_integrasi_id']]);
+
         // Log input yang diterima
         Log::info('Data request:', $request->all());
 
@@ -132,9 +137,9 @@ class PaymentmbaController extends Controller
 
         try {
             $feeData = [
-                'Total_Fee' => $validated['fees'] ?? 0, // Gunakan 0 jika tidak ada nilai
-                'Fee_mba' => $validated['Fee_mba'] ?? 0,
-                'Fee_mitra' => $validated['Fee_mitra'] ?? 0,
+                'total_fee' => $validated['fees'] ?? 0, // Gunakan 0 jika tidak ada nilai
+                'fee_mba' => $validated['fee_mba'] ?? 0,
+                'fee_mitra' => $validated['fee_mitra'] ?? 0,
             ];
 
             // Filter hanya kolom yang memiliki nilai
@@ -147,29 +152,30 @@ class PaymentmbaController extends Controller
 
             // Ambil ID terakhir dan buat kode_pengajuan baru
             $latestPayment = PaymentMba::latest('id')->first();
-            $kodePengajuan = 'AM-' . str_pad(($latestPayment ? $latestPayment->id + 1 : 1), 5, '0', STR_PAD_LEFT);
+            $kode_pengajuan = 'AM-' . str_pad(($latestPayment ? $latestPayment->id + 1 : 1), 5, '0', STR_PAD_LEFT);
 
             // Simpan data ke tabel payment_mba
             $data = PaymentMba::create([
                 'wilayah_id' => $validated['wilayah_id'],
                 'mitra_id' => $validated['mitra_id'],
-                'Kode_pengajuan' => $kodePengajuan,
-                'Pengajuan_integrasi' => $validated['Pengajuan_integrasi'],
-                'Cutoff' => $validated['Cutoff'],
-                'Settlement' => $validated['Settlement'],
-                'Nomor_Registrasi_Legal' => $validated['Nomor_Registrasi_Legal'],
+                'kode_pengajuan' => $kode_pengajuan,
+                'pengajuan_integrasi_id' => $validated['pengajuan_integrasi_id'],
+                'jenis_pengajuan' => $validated['jenis_pengajuan'],
+                'cutoff' => $validated['cutoff'],
+                'settlement' => $validated['settlement'],
+                'nomor_registrasi_legal' => $validated['nomor_registrasi_legal'],
                 'fees_id' => $fee->id,
-                'PIC_Payment_Mitra' => $validated['PIC_Payment_Mitra'],
+                'pic_payment_mitra' => $validated['pic_payment_mitra'],
                 'telepon_payment_mitra' => $validated['telepon_payment_mitra'],
-                'PIC_Rekon_Mitra' => $validated['PIC_Rekon_Mitra'],
+                'pic_rekon_mitra' => $validated['pic_rekon_mitra'],
                 'telepon_rekon_mitra' => $validated['telepon_rekon_mitra'],
-                'PIC_Dinas' => $validated['PIC_Dinas'],
+                'pic_dinas' => $validated['pic_dinas'],
                 'telepon_dinas' => $validated['telepon_dinas'],
                 'transaksi_id' => $validated['transaksi_id'],
-                'WAG_KORDINASI_PAYMENT' => $validated['WAG_KORDINASI_PAYMENT'],
-                'WAG_KORDINASI_REKON' => $validated['WAG_KORDINASI_REKON'],
+                'wag_kordinasi_payment' => $validated['wag_kordinasi_payment'],
+                'wag_kordinasi_rekon' => $validated['wag_kordinasi_rekon'],
                 'mitra_agg' => $validated['mitra_agg'],
-                'jenis_pajak_id' => $validated['jenis_pajak'],
+                'jenis_pajak_id' => $jenisPajakStr,
                 'user_id' => Auth::id(), // Simpan ID jenis pajak
             ]);
             $prefix = '';
@@ -195,7 +201,7 @@ class PaymentmbaController extends Controller
             // Commit transaksi
             DB::commit();
 
-             return redirect()->route('success.page')->with('success', 'Data berhasil disimpan.');
+            return redirect()->route('success.page')->with('success', 'Data berhasil disimpan.');
         } catch (\Throwable $e) {
             // Rollback jika terjadi error
             DB::rollBack();

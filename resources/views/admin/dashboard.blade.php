@@ -1,6 +1,7 @@
 @extends('layout.am_wilayahfeelayout')
 
-@section('title', 'Dashboard')
+@section('side0', 'active')
+@section('side1', 'collapsed')
 
 @section('content')
     <div class="container mt-4">
@@ -11,289 +12,291 @@
                 {{ Session::get('message') }}
             </div>
         @endif
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <!DOCTYPE html>
+        <html lang="en">
 
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+        <head>
+            <meta charset="utf-8">
+            <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+            <meta content="" name="description">
+            <meta content="" name="keywords">
 
 
-</head>
+        </head>
 
-<body>
+        <body>
 
-    <div class="pagetitle">
-        <h1>Dashboard</h1>
-        <nav>
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
-          </ol>
-        </nav>
-      </div><!-- End Page Title -->
+            <div class="pagetitle">
+                <h1>Dashboard</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </nav>
+            </div><!-- End Page Title -->
 
-    <section class="section">
-        <div class="row">
-          <div class="col-lg-12">
-
-            <section class="section dashboard">
+            <section class="section">
                 <div class="row">
+                    <div class="col-lg-12">
 
-                <!-- Customers Card -->
+                        <section class="section dashboard">
+                            <div class="row">
 
+                                <!-- fee based Card -->
+                                <div class="col-xxl-4 col-xl-6">
 
-                      <div class="col-xxl-4 col-xl-6">
+                                    <div class="card info-card customers-card">
 
-                        <div class="card info-card customers-card">
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                    class="bi bi-three-dots"></i></a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <li class="dropdown-header text-start">
+                                                    <h6>Filter</h6>
+                                                </li>
 
-                          <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                              <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                              </li>
+                                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                                            </ul>
+                                        </div>
 
-                              <li><a class="dropdown-item" href="#">Today</a></li>
-                              <li><a class="dropdown-item" href="#">This Month</a></li>
-                              <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                          </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">Integrasi Mitra Feebased </span></h5>
 
-                          <div class="card-body">
-                            <h5 class="card-title">Integrasi Mitra Feebased </span></h5>
-
-                            <div class="d-flex align-items-center">
-                              <div class="ps-3">
-                                <span class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">Belum Validasi</span> <span id="notif-belumvalidasi" class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">0</span></td> | <span class="badge bg-success" onclick="window.location.href='/diterima'" style="cursor: pointer;">Diterima</span> <span class="badge bg-success" onclick="window.location.href='/diterima'" style="cursor: pointer;">8</span></td> | <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">Ditolak</span> <span id="notif-ditolak" class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">0</span></td>
-
-
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-xxl-4 col-xl-6">
-
-                        <div class="card info-card customers-card">
-
-                          <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                              <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                              </li>
-
-                              <li><a class="dropdown-item" href="#">Today</a></li>
-                              <li><a class="dropdown-item" href="#">This Month</a></li>
-                              <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                          </div>
-
-                          <div class="card-body">
-                            <h5 class="card-title">Integrasi Mitra Non Feebased </span></h5>
-
-                            <div class="d-flex align-items-center">
-                              <div class="ps-3">
-                                <span class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">Belum Validasi</span> <span id="notif-belumvalidasi" class="badge bg-warning" onclick="window.location.href='/belumvalidasi'" style="cursor: pointer;">0</span></td> | <span class="badge bg-success" onclick="window.location.href='/diterima'" style="cursor: pointer;">Diterima</span> <span class="badge bg-success" onclick="window.location.href='/diterima'" style="cursor: pointer;">8</span></td> | <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">Ditolak</span> <span class="badge bg-danger" onclick="window.location.href='/ditolak'" style="cursor: pointer;">8</span></td>
-
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Sales Card -->
-                      <div class="col-xxl-4 col-md-4">
-                        <div class="card info-card sales-card">
-
-                          <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                              <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                              </li>
-
-                              <li><a class="dropdown-item" href="#">Today</a></li>
-                              <li><a class="dropdown-item" href="#">This Month</a></li>
-                              <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                          </div>
-
-                          <div class="card-body">
-                            <h5 class="card-title">AM Wilayah 1</h5>
-
-                            <div class="d-flex align-items-center">
-                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-graph-up"></i>
-                              </div>
-                              <div class="ps-3">
-                                <h6>145</h6>
-                                <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
-                              </div>
-                            </div>
-                          </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3">
+                                                    <span class="badge bg-warning"
+                                                        onclick="window.location.href='/belumvalidasi'"
+                                                        style="cursor: pointer;">Belum Validasi</span></td> | <span
+                                                        class="badge bg-success"
+                                                        onclick="window.location.href='/diterima'"
+                                                        style="cursor: pointer;">Diterima</span></td> | <span
+                                                        class="badge bg-danger" onclick="window.location.href='/ditolak'"
+                                                        style="cursor: pointer;">Ditolak</span> </td>
 
 
-                        </div>
-                      </div><!-- End Sales Card -->
+                                                </div>
+                                            </div>
 
-                              <!-- Sales Card -->
-                      <div class="col-xxl-4 col-md-4">
-                        <div class="card info-card sales-card">
+                                        </div>
+                                    </div>
+                                </div>
 
-                          <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                              <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                              </li>
+                                <div class="col-xxl-4 col-xl-6">
 
-                              <li><a class="dropdown-item" href="#">Today</a></li>
-                              <li><a class="dropdown-item" href="#">This Month</a></li>
-                              <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                          </div>
+                                    <div class="card info-card customers-card">
 
-                          <div class="card-body">
-                            <h5 class="card-title">AM Kerja Sama</h5>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                    class="bi bi-three-dots"></i></a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <li class="dropdown-header text-start">
+                                                    <h6>Filter</h6>
+                                                </li>
 
-                            <div class="d-flex align-items-center">
-                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-graph-up"></i>
-                              </div>
-                              <div class="ps-3">
-                                <h6>$3,264</h6>
-                                <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                                            </ul>
+                                        </div>
 
-                              </div>
-                            </div>
-                          </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">Integrasi Mitra Non Feebased </span></h5>
 
-                        </div>
-                      </div><!-- End Revenue Card -->
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3">
+                                                    <span class="badge bg-warning"
+                                                        onclick="window.location.href='/nofeebelumvalidasi'"
+                                                        style="cursor: pointer;">Belum Validasi</span> </td> | <span
+                                                        class="badge bg-success"
+                                                        onclick="window.location.href='/nofeediterima'"
+                                                        style="cursor: pointer;">Diterima</span> </td> | <span
+                                                        class="badge bg-danger"
+                                                        onclick="window.location.href='/nofeeditolak'"
+                                                        style="cursor: pointer;">Ditolak</span> <span
+                                                        class="badge bg-danger"
+                                                        onclick="window.location.href='/nofeeditolak'"
+                                                        style="cursor: pointer;">8</span></td>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sales Card -->
+                                <div class="col-xxl-4 col-md-4">
+                                    <div class="card info-card sales-card">
+
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                    class="bi bi-three-dots"></i></a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <li class="dropdown-header text-start">
+                                                    <h6>Filter</h6>
+                                                </li>
+
+                                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <h5 class="card-title">AM Wilayah 1</h5>
+
+                                            <div class="d-flex align-items-center">
+                                                <div
+                                                    class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-graph-up"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>145</h6>
+                                                    <span class="text-success small pt-1 fw-bold">12%</span> <span
+                                                        class="text-muted small pt-2 ps-1">increase</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
 
 
-                      <!-- Recent Sales -->
-                      <div class="col-12">
-                        <div class="card recent-sales overflow-auto">
+                                    </div>
+                                </div><!-- End Sales Card -->
 
-                          <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                              <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                              </li>
+                                <!-- Sales Card -->
+                                <div class="col-xxl-4 col-md-4">
+                                    <div class="card info-card sales-card">
 
-                              <li><a class="dropdown-item" href="#">Today</a></li>
-                              <li><a class="dropdown-item" href="#">This Month</a></li>
-                              <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                          </div>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                    class="bi bi-three-dots"></i></a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <li class="dropdown-header text-start">
+                                                    <h6>Filter</h6>
+                                                </li>
+
+                                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <h5 class="card-title">AM Kerja Sama</h5>
+
+                                            <div class="d-flex align-items-center">
+                                                <div
+                                                    class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-graph-up"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>$3,264</h6>
+                                                    <span class="text-success small pt-1 fw-bold">8%</span> <span
+                                                        class="text-muted small pt-2 ps-1">increase</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div><!-- End Revenue Card -->
 
 
+                                <!-- Recent Sales -->
+                                <div class="col-12">
+                                    <div class="card recent-sales overflow-auto">
 
-            <div class="card">
-              <div class="card-body">
-<<<<<<< HEAD
-                <h5 class="card-title">dashboard</h5>
-=======
-                <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
->>>>>>> d0b27c7410a2e2387c00d1c40833233b26000997
-                <p>data tabel No fee admin dan fee admin </p>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                    class="bi bi-three-dots"></i></a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <li class="dropdown-header text-start">
+                                                    <h6>Filter</h6>
+                                                </li>
 
-                <!-- Table with stripped rows -->
-                <div class="table-responsive">
-                <table class="table datatable">
-                  <thead>
-                    <tr>
-                      <th>Kode Pengajuan</th>
-                      <th>
-                        <b>N</b>ame
-                      </th>
-                      <th>Jenis pajak</th>
-                      <th>Total fee</th>
-                      <th>Fee mba</th>
-                      <th>Fee mitra</th>
-                      <th>Status</th>
-                      <th>Wilayah</th>
-                      <th>Jenis mitra</th>
-                      <th>Jenis transaksi</th>
-                      <th>Mitra agg</th>
-                      <th>Cutt off</th>
-                      <th>Settlement</th>
-                      <th>nomor registrasi legal</th>
-                      <th>Pengajuan integrasi</th>
-                      <th>Wag kordinasi payment</th>
-                      <th>Wag kordinasi rekon</th>
-                      <th>Pic payment mitra</th>
-                      <th>telepon payment mitra</th>
-                      <th>Pic rekon mitra</th>
-                      <th>telepon rekon mitra</th>
-                      <th>Pic dinas</th>
-                      <th>telepon Dinas</th>
-                      <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
-                      <th>Completion</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      @foreach($paymentmbafee as $key => $list)
-                    <tr>
-                      <td>{{ $list->kode_pengajuan }}</td>
-                      <td>{{ $list->user->username }}</td>
-                      <td>{{ $list->jenis_pajak_id }}</td>
-                      <td>{{ $list->fees->total_fee }}</td>
-                      <td>{{ $list->fees->fee_mba }}</td>
-                      <td>{{ $list->fees->fee_mitra }}</td>
-                      <td>{{ $list->status}}</td>
-                      <td>{{ $list->wilayah->nama_wilayah }}</td>
-                      <td>{{ $list->mitra->nama_mitra }}</td>
-                      <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                      <td>{{ $list->mitra_agg }}</td>
-                      <td>{{ $list->cutoff }}</td>
-                      <td>{{ $list->settlement }}</td>
-                      <td>{{ $list->nomor_registrasi_legal }}</td>
-                      <td>{{ $list->pengajuan_integrasi }}</td>
-                      <td>{{ $list->wag_kordinasi_payment }}</td>
-                      <td>{{ $list->wag_kordinasi_rekon }}</td>
-                      <td>{{ $list->pic_payment_mitra }}</td>
-                      <td>{{ $list->telepon_payment_mitra }}</td>
-                      <td>{{ $list->pic_rekon_mitra }}</td>
-                      <td>{{ $list->telepon_rekon_mitra }}</td>
-                      <td>{{ $list->pic_dinas }}</td>
-                      <td>{{ $list->telepon_dinas }}</td>
-                      <td>2005/02/11</td>
-                      <td>37%</td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-                <!-- End Table with stripped rows -->
-
-              </div>
-            </div>
-            {{-- end card div --}}
-
-          </div>
-        </div>
-      </section>
-
-    </main><!-- End #main -->
+                                                <li><a class="dropdown-item" href="#">Today</a></li>
+                                                <li><a class="dropdown-item" href="#">This Month</a></li>
+                                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                                            </ul>
+                                        </div>
 
 
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <h5 class="card-title">dashboard</h5>
+
+                                                <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
+                                                <p>data tabel No fee admin dan fee admin </p>
+
+                                                <!-- Table with stripped rows -->
+                                                <div class="table-responsive">
+                                                    <table class="table datatable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Kode Pengajuan</th>
+                                                                <th>
+                                                                    <b>N</b>ame
+                                                                </th>
+                                                                <th>Nama mitra</th>
+                                                                <th>Nama wilayah</th>
+                                                                <th>Jenis pajak</th>
+                                                                <th>Nama Jenis transaksi</th>
+                                                                <th>Wag kordinasi payment</th>
+                                                                <th>Aksi</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($paymentmba as $key => $list )
+                                                                <tr>
+                                                                    <td>{{ $list->kode_pengajuan }}</td>
+                                                                    <td>{{ $list->user->username }}</td>
+                                                                    <td>{{ $list->mitra->nama_mitra }}</td>
+                                                                    <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                                                    <td>{{ $list->jenis_pajak->nama_jenis_pajak }}</td>
+                                                                    <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                                                    <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                                    <td>
+                                                                        <div class="col-3">
+                                                                            <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                                                data-bs-target="#Editpayment{{ $list->id }}">
+                                                                                <i class="bi bi-pencil-square"></i> Detail
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                                                    @include('admin.modal.detaildiajukan')
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    <!-- End Table with stripped rows -->
+
+                                                </div>
+                                            </div>
+                                            {{-- end card div --}}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                </section>
+                        </section>
+
+                        </main><!-- End #main -->
 
 
-</body>
 
-</html>
+                        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                                class="bi bi-arrow-up-short"></i></a>
+
+
+        </body>
+
+        </html>
 
 
     </div>

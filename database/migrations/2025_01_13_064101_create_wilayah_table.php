@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('wilayah', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_wilayah', 255);
-            $table->string('kode_area', 255);
+            $table->string('kode_area')->unique();
+            $table->string('nama_wilayah', 255)->unique();
+            $table->string('kode_prov', 255); // Relasi ke tabel provinsi
+          
             $table->timestamps();
         });
     }

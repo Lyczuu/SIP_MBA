@@ -1,5 +1,9 @@
 @extends('layout.am_wilayahfeelayout')
 
+@section('side0', 'collapsed')
+@section('side4', 'active')
+@section('side2', 'collapsed')
+
 @section('title', 'payment_mba_no_fee_admin')
 
 @section('content')
@@ -18,7 +22,7 @@
 
 
     @include('admin.modal.payment_mba_no_fee_admin_add')
-    
+
 
 
 

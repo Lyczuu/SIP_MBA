@@ -11,7 +11,10 @@ class mitra extends Model
     use HasFactory;
 
     protected $table = 'mitra';
-    protected $fillable = ['nama_mitra'];
+    protected $fillable = [
+          'nama_mitra',
+          'flag_agg',
+          'flag_bank'];
 
     public function payments()
 {

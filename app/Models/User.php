@@ -18,21 +18,29 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'role_id',
         'username',
         'full_name',
+        'alamat',
+        'phone_number',
         'email',
+        'role_id',
         'password',
     ];
 
     public function role()
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
     public function paymentMba()
     {
         return $this->hasMany(PaymentMba::class, 'user_id');
     }
+
+    public function wilayah()
+    {
+        return $this->belongsToMany(Wilayah::class, 'user_wilayah', 'user_id', 'wilayah_id');
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
