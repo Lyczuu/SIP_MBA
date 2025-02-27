@@ -1,4 +1,4 @@
-@extends('layoutes.main0')
+@extends('layout.am_wilayahfeelayout')
 
 @section('side0')
     collapsed
@@ -29,9 +29,11 @@
 @section('side10')
     collapsed
 @endsection
-
+@section('side11')
+    collapsed
+@endsection
 @section('content')
-    <main id="main" class="main">
+
 
         <div class="pagetitle">
             <h1>Data Tables</h1>
@@ -129,5 +131,5 @@
             </div>
         </section>
 
-    </main><!-- End #main -->
+
 @endsection

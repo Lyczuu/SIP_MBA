@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\fees;
 use App\Models\mitra;
 use App\Models\wilayah;
+use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class PaymentmbaController extends Controller
 
         $wilayah = $user->wilayah; // Ambil wilayah sesuai dengan user yang login
         $mitra = mitra::all();
-        $jenis_pajak = jenis_pajak::all();
+        $jenis_pajak = jenispajak::all();
         $mitras = Mitra::where('flag_agg', 1)->get();
         $jenis_transaksi = jenis_transaksi::all();
         $fees = fees::all();
@@ -52,7 +53,7 @@ class PaymentmbaController extends Controller
 
     {
 
-        $jenisPajak = jenis_pajak::all(); //tabel di model
+        $jenisPajak = jenispajak::all(); //tabel di model
 
 
         // Kirim data ke view
@@ -101,11 +102,12 @@ class PaymentmbaController extends Controller
             'wag_kordinasi_payment'    => 'required|string|max:255',
             'wag_kordinasi_rekon'      => 'required|string|max:255',
         ]);
+        $jenisPajakStr = isset($validated['jenis_pajak']) ? implode(',', $validated['jenis_pajak']) : null;
 
         Log::info('Data yang divalidasi:', $validated);
 
         // Ubah array jenis_pajak menjadi JSON string jika diperlukan penyimpanan sebagai string
-        $validated['jenis_pajak'] = json_encode($validated['jenis_pajak']);
+       
 
         DB::beginTransaction();
         try {
@@ -137,7 +139,7 @@ class PaymentmbaController extends Controller
                 'wag_kordinasi_payment'  => $validated['wag_kordinasi_payment'],
                 'wag_kordinasi_rekon'    => $validated['wag_kordinasi_rekon'],
                 'mitra_agg'              => $validated['mitra_agg'],
-                'jenis_pajak_id'         => $validated['jenis_pajak'],
+                'jenis_pajak_id' => $jenisPajakStr,
                 'user_id'                => Auth::id(),
                 'kode_pengajuan'                => ''
             ];

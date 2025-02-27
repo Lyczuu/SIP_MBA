@@ -3,6 +3,7 @@
 @section('side0', 'collapsed')
 @section('side8', 'active')
 
+
 @section('side3')
     collapsed
 @endsection
@@ -37,15 +38,16 @@
             </div>
         @endif
 
-     <!DOCTYPE html>
-      <html lang="en">
+        <!DOCTYPE html>
+        <html lang="en">
 
-     <head>
-        <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <head>
+            <meta charset="utf-8">
+            <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
             <meta content="" name="description">
             <meta content="" name="keywords">
+
 
         </head>
 
@@ -56,11 +58,11 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="pagetitle">
-                            <h1>Halaman diterima</h1>
+                            <h1>Halaman ditolak</h1>
                             <nav>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-                                    <li class="breadcrumb-item active">Diterima</li>
+                                    <li class="breadcrumb-item active">Ditolak</li>
                                 </ol>
                             </nav>
                         </div><!-- End Page Title -->
@@ -70,31 +72,30 @@
 
                                 <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
                                     <li class="nav-item flex-fill" role="presentation">
-                                        <a class="nav-link w-50 {{ Request::routeIs('nofee.belumvalidasi') ? 'active' : '' }}"
-                                            id="diajukan-tab" href="{{ route('nofee.belumvalidasi') }}" role="tab"
+                                        <a class="nav-link w-50 {{ Request::routeIs('fee.belumvalidasi') ? 'active' : '' }}"
+                                            id="diajukan-tab" href="{{ route('fee.belumvalidasi') }}" role="tab"
                                             aria-controls="diajukan"
-                                            aria-selected="{{ Request::routeIs('nofee.belumvalidasi') ? 'true' : 'false' }}">
+                                            aria-selected="{{ Request::routeIs('fee.belumvalidasi') ? 'true' : 'false' }}">
                                             Diajukan
                                         </a>
                                     </li>
                                     <li class="nav-item flex-fill" role="presentation">
-                                        <a class="nav-link w-50 {{ Request::routeIs('nofee.ditolak') ? 'active' : '' }}"
-                                            id="ditolak-tab" href="{{ route('nofee.ditolak') }}" role="tab"
+                                        <a class="nav-link w-50 {{ Request::routeIs('fee.ditolak') ? 'active' : '' }}"
+                                            id="ditolak-tab" href="{{ route('fee.ditolak') }}" role="tab"
                                             aria-controls="ditolak"
-                                            aria-selected="{{ Request::routeIs('nofee.ditolak') ? 'true' : 'false' }}">
+                                            aria-selected="{{ Request::routeIs('fee.ditolak') ? 'true' : 'false' }}">
                                             Ditolak
                                         </a>
                                     </li>
                                     <li class="nav-item flex-fill" role="presentation">
-                                        <a class="nav-link w-50 {{ Request::routeIs('nofee.diterima') ? 'active' : '' }}"
-                                            id="disetujui-tab" href="{{ route('nofee.diterima') }}" role="tab"
+                                        <a class="nav-link w-50 {{ Request::routeIs('fee.diterima') ? 'active' : '' }}"
+                                            id="disetujui-tab" href="{{ route('fee.diterima') }}" role="tab"
                                             aria-controls="disetujui"
-                                            aria-selected="{{ Request::routeIs('nofee.diterima') ? 'true' : 'false' }}">
+                                            aria-selected="{{ Request::routeIs('fee.diterima') ? 'true' : 'false' }}">
                                             Disetujui
                                         </a>
                                     </li>
                                 </ul>
-                                {{-- end nav --}}
 
                                 <!-- Table with stripped rows -->
                                 <div class="table-responsive">
@@ -116,8 +117,8 @@
                                         <tbody>
                                             @foreach($paymentmba->filter(function($item) {
                                                 return (
-                                                    $item->status == 2 && // status 0 = belum divalidasi
-                                                    $item->jenis_pengajuan == 2
+                                                    $item->status == 1 && // status 0 = belum divalidasi
+                                                    $item->jenis_pengajuan == 1
                                                 );
                                             }) as $key => $list)
                                                 <tr>

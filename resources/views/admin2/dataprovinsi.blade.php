@@ -1,4 +1,4 @@
-@extends('layoutes.main0')
+@extends('layout.am_wilayahfeelayout')
 
 @section('side0')
     collapsed
@@ -25,14 +25,17 @@
 @section('side4')
     collapsed
 @endsection
+@section('side11')
+    collapsed
+@endsection
 @section('content')
-    <main id="main" class="main">
+
 
         <div class="pagetitle">
             <h1>Provinsi</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('index.index0')}}">Home</a></li>
                     <li class="breadcrumb-item active">Provinsi</li>
                 </ol>
             </nav>
@@ -131,5 +134,5 @@
             </div>
         </section>
 
-    </main><!-- End #main -->
+
 @endsection

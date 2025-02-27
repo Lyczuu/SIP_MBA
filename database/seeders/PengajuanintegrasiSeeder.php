@@ -24,6 +24,11 @@ class PengajuanintegrasiSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nama_pengajuan_integrasi' => 'UAT',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
         ]);
     }

@@ -6,6 +6,7 @@ use App\Models\fees;
 use App\Models\mitra;
 use App\Models\ditolak;
 use App\Models\wilayah;
+use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class DatadetailpaymentController extends Controller
         $data['paymentmba'] = paymentmba::all();
         $data['wilayah'] = wilayah::get();
         $data['mitra'] = mitra::get();
-        $data['jenis_pajak'] = jenis_pajak::all();
+        $data['jenis_pajak'] = jenispajak::all();
         $data['jenis_transaksi'] = jenis_transaksi::all();
         $data['fees'] = fees::all();
 
@@ -79,14 +80,14 @@ class DatadetailpaymentController extends Controller
             $payment->save();
 
             // Ambil ID admin yang sedang login
-            $adminId = Auth::check() ? Auth::user()->id : null;
+            $ADMINId = Auth::check() ? Auth::user()->id : null;
 
             if ($request->status == 1) {
-                Ditolak::updateOrCreate(
+                ditolak::updateOrCreate(
                     ['pengajuan_id' => $payment->id],
                     [
                         'alasan_penolakan' => $request->alasan_penolakan,
-                        'ditolak_oleh' => $adminId,
+                        'ditolak_oleh' => $ADMINId,
                     ]
                 );
             }

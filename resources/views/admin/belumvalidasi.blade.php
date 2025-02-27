@@ -97,30 +97,30 @@
                   <tbody>
                     @foreach($paymentmba->filter(function($item) {
                         return (
-                            $item->status == 0 && // status 0 = belum divalidasi
-                            $item->jenis_pengajuan == 1
+                            $item->status == 0
                         );
                     }) as $key => $list)
                         <tr>
-                    <tr>
-                      <td>{{ $list->kode_pengajuan }}</td>
-                      <td>{{ $list->user->username }}</td>
-                      <td>{{ $list->mitra->nama_mitra }}</td>
-                      <td>{{ $list->wilayah->nama_wilayah }}</td>
-                      <td>{{ $list->jenis_pajak->nama_jenis_pajak }}</td>
-                      <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                      <td>{{ $list->wag_kordinasi_payment }}</td>
-                      <td>
-                        <div class="col-3">
-                            <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#Editpayment{{ $list->id }}">
-                                <i class="bi bi-pencil-square"></i> Detail
-                            </button>
-                        </div>
-                    </td>
-@include('admin.modal.detaildiajukan')
-                    </tr>
+                            <td>{{ $list->kode_pengajuan }}</td>
+                            <td>{{ $list->user->username }}</td>
+                            <td>{{ $list->mitra->nama_mitra }}</td>
+                            <td>{{ $list->wilayah->nama_wilayah }}</td>
+                            <td>{{ $list->jenis_pajak_nama }}</td>
+                            <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                            <td>{{ $list->wag_kordinasi_payment }}</td>
+                            <td>
+                                <div class="col-3">
+                                    <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#Editpayment{{ $list->id }}">
+                                        <i class="bi bi-pencil-square"></i> Detail
+                                    </button>
+                                </div>
+                            </td>
+                            @include('admin.modal.detaildiajukan')
+                        </tr>
                     @endforeach
-                  </tbody>
+                </tbody>
+
                 </table>
                 <!-- End Table with stripped rows -->
 

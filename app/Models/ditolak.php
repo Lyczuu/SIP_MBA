@@ -19,11 +19,11 @@ class ditolak extends Model
 
     protected $dates = ['tanggal_ditolak'];
 
-    // Relasi ke tabel pengajuan
-    public function pengajuan()
+    public function paymentMba()
     {
-        return $this->belongsTo(paymentmba::class, 'pengajuan_id');
+        return $this->belongsTo(PaymentMba::class, 'pengajuan_id', 'id');
     }
+
 
     // Relasi ke tabel users (user yang menolak)
     public function ditolakOleh()

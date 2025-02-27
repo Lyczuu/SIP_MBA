@@ -1,4 +1,4 @@
-@extends('layoutes.main0')
+@extends('layout.am_wilayahfeelayout')
 
 @section('side1')
     collapsed
@@ -30,8 +30,10 @@
 @section('side10')
     collapsed
 @endsection
+@section('side11')
+    collapsed
+@endsection
 @section('content')
-    <main id="main" class="main">
 
         <div class="pagetitle">
             <h1>Dashboard</h1>
@@ -75,13 +77,13 @@
                                         <div class="d-flex align-items-center">
                                             <div class="ps-3">
                                                 <span class="badge bg-warning"
-                                                    onclick="window.location.href='/nofeebelumvalidasi'"
+                                                    onclick="window.location.href='/feebelumvalidasi'"
                                                     style="cursor: pointer;">Belum Validasi</span> </td> | <span
-                                                    class="badge bg-success" onclick="window.location.href='/nofeediterima'"
+                                                    class="badge bg-success" onclick="window.location.href='/feediterima'"
                                                     style="cursor: pointer;">Diterima</span> </td> | <span
-                                                    class="badge bg-danger" onclick="window.location.href='/nofeeditolak'"
+                                                    class="badge bg-danger" onclick="window.location.href='/feeditolak'"
                                                     style="cursor: pointer;">Ditolak</span> <span class="badge bg-danger"
-                                                    onclick="window.location.href='/nofeeditolak'"
+                                                    onclick="window.location.href='/feeditolak'"
                                                     style="cursor: pointer;">8</span></td>
 
                                             </div>
@@ -331,70 +333,70 @@
                                 </div>
                             </div><!-- End AM Kerja sama Card -->
 
- <!-- Recent Sales -->
- <div class="col-12">
-    <div class="card recent-sales overflow-auto">
+                            <!-- Recent Sales -->
+                            <div class="col-12">
+                                <div class="card recent-sales overflow-auto">
 
-        <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                    class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                </li>
+                                    <div class="filter">
+                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                class="bi bi-three-dots"></i></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li class="dropdown-header text-start">
+                                                <h6>Filter</h6>
+                                            </li>
 
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-        </div>
-
-
-
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
-
-                <!-- Table with stripped rows -->
-                <div class="table-responsive">
-                    <table class="table datatable">
-                        <thead>
-                            <tr>
-                                <th>Kode Pengajuan</th>
-                                <th>Mitra</th>
-                                <th>Wilayah</th>
-                                <th>Jenis Pajak</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($paymentmba as $key => $list )
-                                <tr>
-                                    <td>{{ $list->kode_pengajuan }}</td>
-                                    <td>{{ $list->mitra->nama_mitra }}</td>
-                                    <td>{{ $list->wilayah->nama_wilayah }}</td>
-                                    <td>{{ $list->jenis_pajak->nama_jenis_pajak }}</td>
-                                    <td>oke</td>
+                                            <li><a class="dropdown-item" href="#">Today</a></li>
+                                            <li><a class="dropdown-item" href="#">This Month</a></li>
+                                            <li><a class="dropdown-item" href="#">This Year</a></li>
+                                        </ul>
+                                    </div>
 
 
 
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <!-- End Table with stripped rows -->
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
 
-                </div>
-            </div>
-            {{-- end card div --}}
+                                            <!-- Table with stripped rows -->
+                                            <div class="table-responsive">
+                                                <table class="table datatable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Kode Pengajuan</th>
+                                                            <th>Mitra</th>
+                                                            <th>Wilayah</th>
+                                                            <th>Jenis Pajak</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($paymentmba as $key => $list)
+                                                            <tr>
+                                                                <td>{{ $list->kode_pengajuan }}</td>
+                                                                <td>{{ $list->mitra->nama_mitra }}</td>
+                                                                <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                                                <td>{{ $list->jenis_pajak_nama }}</td>
+                                                                <td>oke</td>
 
-        </div>
-    </div>
-</div>
+
+
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <!-- End Table with stripped rows -->
+
+                                            </div>
+                                        </div>
+                                        {{-- end card div --}}
+
+                                    </div>
+                                </div>
+                            </div>
 
 
                     </section>
         </section>
 
-    </main><!-- End #main -->
+
 @endsection

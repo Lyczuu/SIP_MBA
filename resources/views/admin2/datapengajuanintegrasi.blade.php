@@ -1,4 +1,4 @@
-@extends('layoutes.main0')
+@extends('layout.am_wilayahfeelayout')
 
 @section('side0')
     collapsed
@@ -30,7 +30,6 @@
 @endsection
 
 @section('content')
-    <main id="main" class="main">
 
         <div class="pagetitle">
             <h1>Pengajuan Integrasi</h1>
@@ -130,5 +129,5 @@
         </section>
 
 
-    </main><!-- End #main -->
+
 @endsection

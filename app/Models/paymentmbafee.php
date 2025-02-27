@@ -38,7 +38,7 @@ class paymentmbafee extends Model
     }
     public function jenisPajak()
     {
-        return $this->belongsTo(jenis_pajak::class, 'jenis_pajak_id');
+        return $this->belongsTo(jenispajak::class, 'jenis_pajak_id');
     }
     public function fees()
     {

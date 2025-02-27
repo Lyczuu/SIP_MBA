@@ -1,4 +1,4 @@
-@extends('layoutes.main0')
+@extends('layout.am_wilayahfeelayout')
 
 @section('side0')
     collapsed

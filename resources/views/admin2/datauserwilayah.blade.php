@@ -1,4 +1,4 @@
-@extends('layoutes.main0')
+@extends('layout.am_wilayahfeelayout')
 
 @section('side0')
     collapsed
@@ -25,15 +25,16 @@
 @section('side10')
     collapsed
 @endsection
-
+@section('side11')
+    collapsed
+@endsection
 @section('content')
-    <main id="main" class="main">
 
         <div class="pagetitle">
             <h1>Wilayah</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('pengguna.baru')}}">Home</a></li>
                     <li class="breadcrumb-item active">Wilayah</li>
                 </ol>
             </nav>
@@ -55,7 +56,7 @@
                                 @csrf
 
                                 <!-- Pilih user yang ingin diberikan wilayah -->
-                               
+
                                 <label for="user_id">Pilih User:</label>
                                 <select name="user_id" id="user_id" class="col-4">
                                     @foreach ($user as $u)
@@ -85,6 +86,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="wilayahTable">
+
                                         @foreach ($wilayah as $w)
                                             <tr data-kode-prov="{{ $w->kode_prov }}">
                                                 <td>{{ $w->kode_area }}</td>
@@ -126,5 +128,4 @@
             </div>
         </section>
 
-    </main><!-- End #main -->
 @endsection

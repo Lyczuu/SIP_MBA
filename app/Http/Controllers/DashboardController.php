@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\mitra;
-use App\Models\wilayah;
+use App\Models\jenispajak;
 use App\Models\paymentmba;
-use App\Models\jenis_pajak;
-use Illuminate\Http\Request;
-use App\Models\paymentmbafee;
-use App\Models\jenis_transaksi;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 
 class DashboardController extends Controller
@@ -19,15 +13,21 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $paymentmba = paymentmba::all()->map(function ($item) {
-            $jenisPajakIds = explode(',', $item->jenis_pajak_id);
-            $item->jenis_pajak_nama = jenis_pajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+        $allJenisPajak = jenispajak::pluck('nama_jenis_pajak', 'id'); // [id => nama]
+
+        $paymentmba = PaymentMba::all()->map(function ($item) use ($allJenisPajak) {
+            $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
+            $item->jenis_pajak_nama = collect($jenisPajakIds)
+                ->map(fn($id) => $allJenisPajak[$id] ?? null)
+                ->filter()
+                ->implode(', ') ?: '-';
             return $item;
         });
-        $user = Auth::user();
-        $paymentmba = PaymentMBA::where('user_id', $user->id)->get();
 
-        return view('admin.dashboard',compact('paymentmba'));
+        $userId = Auth::id(); // Ambil ID user yang sedang login
+        $totalpengajuan = PaymentMBA::where('user_id', $userId)->count();
+        // Hitung total berdasarkan mitra_agg = "AM Kerja Sama"
+        $totalMitraAgg = PaymentMBA::where('mitra_agg')->count();
+        return view('admin.dashboard', compact('paymentmba', 'totalpengajuan','totalMitraAgg'));
     }
-
 }

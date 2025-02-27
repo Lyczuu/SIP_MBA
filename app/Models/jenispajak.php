@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class jenis_pajak extends Model
+class jenispajak extends Model
 {
-    //
     use HasFactory;
 
     protected $table = 'jenis_pajak';
@@ -17,5 +16,4 @@ class jenis_pajak extends Model
     {
         return $this->hasMany(PaymentMba::class, 'jenis_pajak_id');
     }
-
 }

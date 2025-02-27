@@ -10,38 +10,38 @@ class paymentmba extends Model
     protected $table = 'payment_mba';
     protected $fillable = [
         'user_id',
-        'kode_pengajuan', // Tambahkan ini
+        'kode_pengajuan',
         'transaksi_id',
+        'pengajuan_integrasi_id',
         'jenis_pajak_id',
         'wilayah_id',
         'fees_id',
         'mitra_id',
-        'pengajuan_integrasi_id',
-        'jenis_pengajuan',
         'mitra_agg',
-        'cutoff',
         'status',
+        'jenis_pengajuan',
+        'cutoff',
         'settlement',
         'nomor_registrasi_legal',
+        'pic_payment_mitra',
+        'pic_rekon_mitra',
+        'pic_dinas',
+        'telepon_payment_mitra',
+        'telepon_rekon_mitra',
+        'telepon_dinas',
         'wag_kordinasi_payment',
         'wag_kordinasi_rekon',
-        'pic_payment_mitra',
-        'telepon_payment_mitra',
-        'pic_rekon_mitra',
-        'telepon_rekon_mitra',
-        'pic_dinas',
-        'telepon_dinas',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function jenis_pajak()
+    public function jenisPajak()
     {
-        return $this->belongsTo(Jenis_Pajak::class, 'jenis_pajak_id');
+        return $this->belongsTo(jenispajak::class, 'jenis_pajak_id');
     }
-
 
     public function fees()
     {
@@ -50,7 +50,7 @@ class paymentmba extends Model
 
     public function jenis_transaksi()
     {
-        return $this->belongsTo(jenis_transaksi::class, 'transaksi_id');
+        return $this->belongsTo(jenistransaksi::class, 'transaksi_id');
     }
     public function mitra()
     {
@@ -61,16 +61,14 @@ class paymentmba extends Model
         return $this->belongsTo(Wilayah::class, 'wilayah_id');
     }
 
-
     public function ditolak()
     {
-        return $this->belongsTo(ditolak::class, 'pengajuan_id', 'id');
+        return $this->hasOne(Ditolak::class, 'pengajuan_id', 'id');
     }
 
-
     public function pengajuanIntegrasi()
-{
-    return $this->belongsTo(PengajuanIntegrasi::class, 'pengajuan_integrasi_id');
-}
+    {
+        return $this->belongsTo(PengajuanIntegrasi::class, 'pengajuan_integrasi_id', 'id');
+    }
 
 }

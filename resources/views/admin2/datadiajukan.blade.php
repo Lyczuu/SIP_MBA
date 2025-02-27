@@ -1,4 +1,4 @@
-@extends('layoutes.main0')
+@extends('layout.am_wilayahfeelayout')
 
 @section('side0')
     collapsed
@@ -28,14 +28,17 @@
 @section('side10')
     collapsed
 @endsection
+@section('side11')
+    collapsed
+@endsection
 @section('content')
-    <main id="main" class="main">
+
 
         <div class="pagetitle">
             <h1>Data Tables</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('index.index0')}}">Home</a></li>
                     <li class="breadcrumb-item active">Tables</li>
                 </ol>
             </nav>
@@ -109,9 +112,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($paymentmba->filter(function ($item) {
-            return $item->status == 0; // status belum divalidasi
-        }) as $key => $list)
+                                          @foreach ($paymentmba->filter(function ($item) {
+                                            return $item->status == 0; // status belum divalidasi
+                                      }) as $key => $list)
                                             <tr>
                                                 <td> {{ $list->kode_pengajuan }}</td>
                                                 <td> {{ $list->user->username }}</td>
@@ -146,5 +149,4 @@
             </div>
         </section>
 
-    </main><!-- End #main -->
 @endsection

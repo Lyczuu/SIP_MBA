@@ -1,4 +1,4 @@
-@extends('layoutes.main0')
+@extends('layout.am_wilayahfeelayout')
 
 @section('side0')
     collapsed
@@ -28,9 +28,11 @@
 @section('side10')
     collapsed
 @endsection
-
+@section('side11')
+    collapsed
+@endsection
 @section('content')
-    <main id="main" class="main">
+
 
         <div class="pagetitle">
             <h1>Data Tables</h1>
@@ -98,8 +100,8 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($paymentmba->filter(function ($item) {
-            return $item->status == 1; // Hanya filter berdasarkan status = 1
-        }) as $key => $list)
+                                                 return $item->jenis_pengajuan == 1; // Hanya filter berdasarkan status = 1
+                                           }) as $key => $list)
                                             <tr>
                                                 <td> {{ $list->kode_pengajuan }}</td>
                                                 <td> {{ $list->user->username }}</td>
@@ -135,7 +137,7 @@
             </div>
         </section>
 
-    </main><!-- End #main -->
+
 
     <script>
         function updateNotifDitolak() {

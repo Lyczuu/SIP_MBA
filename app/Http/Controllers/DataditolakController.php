@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\mitra;
 use App\Models\ditolak;
-use App\Models\wilayah;
+use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\dataditolak;
-use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
-use App\Models\paymentmbafee;
-use App\Models\jenis_transaksi;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +19,7 @@ class DataditolakController extends Controller
     {
         $paymentmba = PaymentMba::all()->map(function ($item) {
             $jenisPajakIds = explode(',', $item->jenis_pajak_id);
-            $item->jenis_pajak_nama = jenis_pajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+            $item->jenis_pajak_nama = jenispajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
             return $item;
         });
         $ditolak = Ditolak::with('user')->get();

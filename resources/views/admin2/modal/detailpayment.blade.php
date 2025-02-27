@@ -92,7 +92,7 @@
                             <div class="col-12 col-md-6">
                                 <label for="pengajuan_integrasi" class="form-label">Pengajuan Integrasi</label>
                                 <input type="text" name="pengajuan_integrasi" id="pengajuan_integrasi"
-                                    class="form-control" placeholder="" value="{{ $list->pengajuan_integrasi }}"
+                                    class="form-control" placeholder="" value="{{ $list->pengajuan_integrasi_id }}"
                                     disabled>
                             </div>
                             {{-- end  pengajuan integrasi --}}

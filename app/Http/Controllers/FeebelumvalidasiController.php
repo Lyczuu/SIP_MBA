@@ -5,27 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class Btc0Controller extends Controller
+class FeebelumvalidasiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $paymentmba = PaymentMba::all()->map(function ($item) {
-            $jenisPajakIds = explode(',', $item->jenis_pajak_id);
-            $item->jenis_pajak_nama = jenispajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+        $allJenisPajak = jenispajak::pluck('nama_jenis_pajak', 'id'); // [id => nama]
+
+        $paymentmba = paymentmba::all()->map(function ($item) use ($allJenisPajak) {
+            $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
+            $item->jenis_pajak_nama = collect($jenisPajakIds)
+                ->map(fn($id) => $allJenisPajak[$id] ?? null)
+                ->filter()
+                ->implode(', ') ?: '-';
             return $item;
         });
-        $user = Auth::user();
-        return view('admin2.homeadmin0', compact('paymentmba',  'user'));
 
+        return view('admin.feebelumvalidasi', compact('paymentmba'));
     }
-
-
-
 
     /**
      * Show the form for creating a new resource.

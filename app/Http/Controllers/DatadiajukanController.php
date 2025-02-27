@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\fees;
-use App\Models\mitra;
-use App\Models\wilayah;
+
+use App\Models\jenispajak;
 use App\Models\paymentmba;
-use App\Models\jenis_pajak;
 use App\Models\datadiajukan;
 use Illuminate\Http\Request;
-use App\Models\paymentmbafee;
-use App\Models\jenis_transaksi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +19,7 @@ class DatadiajukanController extends Controller
     {
         $paymentmba = PaymentMba::all()->map(function ($item) {
             $jenisPajakIds = explode(',', $item->jenis_pajak_id);
-            $item->jenis_pajak_nama = jenis_pajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+            $item->jenis_pajak_nama = jenispajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
             return $item;
         });
         $user = Auth::user();

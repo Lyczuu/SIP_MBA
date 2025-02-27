@@ -14,131 +14,136 @@
                 {{ Session::get('message') }}
             </div>
         @endif
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <!DOCTYPE html>
+        <html lang="en">
 
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+        <head>
+            <meta charset="utf-8">
+            <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+            <meta content="" name="description">
+            <meta content="" name="keywords">
 
 
 
-</head>
+        </head>
 
-<body>
+        <body>
 
-    <section class="section">
-        <div class="row">
-          <div class="col-lg-12">
-
-            <section class="section dashboard">
+            <section class="section">
                 <div class="row">
+                    <div class="col-lg-12">
 
-                    <div class="pagetitle">
-                        <h1>Halaman diterima</h1>
-                        <nav>
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-                                <li class="breadcrumb-item active">Diterima</li>
-                            </ol>
-                        </nav>
-                    </div><!-- End Page Title -->
+                        <section class="section dashboard">
+                            <div class="row">
 
-
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
-                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
-                    <li class="nav-item flex-fill" role="presentation">
-                        <a class="nav-link w-50 {{ Request::routeIs('belumvalidasi') ? 'active' : '' }}"
-                            id="belumvalidasi-tab" href="{{ route('belumvalidasi') }}" role="tab"
-                            aria-controls="belumvalidasi"
-                            aria-selected="{{ Request::routeIs('belumvalidasi') ? 'true' : 'false' }}">
-                            Diajukan
-                        </a>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <a class="nav-link w-50 {{ Request::routeIs('ditolak') ? 'active' : '' }}"
-                            id="ditolak-tab" href="{{ route('ditolak') }}" role="tab"
-                            aria-controls="ditolak"
-                            aria-selected="{{ Request::routeIs('ditolak') ? 'true' : 'false' }}">
-                            Ditolak
-                        </a>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <a class="nav-link w-50 {{ Request::routeIs('diterima') ? 'active' : '' }}"
-                            id="diterima-tab" href="{{ route('diterima') }}" role="tab"
-                            aria-controls="diterima"
-                            aria-selected="{{ Request::routeIs('diterima') ? 'true' : 'false' }}">
-                            Disetujui
-                        </a>
-                    </li>
-                </ul>
-
-                <!-- Table with stripped rows -->
-                <div class="table-responsive">
-                <table class="table datatable">
-                  <thead>
-                    <tr>
-                        <th>Kode Pengajuan</th>
-                        <th>
-                          <b>N</b>ame
-                        </th>
-                        <th>Nama mitra</th>
-                        <th>Nama wilayah</th>
-                        <th>Jenis pajak</th>
-                        <th>Nama Jenis transaksi</th>
-                        <th>Wag kordinasi payment</th>
-                        <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($paymentmba->filter(function($item) {
-                        return
-                         $item->status == 2 &&// Hanya filter berdasarkan status =
-                         $item->jenis_pengajuan == 1;
-                    }) as $key => $list)
-                    <tr>
-                        <td>{{ $list->kode_pengajuan }}</td>
-                        <td>{{ $list->user->username }}</td>
-                        <td>{{ $list->mitra->nama_mitra }}</td>
-                        <td>{{ $list->wilayah->nama_wilayah }}</td>
-                        <td>{{ $list->jenis_pajak->nama_jenis_pajak}}</td>
-                        <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                        <td>{{ $list->wag_kordinasi_payment }}</td>
-                        <td>
-                          <div class="col-3">
-                              <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#Editpayment{{ $list->id }}">
-                                  <i class="bi bi-pencil-square"></i> Detail
-                              </button>
-                          </div>
-                      </td>
-  @include('admin.modal.detaildiajukan')
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-                <!-- End Table with stripped rows -->
-
-              </div>
-            </div>
-            {{-- end card div --}}
-
-          </div>
-        </div>
-      </section>
-
-    </main><!-- End #main -->
+                                <div class="pagetitle">
+                                    <h1>Halaman diterima</h1>
+                                    <nav>
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a>
+                                            </li>
+                                            <li class="breadcrumb-item active">Diterima</li>
+                                        </ol>
+                                    </nav>
+                                </div><!-- End Page Title -->
 
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
+                                        <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified"
+                                            role="tablist">
+                                            <li class="nav-item flex-fill" role="presentation">
+                                                <a class="nav-link w-50 {{ Request::routeIs('belumvalidasi') ? 'active' : '' }}"
+                                                    id="belumvalidasi-tab" href="{{ route('belumvalidasi') }}"
+                                                    role="tab" aria-controls="belumvalidasi"
+                                                    aria-selected="{{ Request::routeIs('belumvalidasi') ? 'true' : 'false' }}">
+                                                    Diajukan
+                                                </a>
+                                            </li>
+                                            <li class="nav-item flex-fill" role="presentation">
+                                                <a class="nav-link w-50 {{ Request::routeIs('ditolak') ? 'active' : '' }}"
+                                                    id="ditolak-tab" href="{{ route('ditolak') }}" role="tab"
+                                                    aria-controls="ditolak"
+                                                    aria-selected="{{ Request::routeIs('ditolak') ? 'true' : 'false' }}">
+                                                    Ditolak
+                                                </a>
+                                            </li>
+                                            <li class="nav-item flex-fill" role="presentation">
+                                                <a class="nav-link w-50 {{ Request::routeIs('diterima') ? 'active' : '' }}"
+                                                    id="diterima-tab" href="{{ route('diterima') }}" role="tab"
+                                                    aria-controls="diterima"
+                                                    aria-selected="{{ Request::routeIs('diterima') ? 'true' : 'false' }}">
+                                                    Disetujui
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Table with stripped rows -->
+                                        <div class="table-responsive">
+                                            <table class="table datatable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Kode Pengajuan</th>
+                                                        <th>
+                                                            <b>N</b>ame
+                                                        </th>
+                                                        <th>Nama mitra</th>
+                                                        <th>Nama wilayah</th>
+                                                        <th>Jenis pajak</th>
+                                                        <th>Nama Jenis transaksi</th>
+                                                        <th>Wag kordinasi payment</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($paymentmba->filter(function($item) {
+                                                        return (
+                                                            $item->status == 2
+                                                        );
+                                                    }) as $key => $list)
+                                                        <tr>
+                                                            <td>{{ $list->kode_pengajuan }}</td>
+                                                            <td>{{ $list->user->username }}</td>
+                                                            <td>{{ $list->mitra->nama_mitra }}</td>
+                                                            <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                                            <td>{{ $list->jenis_pajak_nama }}</td>
+                                                            <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                                            <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                            <td>
+                                                                <div class="col-3">
+                                                                    <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                                        data-bs-target="#Editpayment{{ $list->id }}">
+                                                                        <i class="bi bi-pencil-square"></i> Detail
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                            @include('admin.modal.detaildiajukan')
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <!-- End Table with stripped rows -->
+
+                                        </div>
+                                    </div>
+                                    {{-- end card div --}}
+
+                                </div>
+                            </div>
+                        </section>
+
+                        </main><!-- End #main -->
 
 
-</body>
+                        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                                class="bi bi-arrow-up-short"></i></a>
 
-</html>
+
+        </body>
+
+        </html>
 
 
     </div>

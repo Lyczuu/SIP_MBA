@@ -19,7 +19,7 @@ class UserwilayahController extends Controller
     {
 
         // $users = User::with('wilayahs')->get();
-        $wilayah = wilayah::all();
+        $wilayah = Wilayah::all(); // Ambil semua data wilayah
         $user = user::all();
         $provinsi = provinsi::all();
         return view('admin2.datauserwilayah', compact('wilayah', 'user','provinsi'));

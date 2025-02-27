@@ -2,7 +2,14 @@
 
 @section('side0', 'active')
 @section('side1', 'collapsed')
-
+@section('side3', 'collapsed')
+@section('side10', 'collapsed')
+@section('side4', 'collapsed')
+@section('side6', 'collapsed')
+@section('side7', 'collapsed')
+@section('side8', 'collapsed')
+@section('side5', 'collapsed')
+@section('side11', 'collapsed')
 @section('content')
     <div class="container mt-4">
 
@@ -69,12 +76,12 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="ps-3">
                                                     <span class="badge bg-warning"
-                                                        onclick="window.location.href='/belumvalidasi'"
+                                                        onclick="window.location.href='/feebelumvalidasi'"
                                                         style="cursor: pointer;">Belum Validasi</span></td> | <span
                                                         class="badge bg-success"
-                                                        onclick="window.location.href='/diterima'"
+                                                        onclick="window.location.href='/feediterima'"
                                                         style="cursor: pointer;">Diterima</span></td> | <span
-                                                        class="badge bg-danger" onclick="window.location.href='/ditolak'"
+                                                        class="badge bg-danger" onclick="window.location.href='/feeditolak'"
                                                         style="cursor: pointer;">Ditolak</span> </td>
 
 
@@ -155,14 +162,13 @@
                                                     <i class="bi bi-graph-up"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>145</h6>
+                                                    <h6>{{$totalpengajuan}}</h6>
                                                     <span class="text-success small pt-1 fw-bold">12%</span> <span
                                                         class="text-muted small pt-2 ps-1">increase</span>
 
                                                 </div>
                                             </div>
                                         </div>
-
 
                                     </div>
                                 </div><!-- End Sales Card -->
@@ -194,9 +200,9 @@
                                                     <i class="bi bi-graph-up"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>$3,264</h6>
+                                                    <h6>{{$totalMitraAgg}}</h6>
                                                     <span class="text-success small pt-1 fw-bold">8%</span> <span
-                                                        class="text-muted small pt-2 ps-1">increase</span>
+                                                        class="text-muted small pt-2 ps-1">Jumlah Kerja Sama</span>
 
                                                 </div>
                                             </div>
@@ -252,18 +258,20 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($paymentmba as $key => $list )
+                                                            @foreach ($paymentmba as $key => $list)
                                                                 <tr>
                                                                     <td>{{ $list->kode_pengajuan }}</td>
                                                                     <td>{{ $list->user->username }}</td>
                                                                     <td>{{ $list->mitra->nama_mitra }}</td>
                                                                     <td>{{ $list->wilayah->nama_wilayah }}</td>
-                                                                    <td>{{ $list->jenis_pajak->nama_jenis_pajak }}</td>
-                                                                    <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                                                    <td>{{ $list->jenis_pajak_nama }}</td>
+                                                                    <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}
+                                                                    </td>
                                                                     <td>{{ $list->wag_kordinasi_payment }}</td>
                                                                     <td>
                                                                         <div class="col-3">
-                                                                            <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                                            <button class="btn btn-dark btn-sm"
+                                                                                data-bs-toggle="modal"
                                                                                 data-bs-target="#Editpayment{{ $list->id }}">
                                                                                 <i class="bi bi-pencil-square"></i> Detail
                                                                             </button>
@@ -283,15 +291,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                </section>
                         </section>
+            </section>
 
-                        </main><!-- End #main -->
+            </main><!-- End #main -->
 
 
 
-                        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-                                class="bi bi-arrow-up-short"></i></a>
+            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                    class="bi bi-arrow-up-short"></i></a>
 
 
         </body>

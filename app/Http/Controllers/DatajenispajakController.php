@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\jenis_pajak;
+use App\Models\jenispajak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -13,7 +13,7 @@ class DatajenispajakController extends Controller
      */
     public function index()
     {
-        $data['jenis_pajak'] = jenis_pajak::get();
+        $data['jenis_pajak'] = jenispajak::get();
         return view('admin2.datajenispajak', $data);
     }
 
@@ -36,7 +36,7 @@ class DatajenispajakController extends Controller
         ]);
 
         // Simpan ke database
-        $data = jenis_pajak::create([
+        $data = jenispajak::create([
             'nama_jenis_pajak' => $validated['nama_jenis_pajak'],
         ]);
 
@@ -73,7 +73,7 @@ class DatajenispajakController extends Controller
         ]);
 
         // Cari data mitra berdasarkan ID
-        $jenis_pajak = jenis_pajak::findOrFail($id);
+        $jenis_pajak = jenispajak::findOrFail($id);
 
         // Update data mitra
         $jenis_pajak->update([
@@ -91,7 +91,7 @@ class DatajenispajakController extends Controller
      */
     public function destroy( $id)
     {
-        $jenis_pajak = jenis_pajak::findOrFail($id);
+        $jenis_pajak = jenispajak::findOrFail($id);
         $jenis_pajak->delete();
         Session::flash('status','success');
         Session::flash('message','Data Berhasil Di hapus');

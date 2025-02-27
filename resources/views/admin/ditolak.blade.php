@@ -8,21 +8,16 @@
 @section('content')
     <div class="container mt-4">
 
-        {{-- Jika ada pesan status --}}
-        @if (Session::has('status'))
-            <div class="alert alert-success" role="alert">
-                {{ Session::get('message') }}
-            </div>
-        @endif
- <!DOCTYPE html>
-  <html lang="en">
 
-   <head>
-       <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <!DOCTYPE html>
+        <html lang="en">
 
-      <meta content="" name="description">
-      <meta content="" name="keywords">
+        <head>
+            <meta charset="utf-8">
+            <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+            <meta content="" name="description">
+            <meta content="" name="keywords">
 
         </head>
 
@@ -42,6 +37,24 @@
                                 </ol>
                             </nav>
                         </div><!-- End Page Title -->
+                        <!-- Modal -->
+                        @if (Session::has('status'))
+                            <div id="flash-message" class="alert alert-success" role="alert">
+                                {{ Session::get('message') }}
+                            </div>
+                        @endif
+
+                        <script>
+                            // Hilangkan flash message setelah 3 detik (3000 ms)
+                            setTimeout(() => {
+                                const flashMessage = document.getElementById('flash-message');
+                                if (flashMessage) {
+                                    flashMessage.style.transition = 'opacity 0.5s ease';
+                                    flashMessage.style.opacity = '0';
+                                    setTimeout(() => flashMessage.remove(), 500); // Hapus dari DOM setelah fade-out
+                                }
+                            }, 3000); // Ubah angka ini untuk durasi yang berbeda
+                        </script>
                         <div class="card">
                             <div class="card-body">
                                 <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
@@ -89,21 +102,21 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($paymentmba->filter(function ($item) {
-            return $item->status == 1 && $item->jenis_pengajuan == 1; // Hanya filter berdasarkan status = 1 // Hanya filter berdasarkan status = 1
+            return $item->status == 1;
         }) as $key => $list)
                                                 <tr>
                                                     <td>{{ $list->kode_pengajuan }}</td>
                                                     <td>{{ $list->user->username }}</td>
                                                     <td>{{ $list->mitra->nama_mitra }}</td>
                                                     <td>{{ $list->wilayah->nama_wilayah }}</td>
-                                                    <td>{{ $list->jenis_pajak->nama_jenis_pajak }}</td>
+                                                    <td>{{ $list->jenis_pajak_nama }}</td>
                                                     <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                     <td>{{ $list->wag_kordinasi_payment }}</td>
                                                     <td>
                                                         <div class="col-3">
                                                             <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
                                                                 data-bs-target="#Editpayment{{ $list->id }}">
-                                                                <i class="bi bi-pencil-square"></i> Detail
+                                                                <i class="bi bi-pencil-square"></i> Perbarui
                                                             </button>
                                                         </div>
                                                     </td>

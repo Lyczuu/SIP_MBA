@@ -33,11 +33,8 @@ use App\Http\Controllers\FeediterimaController;
 use App\Http\Controllers\NofeebelumvalidasiController;
 use App\Http\Controllers\ProvinsiController;
 use App\Http\Controllers\UserwilayahController;
-use App\Models\Penggunabaru;
-use App\Models\Userwilayah;
-
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 //Routing awal
@@ -52,9 +49,17 @@ Route::get('/admin/payment_mba_admin', [PaymentmbaController::class, 'index'])->
 Route::post('/jukan', [PaymentmbaController::class, 'store'])->name('jukan');
 Route::get('/success', function () { return view('success'); })->name('success.page');
 Route::get('/generate-Kode-pengajuan', [PaymentmbaController::class, 'generateKodepengajuan']);
+//fee admin
+Route::get('/feeditolak', [FeeditolakController::class, 'index'])->name('fee.ditolak')->middleware('auth');
+Route::get('/feediterima', [FeediterimaController::class, 'index'])->name('fee.diterima')->middleware('auth');
+Route::get('/feebelumvalidasi', [FeebelumvalidasiController::class, 'index'])->name('fee.belumvalidasi')->middleware('auth');
+
+
 //di tolak
 Route::get('/ditolak', [ditolakController::class, 'index'])->name('ditolak')->middleware('auth');
-Route::put('/ditolak/validate/{id}', [ditolakController::class, 'update'])->name('ditolak.update')->middleware('auth');
+
+Route::put('/ditolak/{id}', [ditolakController::class, 'update'])->name('ditolak.update');
+
 //diterima
 Route::get('/diterima', [DiterimaController::class, 'index'])->name('diterima')->middleware('auth');
 //di proses

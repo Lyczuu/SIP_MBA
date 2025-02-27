@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\fees;
 use App\Models\mitra;
 use App\Models\wilayah;
+use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\jenis_pajak;
 use Illuminate\Support\Str;
@@ -33,7 +34,7 @@ class PaymentmbafeeController extends Controller
 
         $wilayah = $user->wilayah; // Ambil wilayah sesuai dengan user yang login
         $mitra = mitra::all();
-        $jenis_pajak = jenis_pajak::all();
+        $jenis_pajak = jenispajak::all();
         $jenis_transaksi = jenis_transaksi::all();
         $mitras = Mitra::where('flag_agg', 1)->get();
         $fees = fees::all();
@@ -50,7 +51,7 @@ class PaymentmbafeeController extends Controller
     {
         //
 
-        $jenisPajak = jenis_pajak::all(); //tabel di model
+        $jenisPajak = jenispajak::all(); //tabel di model
 
 
         // Kirim data ke view

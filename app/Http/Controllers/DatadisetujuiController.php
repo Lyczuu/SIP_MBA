@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\mitra;
-use App\Models\wilayah;
-use App\Models\paymentmba;
+
 use App\Models\ditolak;
-use App\Models\jenis_pajak;
-use App\Models\jenis_transaksi;
+use App\Models\jenispajak;
+
+use App\Models\paymentmba;
 use Illuminate\Http\Request;
 use App\Models\datadisetujui;
-use App\Models\paymentmbafee;
 use Illuminate\Support\Facades\Auth;
 
 class DatadisetujuiController extends Controller
@@ -22,7 +20,7 @@ class DatadisetujuiController extends Controller
     {
         $paymentmba = PaymentMba::all()->map(function ($item) {
             $jenisPajakIds = explode(',', $item->jenis_pajak_id);
-            $item->jenis_pajak_nama = jenis_pajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+            $item->jenis_pajak_nama = jenispajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
             return $item;
         });
         $ditolak = ditolak::with('user')->get();

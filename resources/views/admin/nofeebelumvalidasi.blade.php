@@ -3,11 +3,33 @@
 @section('side0', 'collapsed')
 @section('side8', 'active')
 
+
+@section('side3')
+    collapsed
+@endsection
+@section('side10')
+    collapsed
+@endsection
+@section('side4')
+    collapsed
+@endsection
+@section('side6')
+    collapsed
+@endsection
+@section('side7')
+    collapsed
+@endsection
+@section('side11')
+    collapsed
+@endsection
+@section('side5')
+    collapsed
+@endsection
 @section('title', 'nofeeditolak')
 
 @section('content')
     <div class="container mt-4">
-       
+
         {{-- Jika ada pesan status --}}
         @if (Session::has('status'))
             <div class="alert alert-success" role="alert">
@@ -45,6 +67,33 @@
                         <div class="card">
                             <div class="card-body">
 
+                                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <a class="nav-link w-50 {{ Request::routeIs('nofee.belumvalidasi') ? 'active' : '' }}"
+                                            id="diajukan-tab" href="{{ route('nofee.belumvalidasi') }}" role="tab"
+                                            aria-controls="diajukan"
+                                            aria-selected="{{ Request::routeIs('nofee.belumvalidasi') ? 'true' : 'false' }}">
+                                            Diajukan
+                                        </a>
+                                    </li>
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <a class="nav-link w-50 {{ Request::routeIs('nofee.ditolak') ? 'active' : '' }}"
+                                            id="ditolak-tab" href="{{ route('nofee.ditolak') }}" role="tab"
+                                            aria-controls="ditolak"
+                                            aria-selected="{{ Request::routeIs('nofee.ditolak') ? 'true' : 'false' }}">
+                                            Ditolak
+                                        </a>
+                                    </li>
+                                    <li class="nav-item flex-fill" role="presentation">
+                                        <a class="nav-link w-50 {{ Request::routeIs('nofee.diterima') ? 'active' : '' }}"
+                                            id="disetujui-tab" href="{{ route('nofee.diterima') }}" role="tab"
+                                            aria-controls="disetujui"
+                                            aria-selected="{{ Request::routeIs('nofee.diterima') ? 'true' : 'false' }}">
+                                            Disetujui
+                                        </a>
+                                    </li>
+                                </ul>
+                                {{-- end nav --}}
 
                                 <!-- Table with stripped rows -->
                                 <div class="table-responsive">

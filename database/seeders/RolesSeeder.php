@@ -17,13 +17,13 @@ class RolesSeeder extends Seeder
         DB::table('roles')->insert([
             [
                 'nama_role' => 'Admin',
-                'keterangan' => 'Seorang Admin',
+                'keterangan' => 'Saya Bekerja Sebagai Admin ',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nama_role' => 'AM wilayah',
-                'keterangan' => 'Seorang AM wilayah',
+                'nama_role' => 'AM Wilayah',
+                'keterangan' => 'Saya Bekerja Sebagai AM Wilayah',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
