@@ -87,7 +87,7 @@
                             @include('admin2.modal.add_datajenistransaksi')
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">
-                                <table class="table  datatable">
+                                <table class="table datatable">
                                     <thead>
                                         <tr>
                                             <th>Nama transaksi</th>

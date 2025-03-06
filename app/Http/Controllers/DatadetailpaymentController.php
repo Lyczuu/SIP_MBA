@@ -8,9 +8,7 @@ use App\Models\ditolak;
 use App\Models\wilayah;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
-use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use App\Models\jenis_transaksi;
 use App\Models\datadetailpayment;
 use Illuminate\Support\Facades\DB;
@@ -98,7 +96,7 @@ class DatadetailpaymentController extends Controller
 
         });
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */

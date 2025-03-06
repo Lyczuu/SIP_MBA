@@ -94,13 +94,14 @@
                                             <th>Jenis pajak</th>
                                             <th>Nama Jenis transaksi</th>
                                             <th>Wag kordinasi payment</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($paymentmba->filter(function ($item) {
-                                                 return $item->jenis_pengajuan == 1; // Hanya filter berdasarkan status = 1
+                                                 return $item->status == 1; // Hanya filter berdasarkan status = 1
                                            }) as $key => $list)
                                             <tr>
                                                 <td> {{ $list->kode_pengajuan }}</td>
@@ -110,8 +111,11 @@
                                                 <td> {{ $list->jenis_pajak_nama }}</td>
                                                 <td> {{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                 <td> {{ $list->wag_kordinasi_payment }}</td>
-
-                                                <td>
+                                                 <td>
+                                                    @if ($list->status == 1)
+                                                       <span class="badge bg-danger">Ditolak</span>
+                                                    @endif
+                                                </td>                                                <td>
                                                     <div class="d-flex gap-2">
                                                         <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
                                                             data-bs-target="#Editpayment{{ $list->id }}">
@@ -120,7 +124,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @include('admin2.modal.detailpayment')
+                                            @include('admin2.modal.detailditolak')
                                         @endforeach
 
 

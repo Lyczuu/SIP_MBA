@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\wilayah;
 use App\Models\provinsi;
-use App\Models\paymentmba;
 use App\Models\Userwilayah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class UserwilayahController extends Controller
 {
@@ -18,56 +18,13 @@ class UserwilayahController extends Controller
     public function index()
     {
 
-        // $users = User::with('wilayahs')->get();
+
+        $selectedWilayah = DB::table('user_wilayah')->pluck('wilayah_id')->toArray();
         $wilayah = Wilayah::all(); // Ambil semua data wilayah
         $user = user::all();
         $provinsi = provinsi::all();
-        return view('admin2.datauserwilayah', compact('wilayah', 'user','provinsi'));
+        return view('admin2.datauserwilayah', compact('wilayah', 'user', 'provinsi', 'selectedWilayah'));
     }
-
-    public function assignWilayah(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'wilayah_id' => 'required|array',
-            'wilayah_id.*' => 'exists:wilayah,id',
-        ]);
-
-        // Cari user berdasarkan ID yang dipilih
-        $user = User::find($request->user_id);
-
-        if (!$user) {
-            return back()->with('error', 'User tidak ditemukan');
-        }
-
-        // Assign wilayah ke user
-        $user->wilayah()->sync($request->wilayah_id);
-
-        return back()->with('success', 'Wilayah berhasil diperbarui untuk user ' . $user->name);
-    }
-
-    public function getWilayahByProv(Request $request)
-    {
-        $wilayah = Wilayah::where('kode_prov', $request->kode_prov)->get();
-
-        $html = '';
-        foreach ($wilayah as $w) {
-            $html .= '
-            <tr>
-                <td>' . $w->kode_area . '</td>
-                <td>' . $w->nama_wilayah . '</td>
-                <td>
-                    <input type="checkbox" name="wilayah_id[]" value="' . $w->id . '">
-                </td>
-            </tr>';
-        }
-
-        return response()->json($html);
-    }
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -82,15 +39,25 @@ class UserwilayahController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // Validasi input
+
+        // dd($request->all());
+            $request->validate([
             'user_id' => 'required|exists:users,id',
-            'wilayah_id' => 'required|exists:wilayah,id',
+            'wilayah_id' => 'required|array', // Pastikan ada wilayah yang dipilih
+            'wilayah_id.*' => 'exists:wilayah,id', // Pastikan setiap wilayah valid
         ]);
 
-        $user = User::find($request->user_id);
-        $user->wilayah()->attach($request->wilayah_id);
+        // Ambil user berdasarkan ID
+        $user = User::findOrFail($request->user_id);
 
-        return redirect()->back()->with('success', 'Wilayah berhasil ditambahkan ke user!');
+        // Simpan wilayah yang dipilih untuk user ini
+        $user->wilayah()->sync($request->wilayah_id);
+
+        Session::flash('status', 'success');
+        Session::flash('selected_user_id', $request->user_id);
+        Session::flash('message', 'Data Berhasil Di Simpan');
+        return redirect('/userwilayah');
     }
 
     /**

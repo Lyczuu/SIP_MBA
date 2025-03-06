@@ -83,7 +83,7 @@
                             @include('admin2.modal.add_datapengajuanintegrasi')
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">
-                                <table class="table  datatable">
+                                <table class="datatable">
                                     <thead>
                                         <tr>
                                             <th>Nama Pengajuan</th>

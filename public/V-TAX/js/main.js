@@ -281,26 +281,32 @@
     /**
      * Initiate Datatables
      */
-    const datatables = select('.datatable', true)
+    const datatables = document.querySelectorAll('.datatable');
+
     datatables.forEach(datatable => {
         new simpleDatatables.DataTable(datatable, {
+            searchable: true, // Pastikan pencarian aktif
+            fixedHeight: true, // Memastikan search tetap bekerja meski datanya sedikit
+            perPage: 5, // Bisa diubah sesuai kebutuhan
             perPageSelect: [5, 10, 15, ["All", -1]],
-            columns: [{
-                select: 2,
-                sortSequence: ["desc", "asc"]
-            },
-            {
-                select: 3,
-                sortSequence: ["desc"]
-            },
-            {
-                select: 4,
-                cellClass: "green",
-                headerClass: "red"
-            }
+            columns: [
+                {
+                    select: 2,
+                    sortSequence: ["desc", "asc"]
+                },
+                {
+                    select: 3,
+                    sortSequence: ["desc"]
+                },
+                {
+                    select: 4,
+                    cellClass: "green",
+                    headerClass: "red"
+                }
             ]
         });
-    })
+    });
+
 
     /**
      * Autoresize echart charts
@@ -318,38 +324,94 @@
 
 })();
 
-//jumlah notif ditolak
-function fetchDitolakCount() {
-    fetch('/api/get-ditolak-count') // Sesuaikan dengan endpoint API
+
+
+
+
+// Fungsi untuk mengambil data notifikasi dari API
+function fetchPaymentCounts() {
+    fetch('/api/get-payment-count') // Panggil API baru
         .then(response => response.json())
         .then(data => {
-            document.getElementById("notif-ditolak").innerText = data.count;
+            // Perbarui elemen notifikasi berdasarkan ID
+            document.getElementById("not-ditolak").innerText = data.ditolak_feeadmin;
+            document.getElementById("not-belumvalidasi").innerText = data.belum_divalidasi;
+            document.getElementById("not-diterima").innerText = data.diterima_feeadmin;
         })
         .catch(error => console.error('Error:', error));
 }
 
 // Jalankan saat halaman dimuat
-document.addEventListener("DOMContentLoaded", fetchDitolakCount);
+document.addEventListener("DOMContentLoaded", fetchPaymentCounts);
 
 // Periksa perubahan setiap 5 detik
-setInterval(fetchDitolakCount, 5000);
+setInterval(fetchPaymentCounts, 5000);
 
-//jumlah notif belumvalidasi
-function fetchbelumvalidasiCount() {
-    fetch('/api/get-belumvalidasi-count') // Sesuaikan dengan endpoint API
+
+//nofeeadmin
+// Fungsi untuk mengambil data notifikasi dari API
+function fetchPaymentCount() {
+    fetch('/api/get-payment-list') // Panggil API baru
         .then(response => response.json())
         .then(data => {
-            document.getElementById("notif-belumvalidasi").innerText = data.count;
+            // Perbarui elemen notifikasi berdasarkan ID
+            document.getElementById("notif-ditolak").innerText = data.ditolak_feeadmin;
+            document.getElementById("notif-belumvalidasi").innerText = data.belum_divalidasi;
+            document.getElementById("notif-diterima").innerText = data.diterima_feeadmin;
         })
         .catch(error => console.error('Error:', error));
 }
 
 // Jalankan saat halaman dimuat
-document.addEventListener("DOMContentLoaded", fetchbelumvalidasiCount);
+document.addEventListener("DOMContentLoaded", fetchPaymentCount);
 
 // Periksa perubahan setiap 5 detik
-setInterval(fetchbelumvalidasiCount, 5000);
+setInterval(fetchPaymentCount, 5000);
 
 
 
+
+
+
+
+//notif am
+// Fungsi untuk mengambil data notifikasi dari API
+function fetchPaymentCounts() {
+    fetch('/api/get-payment-im') // Panggil API baru
+        .then(response => response.json())
+        .then(data => {
+            // Perbarui elemen notifikasi berdasarkan ID
+            document.getElementById("nott-ditolak").innerText = data.ditolak_feeadmin;
+            document.getElementById("nott-belumvalidasi").innerText = data.belum_divalidasi;
+            document.getElementById("nott-diterima").innerText = data.diterima_feeadmin;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Jalankan saat halaman dimuat
+document.addEventListener("DOMContentLoaded", fetchPaymentCounts);
+
+// Periksa perubahan setiap 5 detik
+setInterval(fetchPaymentCounts, 5000);
+
+
+//nofeeadmin
+// Fungsi untuk mengambil data notifikasi dari API
+function fetchPaymentCount() {
+    fetch('/api/get-payment-am') // Panggil API baru
+        .then(response => response.json())
+        .then(data => {
+            // Perbarui elemen notifikasi berdasarkan ID
+            document.getElementById("noti-ditolak").innerText = data.ditolak_feeadmin;
+            document.getElementById("noti-belumvalidasi").innerText = data.belum_divalidasi;
+            document.getElementById("noti-diterima").innerText = data.diterima_feeadmin;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Jalankan saat halaman dimuat
+document.addEventListener("DOMContentLoaded", fetchPaymentCount);
+
+// Periksa perubahan setiap 5 detik
+setInterval(fetchPaymentCount, 5000);
 

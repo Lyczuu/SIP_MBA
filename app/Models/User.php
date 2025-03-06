@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
+        'profile_image',
         'full_name',
         'alamat',
         'phone_number',
@@ -40,7 +41,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Wilayah::class, 'user_wilayah', 'user_id', 'wilayah_id');
     }
-    
+
 
 
     /**

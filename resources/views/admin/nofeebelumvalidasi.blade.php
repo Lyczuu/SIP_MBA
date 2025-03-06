@@ -37,8 +37,9 @@
             </div>
         @endif
 
-     <!DOCTYPE html>
+        <!DOCTYPE html>
         <html lang="en">
+
         <head>
             <meta charset="utf-8">
             <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -109,24 +110,27 @@
                                                 <th>Jenis pajak</th>
                                                 <th>Nama Jenis transaksi</th>
                                                 <th>Wag kordinasi payment</th>
+                                                <th>Status</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($paymentmba->filter(function($item) {
-                                                return (
-                                                    $item->status == 0 && // status 0 = belum divalidasi
-                                                    $item->jenis_pengajuan == 2
-                                                );
-                                            }) as $key => $list)
+                                            @foreach ($paymentmba->filter(function ($item) {
+                                              return $item->status == 0 && $item->jenis_pengajuan == 2; // status 0 = belum divalidasi
+                                                    }) as $key => $list)
                                                 <tr>
                                                     <td>{{ $list->kode_pengajuan }}</td>
                                                     <td>{{ $list->user->username }}</td>
                                                     <td>{{ $list->mitra->nama_mitra }}</td>
                                                     <td>{{ $list->wilayah->nama_wilayah }}</td>
-                                                    <td>{{ $list->jenis_pajak->nama_jenis_pajak }}</td>
+                                                    <td>{{ $list->jenis_pajak_nama }}</td>
                                                     <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                     <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                    <td>
+                                                        @if ($list->status == 0)
+                                                            <span class="badge bg-warning">Diajukan</span>
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         <div class="col-3">
                                                             <button class="btn btn-dark btn-sm" data-bs-toggle="modal"

@@ -4,32 +4,27 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="EditpaymentLabel{{ $list->id }}">Edit Data - ID: {{ $list->id }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('payment.update', $list->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-
-
+                <form class="row g-3">
                     <!-- Body Modal -->
                     <div class="modal-body">
                         <div class="row">
 
                             <div class="col-12 col-md-6">
-                                <label for="kode_pengajuan" class="form-label">Kode Barang</label>
+                                <label for="kode_pengajuan" class="form-label">Kode Pengajuan</label>
                                 <input type="text" name="kode_pengajuan" id="kode_pengajuan" class="form-control"
                                     placeholder="" value="{{ $list->kode_pengajuan }}" disabled>
                             </div>
                             {{-- end kode_pengajuan --}}
 
                             <div class="col-12 col-md-6">
-                                <label for="username" class="form-label">Nama Am</label>
-                                <input type="text" name="username" id="username" class="form-control" placeholder=""
-                                    value="{{ $list->user->username }}" disabled>
+                                <label for="nama_am" class="form-label">Nama AM</label>
+                                <input type="text" name="nama_am" id="nama_am" class="form-control"
+                                    placeholder="" value="{{ $list->user->username }}" disabled>
                             </div>
-                            {{-- end username --}}
+                            {{-- end Nama AM --}}
+
 
                             <div class="col-12 col-md-6">
                                 <label for="nama_mitra" class="form-label">Nama mitra</label>
@@ -48,7 +43,7 @@
                             <div class="col-12 col-md-6">
                                 <label for="nama_jenis_pajak" class="form-label">jenis pajak</label>
                                 <input type="text" name="nama_jenis_pajak" id="nama_jenis_pajak" class="form-control"
-                                    placeholder="" value="{{ $list->jenis_pajak_id }}" disabled>
+                                    placeholder="" value="{{ $list->jenis_pajak_nama }}" disabled>
                             </div>
                             {{-- end  jenis pajak --}}
 
@@ -85,17 +80,17 @@
                             <div class="col-12 col-md-6">
                                 <label for="mitra_agg" class="form-label">Mitra agg</label>
                                 <input type="text" name="mitra_agg" id="mitra_agg" class="form-control"
-                                    placeholder="" value="{{ $list->mitra_agg }}" disabled>
+                                    placeholder="" value="{{ $list->nama_mitra_agg }}" disabled>
                             </div>
                             {{-- end  mitra agg --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="pengajuan_integrasi" class="form-label">Pengajuan Integrasi</label>
                                 <input type="text" name="pengajuan_integrasi" id="pengajuan_integrasi"
-                                    class="form-control" placeholder="" value="{{ $list->pengajuan_integrasi }}"
-                                    disabled>
+                                    class="form-control" placeholder=""
+                                    value="{{ $list->pengajuanIntegrasi->nama_pengajuan_integrasi ?? 'Tidak Ada Data' }}" disabled>
                             </div>
-                            {{-- end  pengajuan integrasi --}}
+
 
                             <div class="col-12 col-md-6">
                                 <label for="total_fee" class="form-label">Total Fee</label>
@@ -121,18 +116,18 @@
                             <div class="col-12 col-md-6">
                                 <label for="status" class="form-label">Status</label>
                                 <input type="text" name="status" id="status" class="form-control"
-                                    placeholder="" value="{{ $list->status }}" disabled>
+                                    placeholder="" value="{{ $list->status == 0 ? 'Di Ajukan' : ($list->status == 1 ? 'Ditolak' : ($list->status == 2 ? 'Diterima' : '')) }}" disabled>
                             </div>
                             {{-- end  status --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="jenis_pengajuan" class="form-label">Jenis pengajuan</label>
                                 <input type="text" name="jenis_pengajuan" id="jenis_pengajuan" class="form-control"
-                                    placeholder="" value="{{ $list->jenis_pengajuan }}" disabled>
+                                    placeholder="" value="{{ $list->jenis_pengajuan == 1 ? 'Fee Based (Admin)' : ($list->jenis_pengajuan == 2 ? 'No Fee Based (Admin)' : '') }}" disabled>
                             </div>
-                            {{-- end  status --}}
+                            {{-- end  jenis pengajuan --}}
 
-                            <div class="row">
+                            {{-- <div class="row"> --}}
                                 <div class="col-12 col-md-6">
                                     <label for="pic_payment_mitra" class="form-label">Pic Payment Mitra</label>
                                     <input type="text" name="pic_payment_mitra" id="pic_payment_mitra"
@@ -167,7 +162,7 @@
                                 </div>
                                 {{-- end  telepon_rekon_mitra --}}
 
-                                <div class="row">
+                                {{-- <div class="row"> --}}
                                     <div class="col-12 col-md-6">
                                         <label for="pic_dinas" class="form-label">Pic Dinas</label>
                                         <input type="text" name="pic_dinas" id="pic_dinas" class="form-control"
@@ -183,7 +178,7 @@
                                     </div>
                                     {{-- end  telepon dinas --}}
 
-                                    <div class="row">
+                                    {{-- <div class="row"> --}}
                                         <div class="col-12 col-md-6">
                                             <label for="wag_kordinasi_payment" class="form-label">Wag Kordinasi
                                                 Payment</label>
@@ -203,31 +198,18 @@
                                         {{-- end  Wag Kordinasi Rekon --}}
 
 
-                                        {{-- <div class="col-12 col-md-6">
-                                            <label for="status" class="form-label">Status</label>
-                                            <select name="status" id="status" class="form-control">
-                                                <option value="">-- Pilih Status --</option>
-                                                <option value="2">Disetujui</option>
-                                                <option value="1">Ditolak</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-12 col-md-6">
-                                            <label for="alasan_penolakan" class="form-label">Alasan penolakan</label>
-                                            <input type="text" name="alasan_penolakan" id="alasan_penolakan"class="form-control" placeholder="Masukan alasan ditolak" required>
-                                        </div> --}}
-
-
 
 
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <br>
 
 
                 </form><!-- Vertical Form -->
             </div>
         </div>
+      </div>
 

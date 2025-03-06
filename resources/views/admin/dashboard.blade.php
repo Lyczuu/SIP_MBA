@@ -56,19 +56,7 @@
 
                                     <div class="card info-card customers-card">
 
-                                        <div class="filter">
-                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                                    class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                                <li class="dropdown-header text-start">
-                                                    <h6>Filter</h6>
-                                                </li>
 
-                                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                                            </ul>
-                                        </div>
 
                                         <div class="card-body">
                                             <h5 class="card-title">Integrasi Mitra Feebased </span></h5>
@@ -77,14 +65,22 @@
                                                 <div class="ps-3">
                                                     <span class="badge bg-warning"
                                                         onclick="window.location.href='/feebelumvalidasi'"
-                                                        style="cursor: pointer;">Belum Validasi</span></td> | <span
-                                                        class="badge bg-success"
-                                                        onclick="window.location.href='/feediterima'"
-                                                        style="cursor: pointer;">Diterima</span></td> | <span
-                                                        class="badge bg-danger" onclick="window.location.href='/feeditolak'"
-                                                        style="cursor: pointer;">Ditolak</span> </td>
-
-
+                                                        style="cursor: pointer;">Belum Validasi</span> </td> |<td> <span
+                                                            id="nott-belumvalidasi" class="badge bg-warning"
+                                                            onclick="window.location.href='/feebelumvalidasi'"
+                                                            style="cursor: pointer;">0</span></td>
+                                                    | <td> <span class="badge bg-success"
+                                                            onclick="window.location.href='/feediterima'"
+                                                            style="cursor: pointer;">Diterima</span> </td> | <td> <span
+                                                            id="nott-diterima" class="badge bg-success"
+                                                            onclick="window.location.href='/feediterima'"
+                                                            style="cursor: pointer;">0</span></td>
+                                                    |<td> <span class="badge bg-danger"
+                                                            onclick="window.location.href='/feeditolak'"
+                                                            style="cursor: pointer;">Ditolak</span></td> |<td> <span
+                                                            id="nott-ditolak" class="badge bg-danger"
+                                                            onclick="window.location.href='/feeditolak'"
+                                                            style="cursor: pointer;">0</span></td>
                                                 </div>
                                             </div>
 
@@ -96,19 +92,7 @@
 
                                     <div class="card info-card customers-card">
 
-                                        <div class="filter">
-                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                                    class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                                <li class="dropdown-header text-start">
-                                                    <h6>Filter</h6>
-                                                </li>
 
-                                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                                            </ul>
-                                        </div>
 
                                         <div class="card-body">
                                             <h5 class="card-title">Integrasi Mitra Non Feebased </span></h5>
@@ -117,17 +101,22 @@
                                                 <div class="ps-3">
                                                     <span class="badge bg-warning"
                                                         onclick="window.location.href='/nofeebelumvalidasi'"
-                                                        style="cursor: pointer;">Belum Validasi</span> </td> | <span
-                                                        class="badge bg-success"
-                                                        onclick="window.location.href='/nofeediterima'"
-                                                        style="cursor: pointer;">Diterima</span> </td> | <span
-                                                        class="badge bg-danger"
-                                                        onclick="window.location.href='/nofeeditolak'"
-                                                        style="cursor: pointer;">Ditolak</span> <span
-                                                        class="badge bg-danger"
-                                                        onclick="window.location.href='/nofeeditolak'"
-                                                        style="cursor: pointer;">8</span></td>
-
+                                                        style="cursor: pointer;">Belum Validasi</span> </td> |<td> <span
+                                                            id="noti-belumvalidasi" class="badge bg-warning"
+                                                            onclick="window.location.href='/nofeebelumvalidasi'"
+                                                            style="cursor: pointer;">0</span></td>
+                                                    | <td> <span class="badge bg-success"
+                                                            onclick="window.location.href='/nofeediterima'"
+                                                            style="cursor: pointer;">Diterima</span> </td> | <td> <span
+                                                            id="noti-diterima" class="badge bg-success"
+                                                            onclick="window.location.href='/nofeediterima'"
+                                                            style="cursor: pointer;">0</span></td>
+                                                    |<td> <span class="badge bg-danger"
+                                                            onclick="window.location.href='/nofeeditolak'"
+                                                            style="cursor: pointer;">Ditolak</span></td> |<td> <span
+                                                            id="noti-ditolak" class="badge bg-danger"
+                                                            onclick="window.location.href='/nofeeditolak'"
+                                                            style="cursor: pointer;">0</span></td>
                                                 </div>
                                             </div>
 
@@ -139,22 +128,26 @@
                                 <div class="col-xxl-4 col-md-4">
                                     <div class="card info-card sales-card">
 
-                                        <div class="filter">
-                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                                    class="bi bi-three-dots"></i></a>
+                                        {{-- <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots"></i>
+                                            </a>
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                 <li class="dropdown-header text-start">
                                                     <h6>Filter</h6>
                                                 </li>
-
-                                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                                <li><a class="dropdown-item" href="#">This Year</a></li>
+                                                <li><a class="dropdown-item filter-option" href="#"
+                                                        data-filter="today">Today</a></li>
+                                                <li><a class="dropdown-item filter-option" href="#"
+                                                        data-filter="month">This Month</a></li>
+                                                <li><a class="dropdown-item filter-option" href="#"
+                                                        data-filter="year">This Year</a></li>
                                             </ul>
-                                        </div>
+                                        </div> --}}
+
 
                                         <div class="card-body">
-                                            <h5 class="card-title">AM Wilayah 1</h5>
+                                            <h5 class="card-title">AM Wilayah</h5>
 
                                             <div class="d-flex align-items-center">
                                                 <div
@@ -162,9 +155,9 @@
                                                     <i class="bi bi-graph-up"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>{{$totalpengajuan}}</h6>
+                                                    <h6>{{ $totalpengajuan }}</h6>
                                                     <span class="text-success small pt-1 fw-bold">12%</span> <span
-                                                        class="text-muted small pt-2 ps-1">increase</span>
+                                                        class="text-muted small pt-2 ps-1">Jumlah Pengajuan</span>
 
                                                 </div>
                                             </div>
@@ -173,11 +166,11 @@
                                     </div>
                                 </div><!-- End Sales Card -->
 
-                                <!-- Sales Card -->
+                                @if (!empty($mitraAgg))
                                 <div class="col-xxl-4 col-md-4">
                                     <div class="card info-card sales-card">
 
-                                        <div class="filter">
+                                        {{-- <div class="filter">
                                             <a class="icon" href="#" data-bs-toggle="dropdown"><i
                                                     class="bi bi-three-dots"></i></a>
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -189,7 +182,7 @@
                                                 <li><a class="dropdown-item" href="#">This Month</a></li>
                                                 <li><a class="dropdown-item" href="#">This Year</a></li>
                                             </ul>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="card-body">
                                             <h5 class="card-title">AM Kerja Sama</h5>
@@ -203,13 +196,14 @@
                                                     <h6>{{$totalMitraAgg}}</h6>
                                                     <span class="text-success small pt-1 fw-bold">8%</span> <span
                                                         class="text-muted small pt-2 ps-1">Jumlah Kerja Sama</span>
-
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div><!-- End Revenue Card -->
+                            @endif
+
 
 
                                 <!-- Recent Sales -->
@@ -235,10 +229,8 @@
                                         <div class="card">
                                             <div class="card-body">
 
-                                                <h5 class="card-title">dashboard</h5>
-
                                                 <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
-                                                <p>data tabel No fee admin dan fee admin </p>
+
 
                                                 <!-- Table with stripped rows -->
                                                 <div class="table-responsive">
@@ -254,6 +246,7 @@
                                                                 <th>Jenis pajak</th>
                                                                 <th>Nama Jenis transaksi</th>
                                                                 <th>Wag kordinasi payment</th>
+                                                                <th>Status</th>
                                                                 <th>Aksi</th>
                                                             </tr>
                                                         </thead>
@@ -268,6 +261,15 @@
                                                                     <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}
                                                                     </td>
                                                                     <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                                    <td>
+                                                                        @if ($list->status == 0)
+                                                                            <span class="badge bg-warning">Diajukan</span>
+                                                                        @elseif ($list->status == 1)
+                                                                            <span class="badge bg-danger">Ditolak</span>
+                                                                        @elseif ($list->status == 2)
+                                                                            <span class="badge bg-success">Diterima</span>
+                                                                        @endif
+                                                                    </td>
                                                                     <td>
                                                                         <div class="col-3">
                                                                             <button class="btn btn-dark btn-sm"

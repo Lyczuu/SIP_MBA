@@ -122,8 +122,9 @@
                                                             data-bs-target="#Editdatapengguna{{ $list->id }}">
                                                             <i class="bi bi-pencil-square"></i> Edit
                                                         </button>
-                                                        <button onclick="window.location='{{ route('user.wilayah') }}'"
+                                                        <button onclick="window.location='{{ route('user.wilayah', ['user_id' => $list->id]) }}'"
                                                             class="bi bi-crosshair2"></button>
+
 
 
                                                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal"

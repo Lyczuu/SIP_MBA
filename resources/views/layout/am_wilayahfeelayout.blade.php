@@ -4,7 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Payment integrasi System - AM</title>
+    @if (auth()->user()->role->nama_role == 'AM Wilayah')
+    <title>Payment integrasi System - AM Wilayah</title>
+
+    @elseif (auth()->user()->role->nama_role == 'Admin')
+    <title>Payment integrasi System - Admin</title>
+    @endif
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -30,13 +35,6 @@
     <!-- Template Main CSS File -->
     <link href="{{ asset('V-TAX/css/style.css') }}" rel="stylesheet">
 
-    <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -52,12 +50,12 @@
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
-        <div class="search-bar">
+        {{-- <div class="search-bar">
             <form class="search-form d-flex align-items-center" method="POST" action="#">
                 <input type="text" name="query" placeholder="Search" title="Enter search keyword">
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form>
-        </div><!-- End Search Bar -->
+        </div><!-- End Search Bar --> --}}
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
@@ -278,7 +276,7 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             {{-- Jika pengguna adalah AM Wilayah --}}
-            @if (auth()->user()->role->nama_role == 'AM WILAYAH')
+            @if (auth()->user()->role->nama_role == 'AM Wilayah')
                 <li class="nav-item">
                     <a class="nav-link @yield('side0')" href="{{ route('admin.dashboard') }}">
                         <i class="bi bi-grid"></i>
@@ -292,7 +290,7 @@
                         <span>Pengajuan</span>
                     </a>
                 </li>
-            @elseif(auth()->user()->role->nama_role == 'ADMIN')
+            @elseif(auth()->user()->role->nama_role == 'Admin')
                 {{-- Jika pengguna adalah Admin, tampilkan semua menu --}}
                 <li class="nav-item">
                     <a class="nav-link @yield('side0')" href="{{ route('index.index0') }}">
@@ -324,7 +322,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link @yield('side4')" href="{{ route('data.wilayah') }}">
-                        <i class="bi bi-map"></i>
+                        <i class="bi bi-map-fill"></i>
                         <span>Wilayah</span>
                     </a>
                 </li>

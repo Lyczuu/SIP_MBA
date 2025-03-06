@@ -86,7 +86,7 @@
                             @include('admin2.modal.add_datamitra')
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">
-                                <table class="table  datatable">
+                                <table class="table datatable">
                                     <thead>
                                         <tr>
                                             <th>Nama Mitra</th>

@@ -18,7 +18,7 @@
                         <div class="row">
 
                             <div class="col-12 col-md-6">
-                                <label for="kode_pengajuan" class="form-label">Kode Barang</label>
+                                <label for="kode_pengajuan" class="form-label">Kode Pengajuan</label>
                                 <input type="text" name="kode_pengajuan" id="kode_pengajuan" class="form-control"
                                     placeholder="" value="{{ $list->kode_pengajuan }}" disabled>
                             </div>
@@ -48,7 +48,7 @@
                             <div class="col-12 col-md-6">
                                 <label for="nama_jenis_pajak" class="form-label">jenis pajak</label>
                                 <input type="text" name="nama_jenis_pajak" id="nama_jenis_pajak" class="form-control"
-                                    placeholder="" value="{{ $list->jenis_pajak_id }}" disabled>
+                                    placeholder="" value="{{ $list->jenis_pajak_nama}}" disabled>
                             </div>
                             {{-- end  jenis pajak --}}
 
@@ -85,15 +85,15 @@
                             <div class="col-12 col-md-6">
                                 <label for="mitra_agg" class="form-label">Mitra agg</label>
                                 <input type="text" name="mitra_agg" id="mitra_agg" class="form-control"
-                                    placeholder="" value="{{ $list->mitra_agg }}" disabled>
+                                    placeholder="" value="{{ $list->nama_mitra_agg }}" disabled>
                             </div>
                             {{-- end  mitra agg --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="pengajuan_integrasi" class="form-label">Pengajuan Integrasi</label>
                                 <input type="text" name="pengajuan_integrasi" id="pengajuan_integrasi"
-                                    class="form-control" placeholder="" value="{{ $list->pengajuan_integrasi_id }}"
-                                    disabled>
+                                    class="form-control" placeholder=""
+                                    value="{{ $list->pengajuanIntegrasi->nama_pengajuan_integrasi ?? 'Tidak Ada Data' }}" disabled>
                             </div>
                             {{-- end  pengajuan integrasi --}}
 
@@ -122,18 +122,17 @@
                             <div class="col-12 col-md-6">
                                 <label for="statusDisplay" class="form-label">Status</label>
                                 <input type="text" name="status_display" id="statusDisplay" class="form-control"
-                                       placeholder="" value="{{ $list->status }}" disabled>
+                                       placeholder="" value="{{ $list->status == 0 ? 'Di Ajukan' : ''}}" disabled>
                             </div>
                             {{-- end status display --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="jenis_pengajuan" class="form-label">Jenis pengajuan</label>
                                 <input type="text" name="jenis_pengajuan" id="jenis_pengajuan" class="form-control"
-                                       placeholder="" value="{{ $list->jenis_pengajuan }}" disabled>
+                                       placeholder="" value="{{ $list->jenis_pengajuan  == 1 ? 'Fee based (Admin)' : ($list->jenis_pengajuan == 2 ? 'No Fee Based (Admin)' : '')}}" disabled>
                             </div>
                             {{-- end jenis pengajuan display --}}
 
-                            <div class="row">
                                 <div class="col-12 col-md-6">
                                     <label for="pic_payment_mitra" class="form-label">Pic Payment Mitra</label>
                                     <input type="text" name="pic_payment_mitra" id="pic_payment_mitra"
@@ -168,7 +167,6 @@
                                 </div>
                                 {{-- end  telepon_rekon_mitra --}}
 
-                                <div class="row">
                                     <div class="col-12 col-md-6">
                                         <label for="pic_dinas" class="form-label">Pic Dinas</label>
                                         <input type="text" name="pic_dinas" id="pic_dinas" class="form-control"
@@ -184,7 +182,6 @@
                                     </div>
                                     {{-- end  telepon dinas --}}
 
-                                    <div class="row">
                                         <div class="col-12 col-md-6">
                                             <label for="wag_kordinasi_payment" class="form-label">Wag Kordinasi
                                                 Payment</label>
@@ -223,7 +220,7 @@
 
 
 
-
+                                     <div class="row">
                                     </div>
                                 </div>
                             </div>

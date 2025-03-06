@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\ditolak;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\datadiajukan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class DatadiajukanController extends Controller
@@ -19,30 +19,25 @@ class DatadiajukanController extends Controller
     {
         $paymentmba = PaymentMba::all()->map(function ($item) {
             $jenisPajakIds = explode(',', $item->jenis_pajak_id);
-            $item->jenis_pajak_nama = jenispajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+            $item->jenis_pajak_nama = JenisPajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+
+            // Tambahkan nama mitra dari mitraAgg yang memiliki flag_agg = 1
+            $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
+
             return $item;
         });
+
+        $ditolak = ditolak::with('user')->get();
         $user = Auth::user();
         $paymentmbafee = PaymentMBA::where('user_id', $user->id)->get();
-        return view('admin2.datadiajukan', compact('paymentmba',  'user'));
-        // Ambil semua data paymentmba
-        $paymentmba = PaymentMba::with(['user', 'mitra', 'wilayah', 'jenis_transaksi',  'jenis_transaksi', 'fees'])->get();
 
-        // Pisahkan data yang memiliki fee admin dan yang tidak
-        $paymentmba = $paymentmba->filter(function ($item) {
-            return $item->fees && $item->fees->total_fee !== null;
-        });
+        return view('admin2.datadiajukan', compact('paymentmba', 'user'));
 
-        $paymentmbafee = $paymentmba->filter(function ($item) {
-            return !$item->fees || $item->fees->total_fee === null;
-        });
-
-
-        // Kirim data yang sudah difilter ke view
-        return view('admin2.datadiajukan', [
-            'paymentmba' => $paymentmba,
-            'paymentmbafee' => $paymentmbafee,
-        ]);
+        // // Kirim data yang sudah difilter ke view
+        // return view('admin2.datadiajukan', [
+        //     'paymentmba' => $paymentmba,
+        //     'paymentmbafee' => $paymentmbafee,
+        // ]);
     }
 
     /**

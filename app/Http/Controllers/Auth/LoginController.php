@@ -25,32 +25,37 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-       // Check login attempt
-if (Auth::attempt($credentials)) {
-    $request->session()->regenerate();
-    $level = Auth::user()->role_id;
+        // Check login attempt
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $level = Auth::user()->role_id;
 
-    // Redirect based on user role
-    switch ($level) {
-        case 1: // Admin
-            return redirect()->intended('/utama');
+            // Redirect based on user role
+            switch ($level) {
+                case 1: // Admin
+                    return redirect()->intended('/utama');
 
-        case 2: // AM Wilayah
-            return redirect()->intended('admin/dashboard');
+                case 2: // AM Wilayah
+                    return redirect()->intended('admin/dashboard');
 
-        case 3: // AM Wilayah 2
-            return redirect()->intended('/admin/dashboard');
+                case 3: // AM Wilayah 2
+                    return redirect()->intended('/admin/dashboard');
 
-    }
-}
-       else{
-        //use session
-         Session::flash('status','failed');
-         Session::flash('message','Username atau password salah');
+                case 4: // AM Wilayah 2
+                    return redirect()->intended('/admin/dashboard');
 
-         return redirect('/login');
+                case 5: // AM Wilayah 2
+                    return redirect()->intended('/admin/dashboard');
 
+                case 6: // AM Wilayah 2
+                    return redirect()->intended('/admin/dashboard');
+            };
+        } else {
+            //use session
+            Session::flash('status', 'failed');
+            Session::flash('message', 'Username atau password salah');
 
+            return redirect('/login');
         }
     }
     public function logout(Request $request)

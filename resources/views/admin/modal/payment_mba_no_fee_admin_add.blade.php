@@ -222,7 +222,7 @@
                 <!-- Nomor Registrasi Legal -->
                 <div class="col-4 mb-4">
                     <label class="form-label">Nomor Registrasi Legal </label>
-                    <input type="text" class="form-control" name="nomor_registrasi_legal"
+                    <input type="number" class="form-control" name="nomor_registrasi_legal"
                         placeholder="Masukan Nomor Registrasi Legal" required>
 
                 </div>
@@ -241,7 +241,7 @@
                 </div>
                 <div class="col-4">
                     <label for="telepon_payment_mitra"><strong>Telepon Payment Mitra</strong></label>
-                    <input type="text" name="telepon_payment_mitra" id="telepon_payment_mitra"
+                    <input type="number" name="telepon_payment_mitra" id="telepon_payment_mitra"
                         class="form-control"
                         value="{{ old('telepon_payment_mitra', $paymentMba->telepon_payment_mitra ?? '') }}">
                 </div>
@@ -254,7 +254,7 @@
                 </div>
                 <div class="col-4">
                     <label for="telepon_rekon_mitra"><strong>Telepon Rekon Mitra</strong></label>
-                    <input type="text" name="telepon_rekon_mitra" id="telepon_rekon_mitra" class="form-control"
+                    <input type="number" name="telepon_rekon_mitra" id="telepon_rekon_mitra" class="form-control"
                         value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}">
                 </div>
 
@@ -267,7 +267,7 @@
 
                 <div class="col-4 mb-4">
                     <label for="telepon_dinas"><strong> Telepon Dinas</strong></label>
-                    <input type="text" name="telepon_dinas" id="telepon_dinas" class="form-control"
+                    <input type="number" name="telepon_dinas" id="telepon_dinas" class="form-control"
                         value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}">
                 </div>
 

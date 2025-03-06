@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\fees;
 use App\Models\mitra;
-use App\Models\ditolak;
 use App\Models\wilayah;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
@@ -19,31 +17,42 @@ class ditolakController extends Controller
 {
     public function index()
     {
+        $userId = Auth::id(); // Mendapatkan ID user yang sedang login
+
+        // Ambil daftar nama jenis pajak berdasarkan ID
         $allJenisPajak = JenisPajak::pluck('nama_jenis_pajak', 'id');
 
-        $paymentmba = PaymentMba::with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees'])->get()->map(function ($item) use ($allJenisPajak) {
-            // Ubah jenis_pajak_id (string "1,2,3") menjadi array [1, 2, 3]
-            $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
+        // Ambil data PaymentMba dengan filter berdasarkan user yang login
+        $paymentmba = PaymentMba::where('user_id', $userId)
+            ->with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees', 'mitraAgg'])
+            ->get()
+            ->map(function ($item) use ($allJenisPajak) {
+                // Ubah jenis_pajak_id (string "1,2,3") menjadi array [1, 2, 3]
+                $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
 
-            // Ambil nama jenis pajak berdasarkan ID
-            $item->jenis_pajak_nama = collect($jenisPajakIds)
-                ->map(fn($id) => $allJenisPajak[$id] ?? null)
-                ->filter()
-                ->implode(', ') ?: '-';
+                // Ambil nama jenis pajak berdasarkan ID
+                $item->jenis_pajak_nama = collect($jenisPajakIds)
+                    ->map(fn($id) => $allJenisPajak[$id] ?? null)
+                    ->filter()
+                    ->implode(', ') ?: '-';
 
-            // Tambahkan properti alasan_penolakan dari relasi ditolak
-            $item->alasan_penolakan = $item->ditolak?->alasan_penolakan ?? '-';
-            $item->ditolak_oleh = $item->ditolak?->User?->username ?? '-';
+                // Tambahkan properti alasan_penolakan dari relasi ditolak
+                $item->alasan_penolakan = $item->ditolak?->alasan_penolakan ?? '-';
+                $item->ditolak_oleh = $item->ditolak?->User?->username ?? '-';
 
-            // Tambahkan properti nama_pengajuan_integrasi dari relasi pengajuanIntegrasi
-            $item->nama_pengajuan_integrasi = $item->pengajuanIntegrasi?->nama_pengajuan_integrasi ?? '-';
-            $item->nama_mitra = $item->mitra?->nama_mitra ?? '-';
-            $item->total_fee = $item->fees?->total_fee ?? '-';
-            $item->fee_mba = $item->fees?->fee_mba ?? '-';
-            $item->fee_mitra = $item->fees?->fee_mitra ?? '-';
+                // Tambahkan properti nama_pengajuan_integrasi dari relasi pengajuanIntegrasi
+                $item->nama_pengajuan_integrasi = $item->pengajuanIntegrasi?->nama_pengajuan_integrasi ?? '-';
 
-            return $item;
-        });
+                // Tambahkan properti nama mitra
+                $item->nama_mitra = $item->mitra?->nama_mitra ?? '-';
+                $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
+                // Tambahkan properti total_fee, fee_mba, dan fee_mitra dari relasi fees
+                $item->total_fee = $item->fees?->total_fee ?? '-';
+                $item->fee_mba = $item->fees?->fee_mba ?? '-';
+                $item->fee_mitra = $item->fees?->fee_mitra ?? '-';
+
+                return $item;
+            });
 
         $wilayah = wilayah::all();
         $jenistransaksi = jenistransaksi::all();
@@ -111,7 +120,7 @@ class ditolakController extends Controller
             ]);
         });
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Ajukan');
+        Session::flash('message', 'Data Berhasil Di Perbarui');
         return redirect('/ditolak');
     } catch (\Exception $e) {
         return back()->withErrors(['error' => 'Gagal memperbarui data: ' . $e->getMessage()]);

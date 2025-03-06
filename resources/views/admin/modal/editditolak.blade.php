@@ -17,7 +17,7 @@
                     <input type="hidden" name="status" value="0">
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <label for="kode_pengajuan" class="form-label">Kode Barang</label>
+                            <label for="kode_pengajuan" class="form-label">Kode Pengajuan</label>
                             <input type="text" name="kode_pengajuan" id="kode_pengajuan" class="form-control"
                                 placeholder="" value="{{ $list->kode_pengajuan }}" disabled>
                         </div>
@@ -40,7 +40,7 @@
                             <input type="text" name="ditolak_oleh" id="ditolak_oleh" class="form-control" placeholder=""
                                 value="{{ $list->ditolak_oleh }}" disabled>
                         </div>
-                        {{-- end username --}}
+                        {{-- end ditolak oleh --}}
 
                         <!-- Dropdown Wilayah -->
                         <div class="row">

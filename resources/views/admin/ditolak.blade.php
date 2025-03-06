@@ -24,6 +24,7 @@
         <body>
 
 
+
             <section class="section">
                 <div class="row">
                     <div class="col-lg-12">
@@ -57,6 +58,7 @@
                         </script>
                         <div class="card">
                             <div class="card-body">
+                                <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
                                 <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
                                     <li class="nav-item flex-fill" role="presentation">
                                         <a class="nav-link w-50 {{ Request::routeIs('belumvalidasi') ? 'active' : '' }}"
@@ -85,7 +87,7 @@
                                 </ul>
                                 <!-- Table with stripped rows -->
                                 <div class="table-responsive">
-                                    <table id="table-ditolak" class="table datatable">
+                                    <table class="table datatable">
                                         <thead>
                                             <tr>
                                                 <th>Kode Pengajuan</th>
@@ -102,8 +104,8 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($paymentmba->filter(function ($item) {
-            return $item->status == 1;
-        }) as $key => $list)
+                                                return $item->status == 1;
+                                                      }) as $key => $list)
                                                 <tr>
                                                     <td>{{ $list->kode_pengajuan }}</td>
                                                     <td>{{ $list->user->username }}</td>

@@ -6,18 +6,17 @@ namespace App\Http\Controllers;
 
 use App\Models\fees;
 use App\Models\mitra;
-use App\Models\wilayah;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
-use App\Models\jenis_pajak;
 use Illuminate\Http\Request;
+use App\Exports\PaymentsExport;
 use App\Models\jenis_transaksi;
 use App\Models\pengajuanintegrasi;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 
 class PaymentmbaController extends Controller
@@ -89,16 +88,16 @@ class PaymentmbaController extends Controller
             'cutoff'                   => 'required|string|max:255',
             'jenis_pengajuan'          => 'required|string|max:255',
             'settlement'               => 'required|string|max:255',
-            'nomor_registrasi_legal'   => 'required|string|max:255',
+            'nomor_registrasi_legal'   => 'required|numeric',
             'total_fee'                => 'required|numeric',
             'fee_mba'                  => 'required|numeric',
             'fee_mitra'                => 'required|numeric',
-            'pic_payment_mitra'        => 'required|string|max:255',
+            'pic_payment_mitra'        => 'required|numeric',
             'telepon_payment_mitra'    => 'required|string',
             'pic_rekon_mitra'          => 'required|string|max:255',
-            'telepon_rekon_mitra'      => 'required|string',
+            'telepon_rekon_mitra'      => 'required|numeric',
             'pic_dinas'                => 'required|string|max:255',
-            'telepon_dinas'            => 'required|string',
+            'telepon_dinas'            => 'required|numeric',
             'wag_kordinasi_payment'    => 'required|string|max:255',
             'wag_kordinasi_rekon'      => 'required|string|max:255',
         ]);
@@ -107,7 +106,7 @@ class PaymentmbaController extends Controller
         Log::info('Data yang divalidasi:', $validated);
 
         // Ubah array jenis_pajak menjadi JSON string jika diperlukan penyimpanan sebagai string
-       
+
 
         DB::beginTransaction();
         try {
@@ -187,6 +186,7 @@ class PaymentmbaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data.']);
         }
     }
+
 
 
     /**

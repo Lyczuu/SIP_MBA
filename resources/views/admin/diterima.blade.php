@@ -49,9 +49,11 @@
                                 </div><!-- End Page Title -->
 
 
+
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
+
                                         <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified"
                                             role="tablist">
                                             <li class="nav-item flex-fill" role="presentation">
@@ -80,30 +82,46 @@
                                             </li>
                                         </ul>
 
-                                        <!-- Table with stripped rows -->
-                                        <div class="table-responsive">
+<br>
+                                        <form id="exportForm" method="POST" action="{{ route('payment.exportAM') }}">
+                                            @csrf
+
+                                            <button type="submit" class="btn btn-success">Cetak Excel</button>
+
+                                            <div class="table-responsive">
+                                                <table>
+                                                    <thead>
+                                                        <th>
+                                                            <input type="checkbox" id="selectAll">
+                                                            <label for="selectAll">Select All</label>
+                                                        </th>
+                                                    </thead>
+                                                </table>
+                                            </div>
+
+                                            <div class="table-responsive">
                                             <table class="table datatable">
                                                 <thead>
                                                     <tr>
+                                                        <th></th>
+                                                        <th>ID</th>
                                                         <th>Kode Pengajuan</th>
-                                                        <th>
-                                                            <b>N</b>ame
-                                                        </th>
-                                                        <th>Nama mitra</th>
-                                                        <th>Nama wilayah</th>
-                                                        <th>Jenis pajak</th>
-                                                        <th>Nama Jenis transaksi</th>
-                                                        <th>Wag kordinasi payment</th>
+                                                        <th>Nama AM</th>
+                                                        <th>Nama Mitra</th>
+                                                        <th>Wilayah</th>
+                                                        <th>Jenis Pajak</th>
+                                                        <th>Jenis Transaksi</th>
+                                                        <th>WAG Kordinasi Payment</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($paymentmba->filter(function($item) {
-                                                        return (
-                                                            $item->status == 2
-                                                        );
-                                                    }) as $key => $list)
+                                                    @foreach ($paymentmba->filter(function ($item) {
+            return $item->status == 2;
+        }) as $key => $list)
                                                         <tr>
+                                                            <td><input type="checkbox" name="ids[]" value="{{ $list->id }}"></td>
+                                                            <td>{{ $list->id }}</td>
                                                             <td>{{ $list->kode_pengajuan }}</td>
                                                             <td>{{ $list->user->username }}</td>
                                                             <td>{{ $list->mitra->nama_mitra }}</td>
@@ -113,7 +131,8 @@
                                                             <td>{{ $list->wag_kordinasi_payment }}</td>
                                                             <td>
                                                                 <div class="col-3">
-                                                                    <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                                    <button class="btn btn-dark btn-sm"
+                                                                        data-bs-toggle="modal"
                                                                         data-bs-target="#Editpayment{{ $list->id }}">
                                                                         <i class="bi bi-pencil-square"></i> Detail
                                                                     </button>
@@ -124,9 +143,28 @@
                                                     @endforeach
                                                 </tbody>
                                             </table>
-                                            <!-- End Table with stripped rows -->
+                                            </div>
+                                        </form>
 
-                                        </div>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
+                                                    button.addEventListener('click', function(event) {
+                                                        event.preventDefault(); // Mencegah reload jika terjadi
+                                                        let modalId = this.getAttribute('data-bs-target');
+                                                        console.log("Opening modal:", modalId);
+                                                    });
+                                                });
+
+                                                // Select/Deselect All Checkboxes
+                                                document.getElementById('selectAll').addEventListener('change', function() {
+                                                    let checkboxes = document.querySelectorAll('input[name="ids[]"]');
+                                                    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                                                });
+                                            });
+                                        </script>
+
+
                                     </div>
                                     {{-- end card div --}}
 
@@ -139,12 +177,8 @@
 
                         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
                                 class="bi bi-arrow-up-short"></i></a>
-
-
         </body>
 
         </html>
-
-
     </div>
 @endsection

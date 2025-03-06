@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ditolak;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\dataditolak;
@@ -17,15 +16,34 @@ class DataditolakController extends Controller
      */
     public function index()
     {
-        $paymentmba = PaymentMba::all()->map(function ($item) {
-            $jenisPajakIds = explode(',', $item->jenis_pajak_id);
-            $item->jenis_pajak_nama = jenispajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
+        $allJenisPajak = JenisPajak::pluck('nama_jenis_pajak', 'id');
+
+        $paymentmba = PaymentMba::with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees','mitraAgg'])->get()->map(function ($item) use ($allJenisPajak) {
+            // Ubah jenis_pajak_id (string "1,2,3") menjadi array [1, 2, 3]
+            $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
+
+            // Ambil nama jenis pajak berdasarkan ID
+            $item->jenis_pajak_nama = collect($jenisPajakIds)
+                ->map(fn($id) => $allJenisPajak[$id] ?? null)
+                ->filter()
+                ->implode(', ') ?: '-';
+
+            // Tambahkan properti alasan_penolakan dari relasi ditolak
+            $item->alasan_penolakan = $item->ditolak?->alasan_penolakan ?? '-';
+            $item->ditolak_oleh = $item->ditolak?->User?->username ?? '-';
+
+
+            $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
+            // Tambahkan properti nama_pengajuan_integrasi dari relasi pengajuanIntegrasi
+            $item->nama_pengajuan_integrasi = $item->pengajuanIntegrasi?->nama_pengajuan_integrasi ?? '-';
+            $item->nama_mitra = $item->mitra?->nama_mitra ?? '-';
+            $item->total_fee = $item->fees?->total_fee ?? '-';
+            $item->fee_mba = $item->fees?->fee_mba ?? '-';
+            $item->fee_mitra = $item->fees?->fee_mitra ?? '-';
+
             return $item;
         });
-        $ditolak = Ditolak::with('user')->get();
-        $user = Auth::user();
-        $paymentmbafee = PaymentMBA::where('user_id', $user->id)->get();
-        return view('admin2.dataditolak', compact('paymentmba', 'paymentmbafee', 'user', 'ditolak'));
+        return view('admin2.dataditolak', compact('paymentmba'));
 
 
     }

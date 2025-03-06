@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\paymentmba;
+namespace App\Http\Controllers;
 
 use App\Models\wilayah;
 use Illuminate\Http\Request;

@@ -112,6 +112,7 @@
                                                 <th>Jenis pajak</th>
                                                 <th>Nama Jenis transaksi</th>
                                                 <th>Wag kordinasi payment</th>
+                                                <th>Status</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -131,6 +132,12 @@
                                                     <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                     <td>{{ $list->wag_kordinasi_payment }}</td>
                                                     <td>
+                                                        @if ($list->status == 1)
+                                                        <span class="badge bg-danger">Ditolak</span>
+
+                                                        @endif
+                                                    </td>
+                                                    <td>
                                                         <div class="col-3">
                                                             <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
                                                                 data-bs-target="#Editpayment{{ $list->id }}">
@@ -138,7 +145,7 @@
                                                             </button>
                                                         </div>
                                                     </td>
-                                                    @include('admin.modal.detaildiajukan')
+                                                    @include('admin.modal.detailditolak')
                                                 </tr>
                                             @endforeach
                                         </tbody>

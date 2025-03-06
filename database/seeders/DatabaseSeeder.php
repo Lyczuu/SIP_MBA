@@ -20,19 +20,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        // $this->call(RolesSeeder::class);
+        $this->call(RolesSeeder::class);
 
-        // $this->call(JenispajakSeeder::class);
-        // $this->call(JenistransaksiSeeder::class);
-        // $this->call(MitraSeeder::class);
-        // $this->call(PengajuanintegrasiSeeder::class);
-        // $this->call(ProvinsiSeeder::class);
+        $this->call(JenispajakSeeder::class);
+        $this->call(JenistransaksiSeeder::class);
+        $this->call(MitraSeeder::class);
+        $this->call(PengajuanintegrasiSeeder::class);
+        $this->call(ProvinsiSeeder::class);
         $this->call(WilayahSeeder::class);
-
-
-
     }
 
 }

@@ -71,4 +71,10 @@ class paymentmba extends Model
         return $this->belongsTo(PengajuanIntegrasi::class, 'pengajuan_integrasi_id', 'id');
     }
 
+
+
+    public function mitraAgg()
+    {
+        return $this->belongsTo(Mitra::class, 'mitra_agg')->where('flag_agg', 1);
+    }
 }
