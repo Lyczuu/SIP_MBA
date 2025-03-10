@@ -41,27 +41,31 @@ class PaymentsExport
         // **Mulai menulis data dari baris ke-10**
         $row = 10;
         foreach ($payments as $payment) {
-            $sheet->setCellValue("E38", $payment->kode_pengajuan);
+            $sheet->setCellValue("E37", $payment->kode_pengajuan);
 
             $sheet->setCellValue("F3", $payment->User->username ?? '');
             $sheet->setCellValue("F4", $payment->User->alamat ?? '');
             $sheet->setCellValue("F5", $payment->User->phone_number ?? '');
             $sheet->setCellValue("F6", $payment->User->email ?? '');
 
-            $sheet->setCellValue("E35", $payment->wilayah->nama_wilayah ?? '');
+            $sheet->setCellValue("E34", $payment->wilayah->nama_wilayah ?? '');
 
 
 
-            $checked = "☑"; // Simbol centang
-            $unchecked = "☐"; // Simbol tidak tercentang
-
-
-
-            $sheet->setCellValue("A16", $payment->transaksi_id == 1 ? $checked : $unchecked); // H2H
-            $sheet->setCellValue("A17", $payment->transaksi_id == 2 ? $checked : $unchecked); // Virtual Account
-            $sheet->setCellValue("G16", $payment->transaksi_id == 3 ? $checked : $unchecked); // QRIS Dinamis
-            $sheet->setCellValue("G17", $payment->transaksi_id == 4 ? $checked : $unchecked); // Loket
-
+            switch ($payment->transaksi_id) {
+                case 1:
+                    $sheet->setCellValue("A15", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
+                    break;
+                case 2:
+                    $sheet->setCellValue("A16", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
+                    break;
+                case 3:
+                    $sheet->setCellValue("F15", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
+                    break;
+                case 4:
+                    $sheet->setCellValue("F16", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
+                    break;
+            }
 
             $sheet->setCellValue("F8", $payment->mitra->nama_mitra ?? '');
 
@@ -74,49 +78,56 @@ class PaymentsExport
 
 
 
-            $jenisPajakArray = explode(',', $payment->jenis_pajak_id);  //jenis pajak
+            // Pastikan field jenis_pajak_id tidak null atau kosong
+            $jenisPajakArray = $payment->jenis_pajak_id ? explode(',', $payment->jenis_pajak_id) : [];
+
+            // Mapping ID ke nama jenis pajak
+            $jenisPajakMapping = [
+                1 => 'PBB INDIVIDU',
+                2 => 'PBB KOLEKTIF',
+                3 => 'BPHTB',
+                4 => 'PDL',
+                5 => 'RETRIBUSI' // data jenis pajak
+            ];
+
+            // Misalnya, jika ingin menampilkan di sel-sel tertentu:
+            $sheet->setCellValue("A12", in_array(1, $jenisPajakArray) ? $jenisPajakMapping[1] : '');
+            $sheet->setCellValue("A13", in_array(2, $jenisPajakArray) ? $jenisPajakMapping[2] : '');
+            $sheet->setCellValue("D12", in_array(3, $jenisPajakArray) ? $jenisPajakMapping[3] : '');
+            $sheet->setCellValue("D13", in_array(4, $jenisPajakArray) ? $jenisPajakMapping[4] : '');
+            $sheet->setCellValue("K12", in_array(5, $jenisPajakArray) ? $jenisPajakMapping[5] : '');
 
 
 
 
-            $sheet->setCellValue("A12", in_array(1, $jenisPajakArray) ? $checked : $unchecked); // PPN
-            $sheet->setCellValue("A13", in_array(2, $jenisPajakArray) ? $checked : $unchecked); // PPh 21
-            $sheet->setCellValue("A14", in_array(3, $jenisPajakArray) ? $checked : $unchecked); // PPh 21
-            $sheet->setCellValue("E12", in_array(4, $jenisPajakArray) ? $checked : $unchecked); // PPh 22
-            $sheet->setCellValue("E13", in_array(5, $jenisPajakArray) ? $checked : $unchecked); // PPh 23
+            $sheet->setCellValue("E36", $payment->PengajuanIntegrasi->nama_pengajuan_integrasi ?? '');
+            $sheet->setCellValue("F39", $payment->cutoff ?? '');
+            $sheet->setCellValue("F40", $payment->settlement ?? '');
+
+            $sheet->setCellValue("F19", $payment->nomor_registrasi_legal ?? '');
 
 
+            $sheet->setCellValue("A32", $payment->fees->total_fee ?? '');
+            $sheet->setCellValue("E32", $payment->fees->fee_mba ?? '');
+            $sheet->setCellValue("H32", $payment->fees->fee_mitra ?? '');
 
 
-
-            $sheet->setCellValue("E37", $payment->PengajuanIntegrasi->nama_pengajuan_integrasi ?? '');
-            $sheet->setCellValue("F40", $payment->cutoff ?? '');
-            $sheet->setCellValue("F41", $payment->settlement ?? '');
-
-            $sheet->setCellValue("F20", $payment->nomor_registrasi_legal ?? '');
+            $sheet->setCellValue("A23", $payment->pic_payment_mitra ?? '');
+            $sheet->setCellValue("E23", $payment->pic_rekon_mitra ?? '');
+            $sheet->setCellValue("H23", $payment->pic_dinas ?? '');
 
 
-            $sheet->setCellValue("A33", $payment->fees->total_fee ?? '');
-            $sheet->setCellValue("E33", $payment->fees->fee_mba ?? '');
-            $sheet->setCellValue("H33", $payment->fees->fee_mitra ?? '');
+            $sheet->setCellValue("A26", $payment->telepon_payment_mitra ?? '');
+            $sheet->setCellValue("E26", $payment->telepon_rekon_mitra ?? '');
+            $sheet->setCellValue("H26", $payment->telepon_dinas ?? '');
 
 
-            $sheet->setCellValue("A24", $payment->pic_payment_mitra ?? '');
-            $sheet->setCellValue("E24", $payment->pic_rekon_mitra ?? '');
-            $sheet->setCellValue("H24", $payment->pic_dinas ?? '');
-
-
-            $sheet->setCellValue("A27", $payment->telepon_payment_mitra ?? '');
-            $sheet->setCellValue("E27", $payment->telepon_rekon_mitra ?? '');
-            $sheet->setCellValue("H27", $payment->telepon_dinas ?? '');
-
-
-            $sheet->setCellValue("A30", $payment->wag_kordinasi_payment ?? '');
-            $sheet->setCellValue("H30", $payment->wag_kordinasi_rekon ?? '');
+            $sheet->setCellValue("A29", $payment->wag_kordinasi_payment ?? '');
+            $sheet->setCellValue("H29", $payment->wag_kordinasi_rekon ?? '');
             // $sheet->setCellValue("", $payment->nama_mitra ?? '');
 
-            $sheet->setCellValue("F43", $payment->status == 0 ? 'Di Ajukan' : ($payment->status == 1 ? 'Ditolak' : ($payment->status == 2 ? 'Diterima' : '')));
-            $sheet->setCellValue("F44", $payment->jenis_pengajuan == 1 ? 'Fee Based (Admin)' : 'No Fee Based (Admin)');
+            $sheet->setCellValue("F42", $payment->status == 0 ? 'Di Ajukan' : ($payment->status == 1 ? 'Ditolak' : ($payment->status == 2 ? 'Diterima' : '')));
+            $sheet->setCellValue("F43", $payment->jenis_pengajuan == 1 ? 'Fee Based (Admin)' : 'No Fee Based (Admin)');
             $row++;
         }
 

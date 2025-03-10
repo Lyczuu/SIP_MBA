@@ -17,7 +17,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="kode_prov" class="form-label">Kode Provinsi</label>
+                        <label for="kode_prov" class="form-label">Provinsi</label>
                         <select class="form-control" id="kode_prov" name="kode_prov" required>
                             <option value="">-- Pilih Provinsi --</option>
                             @foreach ($provinsi as $p)

@@ -34,7 +34,7 @@ class PaymentmbaController extends Controller
 
         $wilayah = $user->wilayah; // Ambil wilayah sesuai dengan user yang login
         $mitra = mitra::all();
-        $jenis_pajak = jenispajak::all();
+        $jenis_pajak = JenisPajak::where('status', '1')->get();
         $mitras = Mitra::where('flag_agg', 1)->get();
         $jenis_transaksi = jenis_transaksi::all();
         $fees = fees::all();
@@ -85,15 +85,15 @@ class PaymentmbaController extends Controller
             'transaksi_id'             => 'required|integer|exists:jenis_transaksi,id',
             'jenis_pajak'              => 'required|array',
             'jenis_pajak.*'            => 'exists:jenis_pajak,id',
-            'cutoff'                   => 'required|string|max:255',
             'jenis_pengajuan'          => 'required|string|max:255',
-            'settlement'               => 'required|string|max:255',
+            'cutoff' => 'required|date_format:H:i',
+            'settlement' => 'required|date_format:H:i',
             'nomor_registrasi_legal'   => 'required|numeric',
             'total_fee'                => 'required|numeric',
             'fee_mba'                  => 'required|numeric',
             'fee_mitra'                => 'required|numeric',
-            'pic_payment_mitra'        => 'required|numeric',
-            'telepon_payment_mitra'    => 'required|string',
+            'pic_payment_mitra'        => 'required|string',
+            'telepon_payment_mitra'    => 'required|numeric',
             'pic_rekon_mitra'          => 'required|string|max:255',
             'telepon_rekon_mitra'      => 'required|numeric',
             'pic_dinas'                => 'required|string|max:255',
@@ -124,8 +124,8 @@ class PaymentmbaController extends Controller
                 'mitra_id'               => $validated['mitra_id'],
                 'pengajuan_integrasi_id' => $validated['pengajuan_integrasi_id'],
                 'jenis_pengajuan'        => $validated['jenis_pengajuan'],
-                'cutoff'                 => $validated['cutoff'],
-                'settlement'             => $validated['settlement'],
+                'cutoff' => $request->cutoff,
+                'settlement' => $request->settlement,
                 'nomor_registrasi_legal' => $validated['nomor_registrasi_legal'],
                 'fees_id'                => $fee->id,
                 'pic_payment_mitra'      => $validated['pic_payment_mitra'],
@@ -176,8 +176,7 @@ class PaymentmbaController extends Controller
 
             Session::flash('status', 'success');
             Session::flash('message', 'Data Berhasil Di Ajukan');
-            return redirect('/admin/payment_mba_admin');
-
+            return redirect('/belumvalidasi');
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error("Terjadi kesalahan saat menyimpan data: " . $e->getMessage(), [

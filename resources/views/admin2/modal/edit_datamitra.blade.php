@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="Editmitra{{$list->id}}" tabindex="-1" aria-labelledby="EditmitraLabel" aria-hidden="true">
+<div class="modal fade" id="Editmitra{{ $list->id }}" tabindex="-1" aria-labelledby="EditmitraLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -18,57 +18,53 @@
                 <div class="modal-body">
                     <div class="col-13 mb-3">
                         <label for="nama_mitra" class="form-label">Nama Mitra</label>
-                        <input type="text" name="nama_mitra" id="nama_mitra"
-                            class="form-control"
-                            placeholder="Masukkan nama mitra"
-                            value="{{ old('nama_mitra', $list->nama_mitra) }}" required>
+                        <input type="text" name="nama_mitra" id="nama_mitra" class="form-control"
+                            placeholder="Masukkan nama mitra" value="{{ old('nama_mitra', $list->nama_mitra) }}"
+                            required>
                     </div>
 
 
-
-                <div class="col-13 mb-3">
-                    <label for="flag_agg" class="form-label">Flag Agg</label>
-                    <div class="form-check form-switch">
-                        <input type="hidden" name="flag_agg" value="0"> <!-- Hidden input -->
-                        <input class="form-check-input" type="checkbox" id="flag_agg" name="flag_agg" value="1">
-                        <label class="form-check-label" for="flag_agg">On</label>
+                    <div class="col-13 mb-3">
+                        <label class="form-label">Sebagai Agg</label>
+                        <div class="form-check form-switch d-flex align-items-center">
+                            <input type="hidden" name="flag_agg" value="0">
+                            <input class="form-check-input" type="checkbox" id="flag_agg{{ $list->id }}"
+                                name="flag_agg" value="1"
+                                {{ old('flag_agg', $list->flag_agg) == 1 ? 'checked' : '' }}>
+                            <span class="ms-2" id="flag_agg{{ $list->id }}_status">
+                                {{ old('flag_agg', $list->flag_agg) == 1 ? 'Aktif' : 'Off' }}
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-13">
-                    <label for="flag_bank" class="form-label">Flag Bank</label>
-                    <div class="form-check form-switch">
-                        <input type="hidden" name="flag_bank" value="0"> <!-- Hidden input -->
-                        <input class="form-check-input" type="checkbox" id="flag_bank" name="flag_bank" value="1">
-                        <label class="form-check-label" for="flag_bank">On</label>
+                    <div class="col-13">
+                        <label class="form-label">Sebagai Bank</label>
+                        <div class="form-check form-switch d-flex align-items-center">
+                            <input type="hidden" name="flag_bank" value="0">
+                            <input class="form-check-input" type="checkbox" id="flag_bank{{ $list->id }}"
+                                name="flag_bank" value="1"
+                                {{ old('flag_bank', $list->flag_bank) == 1 ? 'checked' : '' }}>
+                            <span class="ms-2" id="flag_bank{{ $list->id }}_status">
+                                {{ old('flag_bank', $list->flag_bank) == 1 ? 'Aktif' : 'Off' }}
+                            </span>
+                        </div>
                     </div>
-                </div>
-
-
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
-                        let flagAgg = document.getElementById("flag_agg");
-                        let labelAgg = document.querySelector("label[for='flag_agg']");
-                        let flagBank = document.getElementById("flag_bank");
-                        let labelBank = document.querySelector("label[for='flag_bank']");
+                        document.querySelectorAll(".form-check-input").forEach(function (checkbox) {
+                            let statusSpan = document.getElementById(checkbox.id + "_status");
 
-                        function toggleFlag(flag, label) {
-                            flag.addEventListener("change", function () {
-                                if (this.checked) {
-                                    this.value = 1;
-                                    label.textContent = "On";
-                                } else {
-                                    this.value = 0;
-                                    label.textContent = "Off";
-                                }
-                            });
-                        }
+                            if (statusSpan) {
+                                checkbox.addEventListener("change", function () {
+                                    statusSpan.textContent = this.checked ? "Aktif" : "Off";
+                                });
 
-                        toggleFlag(flagAgg, labelAgg);
-                        toggleFlag(flagBank, labelBank);
+                                // Set status awal berdasarkan nilai default checkbox
+                                statusSpan.textContent = checkbox.checked ? "Aktif" : "Off";
+                            }
+                        });
                     });
                 </script>
-                </div>
                 <br>
 
 
@@ -78,6 +74,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
+            </div>
             </form>
         </div>
     </div>

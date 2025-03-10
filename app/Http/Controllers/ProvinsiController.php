@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\provinsi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class ProvinsiController extends Controller
@@ -43,8 +44,8 @@ class ProvinsiController extends Controller
             'kode_prov' => $validated['kode_prov'],
         ]);
 
-        Session::flash('status','success');
-        Session::flash('message','Data berhasil di Simpan');
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil di Simpan');
         return redirect('/dataprovinsi');
     }
 
@@ -69,24 +70,24 @@ class ProvinsiController extends Controller
      */
     public function update(Request $request, $id)
     {
-         // Validasi input
-         $validated = $request->validate([
+        // Validasi input
+        $validated = $request->validate([
             'nama_provinsi' => 'required|string|max:255',
             'kode_prov' => 'required|string|max:255',
 
         ]);
 
-        // Cari data mitra berdasarkan ID
+        // Cari data provinsi berdasarkan ID
         $provinsi = provinsi::findOrFail($id);
 
-        // Update data mitra
+        // Update data provinsi
         $provinsi->update([
             'nama_provinsi' => $validated['nama_provinsi'],
             'kode_prov' => $validated['kode_prov'],
         ]);
 
-        Session::flash('status','success');
-        Session::flash('message','Data Berhasil Di Ubah');
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data Berhasil Di Ubah');
         return redirect('/dataprovinsi');
     }
 
@@ -96,9 +97,24 @@ class ProvinsiController extends Controller
     public function destroy($id)
     {
         $provinsi = provinsi::findOrFail($id);
+
+        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
+        $isUsed = DB::table('wilayah')->where('kode_prov', $provinsi->id)->exists() ||
+            DB::table('payment_mba')->where('wilayah_id', $provinsi->id)->exists();
+
+        if ($isUsed) {
+            Session::flash('status', 'danger'); // ✅ Perbaikan dari "dangger" ke "danger"
+            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
+
+            return redirect('/dataprovinsi');
+        }
+
+        // Jika tidak digunakan, hapus data
         $provinsi->delete();
-        Session::flash('status','success');
-        Session::flash('message','Data Berhasil Di Hapus');
+
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil dihapus.');
+
         return redirect('/dataprovinsi');
     }
 }

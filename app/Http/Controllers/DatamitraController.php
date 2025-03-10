@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\mitra;
 use App\Models\datamitra;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class DatamitraController extends Controller
@@ -45,10 +46,9 @@ class DatamitraController extends Controller
             'flag_bank' => $request->flag_bank,
         ]);
 
-        Session::flash('status','success');
-        Session::flash('message','Data berhasil di Simpan');
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil di Simpan');
         return redirect('/datamitra');
-
     }
 
     /**
@@ -89,8 +89,8 @@ class DatamitraController extends Controller
             'flag_bank' => $request->flag_bank,
         ]);
 
-        Session::flash('status','success');
-        Session::flash('message','Data Berhasil Di Ubah');
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data Berhasil Di Ubah');
         return redirect('/datamitra');
     }
 
@@ -99,10 +99,29 @@ class DatamitraController extends Controller
      */
     public function destroy($id)
     {
-        $mitra = mitra::findOrFail($id);
+
+        $mitra = Mitra::findOrFail($id);
+
+        // Cek apakah data mitra digunakan di tabel utama (contoh: tabel `payment_mba`)
+        $isUsed = DB::table('payment_mba')
+            ->where('mitra_agg', $mitra->id)
+            ->orWhere('mitra_id', $mitra->id) // Tambahkan pengecekan mitra_id
+            ->exists();
+
+        if ($isUsed) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
+
+            // **Tambahkan return agar penghapusan tidak dilanjutkan**
+            return redirect('/datamitra');
+        }
+
+        // Jika tidak digunakan, hapus data
         $mitra->delete();
-        Session::flash('status','success');
-        Session::flash('message','Data Berhasil Di Hapus');
+
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil dihapus.');
+
         return redirect('/datamitra');
     }
 }

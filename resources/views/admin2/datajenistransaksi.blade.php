@@ -71,7 +71,7 @@
                         <div class="card-body">
 
                             &nbsp;
-                            <h4 class="">Data Jenis transaksi</h4>
+                            <h4 class="">Data Jenis Transaksi</h4>
                             <br>
                             &nbsp;
 
@@ -90,7 +90,7 @@
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
-                                            <th>Nama transaksi</th>
+                                            <th>Nama Jenis Transaksi</th>
                                             <th>Dibuat</th>
                                             <th>Diubah</th>
                                             <th>Aksi</th>

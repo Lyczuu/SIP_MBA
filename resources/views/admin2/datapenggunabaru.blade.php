@@ -128,7 +128,7 @@
 
 
                                                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                            data-bs-target="#hapusdatapengguna{{ $list->id }}">
+                                                            data-bs-target="#hapuspengguna{{ $list->id }}">
                                                             <i class="bi bi-trash"></i> Delete
                                                         </button>
                                                     </div>

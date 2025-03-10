@@ -22,4 +22,10 @@ class wilayah extends Model
         return $this->belongsToMany(User::class, 'user_wilayah', 'wilayah_id', 'user_id');
     }
 
+
+    public function provinsi()
+    {
+        return $this->belongsTo(Provinsi::class, 'kode_prov', 'kode_prov');
+    }
+
 }

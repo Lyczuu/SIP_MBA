@@ -22,13 +22,40 @@
                             placeholder="Masukkan nama pajak"
                             value="{{ old('nama_jenis_pajak', $list->nama_jenis_pajak) }}" required>
                     </div>
-                </div>
+
+
+                    <div class="col-13">
+                        <label class="form-label">Status</label>
+                        <div class="form-check form-switch d-flex align-items-center">
+                            <input type="hidden" name="status" value="0">
+                            <input class="form-check-input" type="checkbox" id="statusCheckbox{{$list->id}}" name="status" value="1" {{ $list->status ? 'checked' : '' }}>
+                            <span class="ms-2" id="statusText{{$list->id}}">{{ $list->status ? 'On' : 'Off' }}</span>
+                        </div>
+                    </div>
+                
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        document.querySelectorAll('.form-check-input').forEach(function (checkbox) {
+                            let id = checkbox.id.replace('statusCheckbox', '');
+                            let statusSpan = document.getElementById("statusText" + id);
+
+                            checkbox.addEventListener("change", function () {
+                                statusSpan.textContent = this.checked ? "On" : "Off";
+                            });
+
+                            // Set status awal berdasarkan nilai default checkbox
+                            statusSpan.textContent = checkbox.checked ? "On" : "Off";
+                        });
+                    });
+                </script>
 
                 <!-- Footer Modal -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
+            </div>
             </form>
         </div>
     </div>

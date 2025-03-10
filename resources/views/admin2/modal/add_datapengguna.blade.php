@@ -29,6 +29,18 @@
                         @enderror
                     </div>
 
+                    <div class="row mb-3">
+                        <label for="profile_image" class="col-md-4 col-lg-3 col-form-label">Foto
+                            Profil</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input type="file" name="profile_image" id="profile_image"
+                                class="form-control @error('profile_image') is-invalid @enderror">
+                            @error('profile_image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label for="alamat" class="form-label">Alamat</label>
                         <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" value="{{ old('alamat') }}" required>

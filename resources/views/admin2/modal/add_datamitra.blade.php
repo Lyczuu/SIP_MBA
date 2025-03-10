@@ -18,48 +18,39 @@
                     <br>
 
                     <div class="col-13">
-                        <label for="flag_agg" class="form-label">Flag Agg</label>
-                        <div class="form-check form-switch">
-                            <input type="hidden" name="flag_agg" value="0"> <!-- Hidden input -->
+                        <label class="form-label">Sebagai Agg</label>
+                        <div class="form-check form-switch d-flex align-items-center">
+                            <input type="hidden" name="flag_agg" value="0">
                             <input class="form-check-input" type="checkbox" id="flag_agg" name="flag_agg" value="1">
-                            <label class="form-check-label" for="flag_agg">On</label>
+                            <span class="ms-2" id="flag_agg_status">Off</span>
                         </div>
                     </div>
 
                     <div class="col-13">
-                        <label for="flag_bank" class="form-label">Flag Bank</label>
-                        <div class="form-check form-switch">
-                            <input type="hidden" name="flag_bank" value="0"> <!-- Hidden input -->
+                        <label class="form-label">Sebagai Bank</label>
+                        <div class="form-check form-switch d-flex align-items-center">
+                            <input type="hidden" name="flag_bank" value="0">
                             <input class="form-check-input" type="checkbox" id="flag_bank" name="flag_bank" value="1">
-                            <label class="form-check-label" for="flag_bank">On</label>
+                            <span class="ms-2" id="flag_bank_status">Off</span>
                         </div>
                     </div>
 
 
                     <script>
                         document.addEventListener("DOMContentLoaded", function () {
-                            let flagAgg = document.getElementById("flag_agg");
-                            let labelAgg = document.querySelector("label[for='flag_agg']");
-                            let flagBank = document.getElementById("flag_bank");
-                            let labelBank = document.querySelector("label[for='flag_bank']");
-
-                            function toggleFlag(flag, label) {
+                            function toggleFlag(flag, statusSpan) {
                                 flag.addEventListener("change", function () {
-                                    if (this.checked) {
-                                        this.value = 1;
-                                        label.textContent = "On";
-                                    } else {
-                                        this.value = 0;
-                                        label.textContent = "Off";
-                                    }
+                                    statusSpan.textContent = this.checked ? "On" : "Off";
                                 });
+
+                                // Set status awal berdasarkan nilai default checkbox
+                                statusSpan.textContent = flag.checked ? "On" : "Off";
                             }
 
-                            toggleFlag(flagAgg, labelAgg);
-                            toggleFlag(flagBank, labelBank);
+                            toggleFlag(document.getElementById("flag_agg"), document.getElementById("flag_agg_status"));
+                            toggleFlag(document.getElementById("flag_bank"), document.getElementById("flag_bank_status"));
                         });
                     </script>
-
 
                     <br>
                 </div>

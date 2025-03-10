@@ -10,7 +10,10 @@ class jenispajak extends Model
     use HasFactory;
 
     protected $table = 'jenis_pajak';
-    protected $fillable = ['nama_jenis_pajak'];
+    protected $fillable = [
+        'nama_jenis_pajak',
+        'status'
+    ];
 
     public function paymentMba()
     {

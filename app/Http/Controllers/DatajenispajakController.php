@@ -31,13 +31,15 @@ class DatajenispajakController extends Controller
     public function store(Request $request)
     {
         // Validasi input
-        $validated = $request->validate([
+        $request->validate([
             'nama_jenis_pajak' => 'required|string|max:255',
+            'status' => 'required|boolean',
         ]);
 
         // Simpan ke database
-        $data = jenispajak::create([
-            'nama_jenis_pajak' => $validated['nama_jenis_pajak'],
+        JenisPajak::create([
+            'nama_jenis_pajak' => $request->nama_jenis_pajak,
+            'status' => $request->status,
         ]);
 
         Session::flash('status','success');
@@ -70,6 +72,7 @@ class DatajenispajakController extends Controller
          // Validasi input
          $validated = $request->validate([
             'nama_jenis_pajak' => 'required|string|max:255',
+            'status' => 'required|boolean',
         ]);
 
         // Cari data mitra berdasarkan ID
@@ -78,6 +81,7 @@ class DatajenispajakController extends Controller
         // Update data mitra
         $jenis_pajak->update([
             'nama_jenis_pajak' => $validated['nama_jenis_pajak'],
+            'status' => $request->status,
         ]);
 
         Session::flash('status','success');

@@ -9,8 +9,10 @@ use App\Models\wilayah;
 use App\Models\Penggunabaru;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class PenggunabaruController extends Controller
 {
@@ -38,32 +40,42 @@ class PenggunabaruController extends Controller
      */
     public function store(Request $request)
     {
+
         // Validasi input
         $request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'full_name' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'phone_number' => 'required|string|min:10|max:15|regex:/^[0-9]+$/',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'role_id' => 'required|exists:roles,id',
-            'password' => 'required|string|min:6|max:8|confirmed',
+            'username'     => 'required|string|max:255|unique:users,username',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'full_name'    => 'required|string|max:255',
+            'alamat'       => 'nullable|string',
+            'phone_number' => 'nullable|string|max:15',
+            'email'        => 'required|email|unique:users,email',
+            'password'     => 'required|min:6|max:8|confirmed',
+            'role_id'      => 'required|exists:roles,id', // Pastikan role_id ada di tabel roles
         ]);
 
-        // Simpan data ke database
+        // Cek apakah ada file gambar yang di-upload
+        $imagePath = null;
+        if ($request->hasFile('profile_image')) {
+            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+        }
+
+        // Buat user baru
         User::create([
-            'username' => $request->username,
-            'full_name' => $request->full_name,
-            'alamat' => $request->alamat,
+            'username'     => $request->username,
+            'profile_image' => $imagePath,
+            'full_name'    => $request->full_name,
+            'alamat'       => $request->alamat,
             'phone_number' => $request->phone_number,
-            'email' => $request->email,
-            'role_id' => $request->role_id,
-            'password' => Hash::make($request->password),
+            'email'        => $request->email,
+            'password'     => Hash::make($request->password),
+            'role_id'      => $request->role_id, // Tambahkan role_id
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Simpan');
+        Session::flash('message', 'User berhasil ditambahkan');
         return redirect('/penggunabaru');
     }
+
 
     /**
      * Display the specified resource.
@@ -86,36 +98,49 @@ class PenggunabaruController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        // Ambil data pengguna berdasarkan ID
         $user = User::findOrFail($id);
 
         // Validasi input
         $request->validate([
-            'username' => 'required|string|max:255',
-            'full_name' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-            'role_id' => 'required',
-            'password' => 'nullable|min:6|max:8|confirmed', // Password opsional
+            'username'     => 'required|string|max:255|unique:users,username,' . $id,
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'full_name'    => 'required|string|max:255',
+            'alamat'       => 'nullable|string',
+            'phone_number' => 'nullable|string|max:15',
+            'email'        => 'required|email|unique:users,email,' . $id,
+            'role_id'      => 'required|exists:roles,id',
+            'password'     => 'nullable|min:6|max:8|confirmed',
         ]);
 
-        // Update data
-        $user->username = $request->username;
-        $user->full_name = $request->full_name;
-        $user->alamat = $request->alamat;
-        $user->phone_number = $request->phone_number;
-        $user->email = $request->email;
-        $user->role_id = $request->role_id;
+        // Cek apakah ada file gambar yang di-upload
+        if ($request->hasFile('profile_image')) {
+            // Simpan gambar ke dalam storage/app/public/profile_images
+            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
 
-        // Cek apakah user mengisi password baru
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password); // Hash password baru
+            // Hapus gambar lama jika ada
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+
+            // Simpan path gambar baru ke database
+            $user->profile_image = $imagePath;
         }
 
-        $user->save();
+        // Update data pengguna
+        $user->update([
+            'username'     => $request->username,
+            'profile_image' => isset($imagePath) ? $imagePath : $user->profile_image,
+            'full_name'    => $request->full_name,
+            'alamat'       => $request->alamat,
+            'phone_number' => $request->phone_number,
+            'email'        => $request->email,
+            'role_id'      => $request->role_id,
+            'password'     => $request->filled('password') ? Hash::make($request->password) : $user->password,
+        ]);
+        
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Ubah');
+        Session::flash('message', 'Data berhasil diperbarui');
         return redirect('/penggunabaru');
     }
 

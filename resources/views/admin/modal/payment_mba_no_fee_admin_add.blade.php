@@ -73,7 +73,9 @@
                     <label for="wilayah" class="form-label">Nama Wilayah</label>
                     <select id="wilayah" name="wilayah_id" class="form-select" required>
                         @foreach ($wilayah as $w)
-                            <option value="{{ $w->id }}">{{ $w->nama_wilayah }}</option>
+                            <option value="{{ $w->id }}" {{ old('wilayah_id') == $w->id ? 'selected' : '' }}>
+                                {{ $w->nama_wilayah }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -86,7 +88,8 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="transaksi_id"
                                     id="transaksi_{{ $transaksi->id }}" value="{{ $transaksi->id }}"
-                                    data-jenis="{{ $transaksi->nama_jenis_transaksi }}" required>
+                                    data-jenis="{{ $transaksi->nama_jenis_transaksi }}" required
+                                    {{ old('transaksi_id') == $transaksi->id ? 'checked' : '' }}>
                                 <label class="form-check-label" for="transaksi_{{ $transaksi->id }}">
                                     {{ $transaksi->nama_jenis_transaksi }}
                                 </label>
@@ -101,8 +104,7 @@
                     <select name="mitra_agg" id="mitra_agg" class="form-control">
                         <option value="">-- Pilih agg --</option>
                         @foreach ($mitras as $m)
-                            <option value="{{ $m->id }}"
-                                {{ old('mitra_agg') == $m->id ? 'selected' : '' }}>
+                            <option value="{{ $m->id }}" {{ old('mitra_agg') == $m->id ? 'selected' : '' }}>
                                 {{ $m->nama_mitra }}
                             </option>
                         @endforeach
@@ -120,7 +122,8 @@
                     <select id="mitra" name="mitra_id" class="form-select" required>
                         <option value="">-- Pilih Mitra --</option>
                         @foreach ($mitra as $m)
-                            <option value="{{ $m->id }}" data-flag-bank="{{ $m->flag_bank }}">
+                            <option value="{{ $m->id }}" data-flag-bank="{{ $m->flag_bank }}"
+                                {{ old('mitra_id') == $m->id ? 'selected' : '' }}>
                                 {{ $m->nama_mitra }}
                             </option>
                         @endforeach
@@ -128,43 +131,8 @@
                 </div>
 
                 <br>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const jenisTransaksiRadios = document.querySelectorAll('input[name="transaksi_id"]');
-                        const mitraDropdown = document.getElementById('mitra');
-                        const aggregatorInputContainer = document.getElementById('aggregator-input-container');
 
-                        // Simpan semua data opsi mitra sebelum difilter
-                        const allMitraOptions = Array.from(mitraDropdown.querySelectorAll('option')).slice(1);
 
-                        jenisTransaksiRadios.forEach(radio => {
-                            radio.addEventListener('change', function() {
-                                let selectedType = this.nextElementSibling.textContent.trim();
-
-                                // Reset dropdown dan tambahkan semua opsi mitra
-                                mitraDropdown.innerHTML = '<option value="">-- Pilih Mitra --</option>';
-
-                                if (selectedType === 'AGGREGATOR') {
-                                    // Jika memiih jenis transaksi  AGGREGATOR, filter hanya mitra dengan flag_bank = 1
-                                    allMitraOptions.forEach(option => {
-                                        if (option.dataset.flagBank == 1) {
-                                            mitraDropdown.appendChild(option);
-                                        }
-                                    });
-                                    aggregatorInputContainer.style.display =
-                                    'block'; // Tampilkan input tambahan
-                                } else {
-                                    // Jika jenis transaksi selain AGGREGATOR, tampilkan semua mitra
-                                    allMitraOptions.forEach(option => {
-                                        mitraDropdown.appendChild(option);
-                                    });
-                                    aggregatorInputContainer.style.display =
-                                    'none'; // Sembunyikan input tambahan aggregator
-                                }
-                            });
-                        });
-                    });
-                    </script>
 
                 {{-- jenis pajak --}}
                 <div class="col-3 mb-4">
@@ -173,12 +141,14 @@
                         @foreach ($jenis_pajak as $jak)
                             <div class="form-check">
                                 <input type="checkbox" name="jenis_pajak[]" value="{{ $jak->id }}"
-                                    class="form-check-input" id="jenis_pajak_{{ $jak->id }}">
+                                    class="form-check-input" id="jenis_pajak_{{ $jak->id }}"
+                                    {{ in_array($jak->id, old('jenis_pajak', [])) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="jenis_pajak_{{ $jak->id }}">
                                     {{ $jak->nama_jenis_pajak }}
                                 </label>
                             </div>
                         @endforeach
+
                     </div>
                 </div>
                 {{-- end jenis pajak --}}
@@ -202,30 +172,34 @@
                         </div>
                     </div>
                 </div>
-
+                {{-- end pengajuan untegrasi --}}
 
 
                 <!-- Cutoff -->
-                <label class="cutof-setlement-formlabel"><strong> Cuttoff & Settlement<span class="text-danger">*</span></strong></label>
+                <label class="cutof-setlement-formlabel">
+                    <strong> Cutoff & Settlement<span class="text-danger">*</span></strong>
+                </label>
                 <div class="col-4">
                     <label class="form-label">Cutoff </label>
-                    <input type="text" class="form-control" name="cutoff" placeholder="Masukan Cutoff" required>
+                    <input type="time" class="form-control" name="cutoff" placeholder="Masukan Cutoff" required
+                        value="{{ old('cutoff') }}">
                 </div>
 
                 <!-- Settlement -->
                 <div class="col-4">
                     <label class="form-label">Settlement </label>
-                    <input type="text" class="form-control" name="settlement" placeholder="Masukan Settlement"
-                        required>
+                    <input type="time" class="form-control" name="settlement" placeholder="Masukan Settlement"
+                        required value="{{ old('settlement') }}">
                 </div>
 
                 <!-- Nomor Registrasi Legal -->
                 <div class="col-4 mb-4">
                     <label class="form-label">Nomor Registrasi Legal </label>
                     <input type="number" class="form-control" name="nomor_registrasi_legal"
-                        placeholder="Masukan Nomor Registrasi Legal" required>
-
+                        placeholder="Masukan Nomor Registrasi Legal" required
+                        value="{{ old('nomor_registrasi_legal') }}">
                 </div>
+                {{-- end --}}
 
                 <!-- Skema Fee (hidden inputs for default values) -->
                 <input type="hidden" name="fees" value="0">
@@ -233,11 +207,12 @@
                 <input type="hidden" name="fee_mitra" value="0">
 
                 <!-- PIC Payment Mitra -->
-                <label class="pic-telepon-formlabel"><strong>Pic & Telepon<span class="text-danger">*</span></strong></label>
+                <label class="pic-telepon-formlabel"><strong>Pic & Telepon<span
+                            class="text-danger">*</span></strong></label>
                 <div class="col-4">
                     <label class="form-label">PIC Payment Mitra</label>
                     <input type="text" class="form-control" name="pic_payment_mitra"
-                        placeholder="Masukan PIC Payment Mitra" required>
+                        placeholder="Masukan PIC Payment Mitra" required value="{{ old('pic_payment_mitra') }}">
                 </div>
                 <div class="col-4">
                     <label for="telepon_payment_mitra"><strong>Telepon Payment Mitra</strong></label>
@@ -250,7 +225,7 @@
                 <div class="col-4">
                     <label class="form-label">PIC Rekon Mitra</label>
                     <input type="text" class="form-control" name="pic_rekon_mitra"
-                        placeholder="Masukan PIC Rekon Mitra" required>
+                        placeholder="Masukan PIC Rekon Mitra" required value="{{ old('pic_rekon_mitra') }}">
                 </div>
                 <div class="col-4">
                     <label for="telepon_rekon_mitra"><strong>Telepon Rekon Mitra</strong></label>
@@ -262,7 +237,7 @@
                 <div class="col-4">
                     <label class="form-label">PIC Dinas</label>
                     <input type="text" class="form-control" name="pic_dinas" placeholder="Masukan Pic Dinas"
-                        required>
+                        required value="{{ old('pic_dinas') }}">
                 </div>
 
                 <div class="col-4 mb-4">
@@ -272,45 +247,81 @@
                 </div>
 
                 <!-- WAG Koordinasi Payment -->
-                <label class="cutof-setlement-formlabel"><strong>Wag kordinasi Rekon & Payment<span class="text-danger">*</span></strong></label>
+                <label class="cutof-setlement-formlabel"><strong>Wag kordinasi Rekon & Payment<span
+                            class="text-danger">*</span></strong></label>
                 <div class="col-6">
                     <label class="form-label">WAG Koordinasi Payment</label>
                     <input type="text" class="form-control" name="wag_kordinasi_payment"
-                        placeholder="Masukan WAG Koordinasi Payment" required>
+                        placeholder="Masukan WAG Koordinasi Payment" required
+                        value="{{ old('wag_kordinasi_payment') }}">
                 </div>
 
                 <!-- WAG Koordinasi Rekon -->
                 <div class="col-6">
                     <label class="form-label">WAG Koordinasi Rekon </label>
                     <input type="text" class="form-control" name="wag_kordinasi_rekon"
-                        placeholder="Masukan WAG Koordinasi Rekon" required>
+                        placeholder="Masukan WAG Koordinasi Rekon" required value="{{ old('wag_kordinasi_rekon') }}">
                 </div>
                 <!-- Submit -->
                 <button type="submit" class="btn btn-primary">Ajukan</button>
             </form>
 
+
+
+
+
+
+            {{-- script tambahan aggregator --}}
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                    // Ambil semua radio button untuk jenis transaksi
                     const jenisTransaksiRadios = document.querySelectorAll('input[name="transaksi_id"]');
+                    const mitraDropdown = document.getElementById('mitra');
                     const aggregatorInputContainer = document.getElementById('aggregator-input-container');
-                    const aggregatorInputField = document.getElementById('aggregator-info');
 
-                    // Tambahkan event listener untuk setiap radio button
+                    // Simpan semua data opsi mitra sebelum difilter
+                    const allMitraOptions = Array.from(mitraDropdown.querySelectorAll('option')).slice(1);
+
                     jenisTransaksiRadios.forEach(radio => {
                         radio.addEventListener('change', function() {
-                            // Periksa apakah nilai radio yang dipilih adalah "AGGREGATOR"
-                            if (this.nextElementSibling && this.nextElementSibling.textContent.trim() ===
-                                'AGGREGATOR') {
-                                aggregatorInputContainer.style.display = 'block';
+                            let selectedType = this.nextElementSibling.textContent.trim();
+
+                            // Reset dropdown dan tambahkan semua opsi mitra
+                            mitraDropdown.innerHTML = '<option value="">-- Pilih Mitra --</option>';
+
+                            if (selectedType === 'AGGREGATOR') {
+                                // Jika memilih jenis transaksi AGGREGATOR, filter hanya mitra dengan flag_bank = 1
+                                allMitraOptions.forEach(option => {
+                                    if (option.dataset.flagBank == 1) {
+                                        mitraDropdown.appendChild(option);
+                                    }
+                                });
+                                aggregatorInputContainer.style.display =
+                                'block'; // Tampilkan input tambahan
                             } else {
-                                aggregatorInputContainer.style.display = 'none';
-                                aggregatorInputField.value = ''; // Kosongkan nilai jika disembunyikan
+                                // Jika jenis transaksi selain AGGREGATOR, tampilkan semua mitra
+                                allMitraOptions.forEach(option => {
+                                    mitraDropdown.appendChild(option);
+                                });
+                                aggregatorInputContainer.style.display =
+                                'none'; // Sembunyikan input tambahan aggregator
                             }
                         });
                     });
+
+                    // Cek old input untuk transaksi_id
+                    const oldTransaksiId = "{{ old('transaksi_id') }}";
+                    if (oldTransaksiId) {
+                        const selectedRadio = document.querySelector(
+                            `input[name="transaksi_id"][value="${oldTransaksiId}"]`);
+                        if (selectedRadio) {
+                            selectedRadio.checked = true;
+                            // Trigger event change untuk memicu filtering dan menampilkan input aggregator jika diperlukan
+                            selectedRadio.dispatchEvent(new Event('change'));
+                        }
+                    }
                 });
             </script>
+            {{-- end script tambahan aggregator --}}
 
 
         </div>

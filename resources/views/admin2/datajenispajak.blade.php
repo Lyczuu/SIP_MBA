@@ -89,7 +89,8 @@
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
-                                            <th>Nama pajak</th>
+                                            <th>Nama Pajak</th>
+                                            <th>Status</th>
                                             <th>Dibuat</th>
                                             <th>Diubah</th>
                                             <th>Aksi</th>
@@ -99,6 +100,15 @@
                                         @foreach ($jenis_pajak as $key => $list)
                                             <tr>
                                                 <td>{{ $list->nama_jenis_pajak }}</td>
+                                                <td>
+                                                    @if ($list->status == 1)
+                                                   <span class="badge bg-success">Aktif</span>
+
+                                                   @elseif ($list->status == 0)
+                                                   <span class="badge bg-danger">Off</span>
+
+                                                    @endif
+                                                </td>
                                                 <td>{{ $list->created_at }}</td>
                                                 <td>{{ $list->updated_at }}</td>
                                                 <td>

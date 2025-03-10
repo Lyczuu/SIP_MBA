@@ -22,18 +22,23 @@
                             placeholder="Masukkan nama mitra"
                             value="{{ old('nama_wilayah', $list->nama_wilayah) }}" required>
                     </div>
-                </div>
 
-                <div class="modal-body">
+
                     <div class="mb-3">
-                        <label for="kode_prov" class="form-label">Kode Provinsi</label>
-                        <input type="text" name="kode_prov" id="kode_prov"
-                            class="form-control"
-                            placeholder="Masukkan kode prov"
-                            value="{{ old('kode_prov', $list->kode_prov) }}" required>
+                        <label for="kode_prov" class="form-label">Provinsi</label>
+                        <select class="form-control" id="kode_prov" name="kode_prov" required>
+                            <option value="">-- Pilih Provinsi --</option>
+                            @foreach ($provinsi as $p)
+                                <option value="{{ $p->kode_prov }}"
+                                    {{ old('kode_prov', $list->kode_prov ?? '') == $p->kode_prov ? 'selected' : '' }}>
+                                    {{ $p->nama_provinsi }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-                <div class="modal-body">
+
+
+
                     <div class="mb-3">
                         <label for="kode_area" class="form-label">Kode area</label>
                         <input type="text" name="kode_area" id="kode_area"
@@ -41,13 +46,14 @@
                             placeholder="Masukkan kode area"
                             value="{{ old('kode_area', $list->kode_area) }}" required>
                     </div>
-                </div>
+
 
                 <!-- Footer Modal -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
+            </div>
             </form>
         </div>
     </div>

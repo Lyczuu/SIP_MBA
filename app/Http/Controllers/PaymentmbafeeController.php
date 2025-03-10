@@ -91,15 +91,15 @@ class PaymentmbafeeController extends Controller
             'jenis_pajak' => 'array|required', // Wajib diisi sebagai array
             'jenis_pajak.*' => 'exists:jenis_pajak,id', // Pastikan ID valid di tabel jenis_pajak
             'jenis_pengajuan' => 'required|string|max:255',
-            'cutoff' => 'required|string|max:255',
-            'settlement' => 'required|string|max:255',
-            'nomor_registrasi_legal' => 'required|string|max:255',
+            'cutoff' => 'required|date_format:H:i',
+            'settlement' => 'required|date_format:H:i',
+            'nomor_registrasi_legal' => 'required|numeric',
             'pic_payment_mitra' => 'required|string|max:255',
-            'telepon_payment_mitra' => 'required|string',
             'pic_rekon_mitra' => 'required|string|max:255',
-            'telepon_rekon_mitra' => 'required|string',
             'pic_dinas' => 'required|string|max:255',
-            'telepon_dinas' => 'required|string',
+            'telepon_payment_mitra' => 'required|numeric',
+            'telepon_rekon_mitra' => 'required|numeric',
+            'telepon_dinas' => 'required|numeric',
             'wag_kordinasi_payment' => 'required|string|max:255',
             'wag_kordinasi_rekon' => 'required|string|max:255',
             'fees' => 'nullable|numeric',
@@ -187,7 +187,7 @@ class PaymentmbafeeController extends Controller
 
             Session::flash('status','success');
             Session::flash('message','Data Berhasil Di Ajukan');
-            return redirect('/admin/payment_mba_no_fee_admin');
+            return redirect('/belumvalidasi');
 
         } catch (\Throwable $e) {
             DB::rollBack();

@@ -64,7 +64,7 @@ class DiterimaController extends Controller
             $export = new PaymentsExport([$id]); // Kirim ID sebagai array
 
             // Path output untuk setiap file
-            $fileName = "payment_" . $payment->id . ".xlsx";
+            $fileName = $payment->kode_pengajuan . ".xlsx";
             $outputPath = storage_path("app/templates/" . $fileName);
 
             // Buat file Excel dan simpan ke storage

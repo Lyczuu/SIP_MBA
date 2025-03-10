@@ -27,6 +27,29 @@
                         <input type="text" name="full_name" id="full_name" class="form-control" placeholder=""
                             value="{{ old('full_name', $list->full_name) }}" required>
                     </div>
+
+
+                      <!-- Input untuk Gambar -->
+                      <div class="row mb-3">
+                        <label for="profile_image" class="col-md-4 col-lg-3 col-form-label">Foto
+                            Profil</label>
+                        <div class="col-md-8 col-lg-9">
+                            <!-- Preview Gambar Sebelum Upload -->
+                            <div class="mb-2">
+                                <img id="preview-image"
+                                    src="{{ $list->profile_image ? asset('storage/' . $list->profile_image) : asset('default-avatar.png') }}"
+                                    alt="Profile Image" width="150">
+                            </div>
+
+                            <input type="file" name="profile_image" id="profile_image"
+                                class="form-control @error('profile_image') is-invalid @enderror">
+                            @error('profile_image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+
                     <div class="mb-3">
                         <label for="alamat" class="form-label">Alamat</label>
                         <input type="text" name="alamat" id="alamat" class="form-control" placeholder=""
@@ -56,7 +79,8 @@
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                            id="password" name="password">
                         @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -64,7 +88,8 @@
 
                     <div class="mb-3">
                         <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" required>
+                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
+                            id="password_confirmation" name="password_confirmation">
                         @error('password_confirmation')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

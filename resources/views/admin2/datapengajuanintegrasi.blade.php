@@ -86,7 +86,7 @@
                                 <table class="datatable">
                                     <thead>
                                         <tr>
-                                            <th>Nama Pengajuan</th>
+                                            <th>Nama Pengajuan Integrasi</th>
                                             <th>Dibuat</th>
                                             <th>Diubah</th>
                                             <th>Aksi</th>

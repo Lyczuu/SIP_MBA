@@ -6,6 +6,7 @@ use App\Models\wilayah;
 use App\Models\provinsi;
 use App\Models\datawilayah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class DatawilayahController extends Controller
@@ -15,7 +16,7 @@ class DatawilayahController extends Controller
      */
     public function index()
     {
-        $wilayah = wilayah::all();
+        $wilayah = Wilayah::with('provinsi')->get();
         $provinsi = provinsi::all();
         return view('admin2.datawilayah', compact('wilayah','provinsi'));
     }
@@ -100,9 +101,23 @@ class DatawilayahController extends Controller
     public function destroy($id)
     {
         $wilayah = wilayah::findOrFail($id);
+
+        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
+        $isUsed = DB::table('payment_mba')->where('wilayah_id', $wilayah->id)->exists();
+
+        if ($isUsed) {
+            Session::flash('status', 'danger'); // ✅ Perbaikan dari "dangger" ke "danger"
+            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
+
+            return redirect('/datawilayah');
+        }
+
+        // Jika tidak digunakan, hapus data
         $wilayah->delete();
-        Session::flash('status','success');
-        Session::flash('message','Data Berhasil Di Hapus');
+
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil dihapus.');
+
         return redirect('/datawilayah');
     }
 }
