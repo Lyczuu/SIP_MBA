@@ -131,43 +131,6 @@
                 </div>
 
                 <br>
-                {{-- <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const jenisTransaksiRadios = document.querySelectorAll('input[name="transaksi_id"]');
-                        const mitraDropdown = document.getElementById('mitra');
-                        const aggregatorInputContainer = document.getElementById('aggregator-input-container');
-
-                        // Simpan semua data opsi mitra sebelum difilter
-                        const allMitraOptions = Array.from(mitraDropdown.querySelectorAll('option')).slice(1);
-
-                        jenisTransaksiRadios.forEach(radio => {
-                            radio.addEventListener('change', function() {
-                                let selectedType = this.nextElementSibling.textContent.trim();
-
-                                // Reset dropdown dan tambahkan semua opsi mitra
-                                mitraDropdown.innerHTML = '<option value="">-- Pilih Mitra --</option>';
-
-                                if (selectedType === 'AGGREGATOR') {
-                                    // Jika memiih jenis transaksi  AGGREGATOR, filter hanya mitra dengan flag_bank = 1
-                                    allMitraOptions.forEach(option => {
-                                        if (option.dataset.flagBank == 1) {
-                                            mitraDropdown.appendChild(option);
-                                        }
-                                    });
-                                    aggregatorInputContainer.style.display =
-                                        'block'; // Tampilkan input tambahan
-                                } else {
-                                    // Jika jenis transaksi selain AGGREGATOR, tampilkan semua mitra
-                                    allMitraOptions.forEach(option => {
-                                        mitraDropdown.appendChild(option);
-                                    });
-                                    aggregatorInputContainer.style.display =
-                                        'none'; // Sembunyikan input tambahan aggregator
-                                }
-                            });
-                        });
-                    });
-                </script> --}}
 
 
                 {{-- jenis pajak --}}
@@ -253,17 +216,17 @@
                     <div class="col-4">
                         <label class="form-label">Total_Fee </label>
                         <input type="number" class="form-control" name="total_fee" placeholder="Masukan Total fee"
-                            required>
+                            required  value="{{ old('total_fee') }}">
                     </div>
                     <div class="col-4">
                         <label class="form-label">Fee MBA </label>
                         <input type="number" class="form-control" name="fee_mba" placeholder="Masukkan Fee MBA"
-                            required>
+                            required  value="{{ old('fee_mba') }}">
                     </div>
                     <div class="col-4 mb-5">
                         <label class="form-label">Fee Mitra </label>
                         <input type="number" class="form-control" name="fee_mitra" placeholder="Masukkan Fee Mitra"
-                            required>
+                            required  value="{{ old('fee_mitra') }}">
                     </div>
                     {{-- end fees --}}
 
