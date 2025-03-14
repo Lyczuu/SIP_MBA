@@ -8,7 +8,9 @@ use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\datadiajukan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class DatadiajukanController extends Controller
 {
@@ -59,7 +61,7 @@ class DatadiajukanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(datadiajukan $datadiajukan)
+    public function show($datadiajukan)
     {
         //
     }
@@ -67,7 +69,7 @@ class DatadiajukanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(datadiajukan $datadiajukan)
+    public function edit( $datadiajukan)
     {
         //
     }
@@ -75,15 +77,42 @@ class DatadiajukanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, datadiajukan $datadiajukan)
+    public function update(Request $request,  $id)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:1,2',
+            'alasan_penolakan' => 'required_if:status,1',
+        ]);
+
+        return DB::transaction(function () use ($request, $id) {
+            $payment = PaymentMba::findOrFail($id);
+            $payment->status = $request->status;
+            $payment->save();
+
+            // Ambil ID admin yang sedang login
+            $ADMINId = Auth::check() ? Auth::user()->id : null;
+
+            if ($request->status == 1) {
+                ditolak::updateOrCreate(
+                    ['pengajuan_id' => $payment->id],
+                    [
+                        'alasan_penolakan' => $request->alasan_penolakan,
+                        'ditolak_oleh' => $ADMINId,
+                    ]
+                );
+            }
+
+            Session::flash('status','success');
+            Session::flash('message','Data Berhasil Di Validasi');
+            return redirect('/datadiajukan');
+
+        });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(datadiajukan $datadiajukan)
+    public function destroy( $datadiajukan)
     {
         //
     }

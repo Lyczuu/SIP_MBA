@@ -37,8 +37,9 @@
             </div>
         @endif
 
-     <!DOCTYPE html>
+        <!DOCTYPE html>
         <html lang="en">
+
         <head>
             <meta charset="utf-8">
             <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -55,11 +56,11 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="pagetitle">
-                            <h1>Halaman belumdivaliadasi</h1>
+                            <h1>Data Diajukan</h1>
                             <nav>
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-                                    <li class="breadcrumb-item active">Belum divalidasi</li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
+                                    <li class="breadcrumb-item active">Diajukan</li>
                                 </ol>
                             </nav>
                         </div><!-- End Page Title -->
@@ -113,12 +114,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($paymentmba->filter(function($item) {
-                                                return (
-                                                    $item->status == 0 && // status 0 = belum divalidasi
-                                                    $item->jenis_pengajuan == 1
-                                                );
-                                            }) as $key => $list)
+                                            @foreach ($paymentmba->filter(function ($item) {
+            return $item->status == 0 && $item->jenis_pengajuan == 1; // status 0 = belum divalidasi
+        }) as $key => $list)
                                                 <tr>
                                                     <td>{{ $list->kode_pengajuan }}</td>
                                                     <td>{{ $list->user->username }}</td>
@@ -129,8 +127,7 @@
                                                     <td>{{ $list->wag_kordinasi_payment }}</td>
                                                     <td>
                                                         @if ($list->status == 0)
-                                                        <span class="badge bg-warning">Diajukan</span>
-
+                                                            <span class="badge bg-warning">Diajukan</span>
                                                         @endif
                                                     </td>
                                                     <td>

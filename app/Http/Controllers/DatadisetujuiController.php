@@ -107,7 +107,7 @@ class DatadisetujuiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(datadisetujui $datadisetujui)
+    public function show( $datadisetujui)
     {
         //
     }
@@ -115,7 +115,7 @@ class DatadisetujuiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(datadisetujui $datadisetujui)
+    public function edit($datadisetujui)
     {
         //
     }
@@ -123,7 +123,7 @@ class DatadisetujuiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, datadisetujui $datadisetujui)
+    public function update(Request $request, $datadisetujui)
     {
         //
     }
@@ -131,7 +131,7 @@ class DatadisetujuiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(datadisetujui $datadisetujui)
+    public function destroy( $datadisetujui)
     {
         //
     }

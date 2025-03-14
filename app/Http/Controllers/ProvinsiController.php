@@ -38,6 +38,18 @@ class ProvinsiController extends Controller
 
         ]);
 
+        // Cek apakah data provinsi dengan nama atau kode yang sama sudah ada
+        $exists = Provinsi::where('nama_provinsi', $validated['nama_provinsi'])
+            ->orWhere('kode_prov', $validated['kode_prov'])
+            ->exists();
+
+        if ($exists) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
+            return redirect('/dataprovinsi');
+        }
+
+
         // Simpan data ke dalam database
         provinsi::create([
             'nama_provinsi' => $validated['nama_provinsi'],
@@ -77,8 +89,35 @@ class ProvinsiController extends Controller
 
         ]);
 
-        // Cari data provinsi berdasarkan ID
+
+        // Cari data provinsi ID
         $provinsi = provinsi::findOrFail($id);
+
+
+        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
+        $isUsed = DB::table('wilayah')->where('kode_prov', $provinsi->id)->exists() ||
+            DB::table('payment_mba')->where('wilayah_id', $provinsi->id)->exists();
+
+        if ($isUsed) {
+            Session::flash('status', 'danger'); //Perbaikan dari "dangger" ke "danger"
+            Session::flash('message', 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.');
+
+            return redirect('/dataprovinsi');
+        }
+
+        // Cek apakah data provinsi dengan nama atau kode yang sama sudah ada
+        $existingData = Provinsi::where(function ($query) use ($validated) {
+            $query->where('nama_provinsi', $validated['nama_provinsi'])
+                ->orWhere('kode_prov', $validated['kode_prov']);
+        })
+            ->where('id', '!=', $id) // Mengecualikan data yang sedang diedit
+            ->first();
+
+        if ($existingData  !== null) {
+            Session::flash('status', 'danger');
+            Session::flash('message', "Data dengan nama '{$existingData->nama_provinsi}' atau kode_prov '{$existingData->kode_prov}' sudah ada, tidak dapat memperbarui data.");
+            return redirect('/dataprovinsi');
+        }
 
         // Update data provinsi
         $provinsi->update([
@@ -87,7 +126,7 @@ class ProvinsiController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Ubah');
+        Session::flash('message', 'Data Berhasil Di Perbarui');
         return redirect('/dataprovinsi');
     }
 

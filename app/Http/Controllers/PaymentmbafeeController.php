@@ -7,8 +7,7 @@ use App\Models\mitra;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use Illuminate\Http\Request;
-use App\Models\paymentmbafee;
-use App\Models\jenis_transaksi;
+use App\Models\jenistransaksi;
 use App\Models\pengajuanintegrasi;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -32,12 +31,12 @@ class PaymentmbafeeController extends Controller
         $wilayah = $user->wilayah; // Ambil wilayah sesuai dengan user yang login
         $mitra = mitra::all();
         $jenis_pajak = jenispajak::all();
-        $jenis_transaksi = jenis_transaksi::all();
+        $jenis_transaksi = jenistransaksi::all();
         $mitras = Mitra::where('flag_agg', 1)->get();
         $fees = fees::all();
         $pengajuanintegrasi = pengajuanintegrasi::all();
 
-        return view('admin.payment_mba_no_fee_admin',compact('wilayah','mitra','mitras','jenis_pajak','jenis_transaksi','fees','pengajuanintegrasi'));
+        return view('admin.payment_mba_no_fee_admin', compact('wilayah', 'mitra', 'mitras', 'jenis_pajak', 'jenis_transaksi', 'fees', 'pengajuanintegrasi'));
     }
 
 
@@ -46,15 +45,8 @@ class PaymentmbafeeController extends Controller
      */
     public function create()
     {
-        //
 
-        $jenisPajak = jenispajak::all(); //tabel di model
-
-
-        // Kirim data ke view
-        return view('admin.payment_mba_no_fee_admin', compact('jenisPajak', 'jenis_transaksi'));
     }
-
 
 
     /**
@@ -156,7 +148,7 @@ class PaymentmbafeeController extends Controller
                 'wag_kordinasi_payment' => $validated['wag_kordinasi_payment'],
                 'wag_kordinasi_rekon' => $validated['wag_kordinasi_rekon'],
                 'mitra_agg' => $validated['mitra_agg'],
-               'jenis_pajak_id' => $jenisPajakStr,
+                'jenis_pajak_id' => $jenisPajakStr,
                 'fees_id' => $fee->id,
                 'user_id' => $userId,
             ]);
@@ -185,10 +177,9 @@ class PaymentmbafeeController extends Controller
 
             DB::commit();
 
-            Session::flash('status','success');
-            Session::flash('message','Data Berhasil Di Ajukan');
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Di Ajukan');
             return redirect('/belumvalidasi');
-
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error("Terjadi kesalahan saat menyimpan data: {$e->getMessage()}", [
@@ -202,18 +193,7 @@ class PaymentmbafeeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(paymentmbafee $paymentmbafee)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(paymentmbafee $paymentmbafee)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -222,73 +202,70 @@ class PaymentmbafeeController extends Controller
     {
 
         // Validasi data
-    $request->validate([
-        'wilayah_id' => 'required',
-        'mitra_id' => 'required',
-        'Kode_pengajuan' => 'required',
-        'Pengajuan_integrasi' => 'required',
-        'mitra_agg' => 'required',
-        'Cutoff' => 'required',
-        'Settlement' => 'required',
-        'Nomor_Registrasi_Legal' => 'required',
-        'PIC_Payment_Mitra' => 'required',
-        'telepon_payment_mitra' => 'required',
-        'PIC_Rekon_Mitra' => 'required',
-        'telepon_rekon_mitra' => 'required',
-        'PIC_Dinas' => 'required',
-        'telepon_dinas' => 'required',
-        'transaksi_id' => 'required',
-        'WAG_KORDINASI_PAYMENT' => 'required',
-        'WAG_KORDINASI_REKON' => 'required',
-        'jenis_pajak_id' => 'required',
-        'fees_id' => 'required|exists:fees,id',
-        'user_id' => 'required',
-        'dokumen' => 'nullable|file|mimes:pdf,jpg,png|max:2048', // Validasi file opsional
-    ]);
+        $request->validate([
+            'wilayah_id' => 'required',
+            'mitra_id' => 'required',
+            'Kode_pengajuan' => 'required',
+            'Pengajuan_integrasi' => 'required',
+            'mitra_agg' => 'required',
+            'Cutoff' => 'required',
+            'Settlement' => 'required',
+            'Nomor_Registrasi_Legal' => 'required',
+            'PIC_Payment_Mitra' => 'required',
+            'telepon_payment_mitra' => 'required',
+            'PIC_Rekon_Mitra' => 'required',
+            'telepon_rekon_mitra' => 'required',
+            'PIC_Dinas' => 'required',
+            'telepon_dinas' => 'required',
+            'transaksi_id' => 'required',
+            'WAG_KORDINASI_PAYMENT' => 'required',
+            'WAG_KORDINASI_REKON' => 'required',
+            'jenis_pajak_id' => 'required',
+            'fees_id' => 'required|exists:fees,id',
+            'user_id' => 'required',
+            'dokumen' => 'nullable|file|mimes:pdf,jpg,png|max:2048', // Validasi file opsional
+        ]);
 
-    // Mengambil data yang akan diupdate
-    $paymentmba = PaymentMba::findOrFail($id);
+        // Mengambil data yang akan diupdate
+        $paymentmba = PaymentMba::findOrFail($id);
 
-    // Update data berdasarkan request
-    $paymentmba->wilayah_id = $request->wilayah_id;
-    $paymentmba->mitra_id = $request->mitra_id;
-    $paymentmba->Kode_pengajuan = $request->Kode_pengajuan;
-    $paymentmba->Pengajuan_integrasi = $request->Pengajuan_integrasi;
-    $paymentmba->mitra_agg = $request->mitra_agg;
-    $paymentmba->Cutoff = $request->Cutoff;
-    $paymentmba->Settlement = $request->Settlement;
-    $paymentmba->Nomor_Registrasi_Legal = $request->Nomor_Registrasi_Legal;
-    $paymentmba->PIC_Payment_Mitra = $request->PIC_Payment_Mitra;
-    $paymentmba->telepon_payment_mitra = $request->telepon_payment_mitra;
-    $paymentmba->PIC_Rekon_Mitra = $request->PIC_Rekon_Mitra;
-    $paymentmba->telepon_rekon_mitra = $request->telepon_rekon_mitra;
-    $paymentmba->PIC_Dinas = $request->PIC_Dinas;
-    $paymentmba->telepon_dinas = $request->telepon_dinas;
-    $paymentmba->transaksi_id = $request->transaksi_id;
-    $paymentmba->WAG_KORDINASI_PAYMENT = $request->WAG_KORDINASI_PAYMENT;
-    $paymentmba->WAG_KORDINASI_REKON = $request->WAG_KORDINASI_REKON;
-    $paymentmba->jenis_pajak_id = $request->jenis_pajak_id;
-    $paymentmba->fees_id = $request->fees_id;
-    $paymentmba->user_id = $request->user_id;
+        // Update data berdasarkan request
+        $paymentmba->wilayah_id = $request->wilayah_id;
+        $paymentmba->mitra_id = $request->mitra_id;
+        $paymentmba->Kode_pengajuan = $request->Kode_pengajuan;
+        $paymentmba->Pengajuan_integrasi = $request->Pengajuan_integrasi;
+        $paymentmba->mitra_agg = $request->mitra_agg;
+        $paymentmba->Cutoff = $request->Cutoff;
+        $paymentmba->Settlement = $request->Settlement;
+        $paymentmba->Nomor_Registrasi_Legal = $request->Nomor_Registrasi_Legal;
+        $paymentmba->PIC_Payment_Mitra = $request->PIC_Payment_Mitra;
+        $paymentmba->telepon_payment_mitra = $request->telepon_payment_mitra;
+        $paymentmba->PIC_Rekon_Mitra = $request->PIC_Rekon_Mitra;
+        $paymentmba->telepon_rekon_mitra = $request->telepon_rekon_mitra;
+        $paymentmba->PIC_Dinas = $request->PIC_Dinas;
+        $paymentmba->telepon_dinas = $request->telepon_dinas;
+        $paymentmba->transaksi_id = $request->transaksi_id;
+        $paymentmba->WAG_KORDINASI_PAYMENT = $request->WAG_KORDINASI_PAYMENT;
+        $paymentmba->WAG_KORDINASI_REKON = $request->WAG_KORDINASI_REKON;
+        $paymentmba->jenis_pajak_id = $request->jenis_pajak_id;
+        $paymentmba->fees_id = $request->fees_id;
+        $paymentmba->user_id = $request->user_id;
 
 
-    // Simpan perubahan
-    $paymentmba->save();
+        // Simpan perubahan
+        $paymentmba->save();
 
-    // Set flash message
-    Session::flash('status', 'success');
-    Session::flash('message', 'Data berhasil diperbarui');
+        // Set flash message
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil diperbarui');
 
-    // Redirect kembali ke halaman admin
-    // return redirect('/admin/payment_mba_no_fee');
+        // Redirect kembali ke halaman admin
+        // return redirect('/admin/payment_mba_no_fee');
     }
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(paymentmbafee $paymentmbafee)
-    {
-        //
-    }
+
 }

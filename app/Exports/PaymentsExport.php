@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 
+use Carbon\Carbon;
 use App\Models\paymentmba;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -41,23 +42,23 @@ class PaymentsExport
         // **Mulai menulis data dari baris ke-10**
         $row = 10;
         foreach ($payments as $payment) {
-            $sheet->setCellValue("E37", $payment->kode_pengajuan);
+            $sheet->setCellValue("F37", $payment->kode_pengajuan);
 
             $sheet->setCellValue("F3", $payment->User->username ?? '');
             $sheet->setCellValue("F4", $payment->User->alamat ?? '');
             $sheet->setCellValue("F5", $payment->User->phone_number ?? '');
             $sheet->setCellValue("F6", $payment->User->email ?? '');
 
-            $sheet->setCellValue("E34", $payment->wilayah->nama_wilayah ?? '');
+            $sheet->setCellValue("F34", $payment->wilayah->nama_wilayah ?? '');
 
 
 
             switch ($payment->transaksi_id) {
                 case 1:
-                    $sheet->setCellValue("A15", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
+                    $sheet->setCellValue("B15", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
                     break;
                 case 2:
-                    $sheet->setCellValue("A16", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
+                    $sheet->setCellValue("B16", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
                     break;
                 case 3:
                     $sheet->setCellValue("F15", $payment->jenis_transaksi->nama_jenis_transaksi ?? '');
@@ -91,18 +92,18 @@ class PaymentsExport
             ];
 
             // Misalnya, jika ingin menampilkan di sel-sel tertentu:
-            $sheet->setCellValue("A12", in_array(1, $jenisPajakArray) ? $jenisPajakMapping[1] : '');
-            $sheet->setCellValue("A13", in_array(2, $jenisPajakArray) ? $jenisPajakMapping[2] : '');
-            $sheet->setCellValue("D12", in_array(3, $jenisPajakArray) ? $jenisPajakMapping[3] : '');
-            $sheet->setCellValue("D13", in_array(4, $jenisPajakArray) ? $jenisPajakMapping[4] : '');
-            $sheet->setCellValue("K12", in_array(5, $jenisPajakArray) ? $jenisPajakMapping[5] : '');
+            $sheet->setCellValue("B12", in_array(1, $jenisPajakArray) ? $jenisPajakMapping[1] : '');
+            $sheet->setCellValue("B13", in_array(2, $jenisPajakArray) ? $jenisPajakMapping[2] : '');
+            $sheet->setCellValue("F12", in_array(3, $jenisPajakArray) ? $jenisPajakMapping[3] : '');
+            $sheet->setCellValue("F13", in_array(4, $jenisPajakArray) ? $jenisPajakMapping[4] : '');
+            $sheet->setCellValue("J12", in_array(5, $jenisPajakArray) ? $jenisPajakMapping[5] : '');
 
 
 
 
-            $sheet->setCellValue("E36", $payment->PengajuanIntegrasi->nama_pengajuan_integrasi ?? '');
-            $sheet->setCellValue("F39", $payment->cutoff ?? '');
-            $sheet->setCellValue("F40", $payment->settlement ?? '');
+            $sheet->setCellValue("F36", $payment->PengajuanIntegrasi->nama_pengajuan_integrasi ?? '');
+            $sheet->setCellValue("F39", $payment->cutoff ? Carbon::parse($payment->cutoff)->format('H:i') : '');
+            $sheet->setCellValue("F40", $payment->settlement ? Carbon::parse($payment->settlement)->format('H:i') : '');
 
             $sheet->setCellValue("F19", $payment->nomor_registrasi_legal ?? '');
 
@@ -126,7 +127,7 @@ class PaymentsExport
             $sheet->setCellValue("H29", $payment->wag_kordinasi_rekon ?? '');
             // $sheet->setCellValue("", $payment->nama_mitra ?? '');
 
-            $sheet->setCellValue("F42", $payment->status == 0 ? 'Di Ajukan' : ($payment->status == 1 ? 'Ditolak' : ($payment->status == 2 ? 'Diterima' : '')));
+            $sheet->setCellValue("F42", $payment->status == 0 ? 'Di Ajukan' : ($payment->status == 1 ? 'Ditolak' : ($payment->status == 2 ? 'Disetujui' : '')));
             $sheet->setCellValue("F43", $payment->jenis_pengajuan == 1 ? 'Fee Based (Admin)' : 'No Fee Based (Admin)');
             $row++;
         }

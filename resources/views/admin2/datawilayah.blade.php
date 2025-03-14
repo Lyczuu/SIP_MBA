@@ -36,7 +36,7 @@
         <h1>Wilayah</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('index.index0') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
                 <li class="breadcrumb-item active">Wilayah</li>
             </ol>
         </nav>
@@ -65,9 +65,9 @@
 
                 <div class="card">
                     <div class="card-body">
-
+                        <h5 class="card-title">Data <span>| Wilayah</span></h5>
                         &nbsp;
-                        <h4 class="">Data Wilayah</h4>
+
                         <br>
                         &nbsp;
 

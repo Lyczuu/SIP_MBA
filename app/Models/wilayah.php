@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class wilayah extends Model
 {
@@ -17,7 +18,8 @@ class wilayah extends Model
     {
         return $this->hasMany(paymentMba::class, 'wilayah_id');
     }
-    public function users()
+
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_wilayah', 'wilayah_id', 'user_id');
     }

@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('ditolak.update', $list->id) }}" method="POST">
+                <form action="{{ route('update.ditolak', $list->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -163,15 +163,14 @@
                             </label>
                             <div class="col-4">
                                 <label class="form-label">Cutoff</label>
-                                <input type="text" class="form-control" name="cutoff"
-                                    placeholder="Masukan cutoff" value="{{ old('cutoff', $list->cutoff ?? '') }}"
-                                    required>
+                                <input type="time" class="form-control" name="cutoff"
+                                    placeholder="Masukan cutoff" value="{{ old('cutoff', $list->cutoff ?? '') }}">
                             </div>
                             <div class="col-4">
                                 <label class="form-label">Settlement</label>
-                                <input type="text" class="form-control" name="settlement"
+                                <input type="time" class="form-control" name="settlement"
                                     placeholder="Masukan Settlement"
-                                    value="{{ old('settlement', $list->settlement ?? '') }}" required>
+                                    value="{{ old('settlement', $list->settlement ?? '') }}">
                             </div>
                             <div class="col-4 mb-5">
                                 <label class="form-label">Nomor Registrasi Legal</label>

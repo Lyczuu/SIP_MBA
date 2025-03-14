@@ -4,10 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Btc0Controller;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\ditolakController;
+use App\Http\Controllers\DitolakController;
 use App\Http\Controllers\DiterimaController;
 use App\Http\Controllers\ProvinsiController;
 use App\Http\Controllers\DashboardController;
@@ -29,12 +28,12 @@ use App\Http\Controllers\DatadisetujuiController;
 use App\Http\Controllers\NofeeaditolakController;
 use App\Http\Controllers\NofeediterimaController;
 use App\Http\Controllers\PaymentmbafeeController;
+use App\Http\Controllers\AdmindashboardController;
 use App\Http\Controllers\DatajenispajakController;
-use App\Http\Controllers\jenispengajuanController;
+use App\Http\Controllers\JenispengajuanController;
 use App\Http\Controllers\NofeeaditerimaController;
 use App\Http\Controllers\PenggunadetailController;
 use App\Http\Controllers\FeebelumvalidasiController;
-use App\Http\Controllers\DatadetailpaymentController;
 use App\Http\Controllers\FeeabelumvalidasiController;
 use App\Http\Controllers\DatajenistransaksiController;
 use App\Http\Controllers\NofeebelumvalidasiController;
@@ -53,27 +52,39 @@ Route::post('/login', [LoginController::class, 'cek_login'])->name('cek_login');
 Route::get('/admin/home', [AdminController::class, 'index'])->name('admin_home');
 
 
-//payment mba fee admin
+//routing am
+
+//halaman dashboard
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+//halaman pengajuan
 Route::get('/admin/payment_mba_admin', [PaymentmbaController::class, 'index'])->name('payment_mba_admin');
+
+//form pengajuan fee admin
 Route::post('/jukan', [PaymentmbaController::class, 'store'])->name('jukan');
-Route::get('/success', function () { return view('success'); })->name('success.page');
-Route::get('/generate-Kode-pengajuan', [PaymentmbaController::class, 'generateKodepengajuan']);
-//fee admin
+
+//jenis pengajuan
+Route::get('/admin/pengajuan', [JenispengajuanController::class, 'index'])->name('admin.pengajuan');
+
+
+//halaman fee admin
 Route::get('/feeditolak', [FeeditolakController::class, 'index'])->name('fee.ditolak')->middleware('auth');
 Route::get('/feediterima', [FeediterimaController::class, 'index'])->name('fee.diterima')->middleware('auth');
 Route::get('/feebelumvalidasi', [FeebelumvalidasiController::class, 'index'])->name('fee.belumvalidasi')->middleware('auth');
 
 
-//di tolak
-Route::get('/ditolak', [ditolakController::class, 'index'])->name('ditolak')->middleware('auth');
+//di tolak am
+Route::get('/ditolak', [DitolakController::class, 'index'])->name('ditolak')->middleware('auth');
 
-Route::put('/ditolak/{id}', [ditolakController::class, 'update'])->name('ditolak.update');
+//update form pengajuan
+Route::put('/ditolak/{id}', [DitolakController::class, 'update'])->name('update.ditolak');
 
 //diterima
 Route::get('/diterima', [DiterimaController::class, 'index'])->name('diterima')->middleware('auth');
+
 //di proses
 Route::get('/belumvalidasi', [BelumvalidasiController::class, 'index'])->name('belumvalidasi')->middleware('auth');
-Route::get('/api/get-belumvalidasi-count', function () {$count = DB::table('payment_mba')->count(); return response()->json(['count' => $count]);});// Gantilah 'ditolak' dengan nama tabel yang benar
+
 
 
 
@@ -81,186 +92,186 @@ Route::get('/api/get-belumvalidasi-count', function () {$count = DB::table('paym
 
 //payment mba no fee admin
 Route::get('/admin/payment_mba_no_fee_admin', [PaymentmbafeeController::class, 'index'])->name('payment_mba_no_fee_admin');
+
+//form pengajuan no fee
 Route::post('/sok', [PaymentmbafeeController::class, 'store'])->name('sok');
-Route::get('/generate-Kode-pengajuan', [PaymentmbafeeController::class, 'generateKodepengajuan']);
+
+
+// halaman no fee admin {tabel}
 //ditolak
 Route::get('/nofeeditolak', [NofeeditolakController::class, 'index'])->name('nofee.ditolak')->middleware('auth');
+
 //di terima
 Route::get('/nofeediterima', [NofeediterimaController::class, 'index'])->name('nofee.diterima')->middleware('auth');
+
 //belum validasi
 Route::get('/nofeebelumvalidasi', [NofeebelumvalidasiController::class, 'index'])->name('nofee.belumvalidasi')->middleware('auth');
 
 
 
 //cetakexcel
+
 //diterima hak AM
 Route::post('/payment/exportAM', [DiterimaController::class, 'export'])->name('payment.exportAM');
+
 //diterima hak admin
 Route::post('/payment/exportAdmin', [DatadisetujuiController::class, 'export'])->name('payment.exportAdmin');
 
 
 
 
-//jenis pengajuan
-Route::get('/admin/pengajuan', [jenispengajuanController::class, 'index'])->name('admin.pengajuan');
-
-
-
-//dashboard
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-// Route::match(['get', 'post'], '/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware('auth');
+// routing profil {admin & am}
 
 Route::get('/admin/profil', [ProfilController::class, 'index'])->name('admin.profil');
 Route::put('/profile/update', [ProfilController::class, 'update'])->name('profile.update');
 
 
-// Route::get('/generate-kode-pengajuan', [PaymentmbaController::class, 'generateKodePengajuan']);
+
 
 Route::put('/update_nofee{id}', [paymentmbafeeController::class, 'update'])->name('update_nofee');
-// end Rouitng awal
 
 
-//api untuk notif
 
-// Hitung jumlah berdasarkan status dan jenis_pengajuan
-Route::get('/api/get-payment-count', function () {
-    $ditolak_feeadmin = DB::table('payment_mba')
+
+
+
+
+
+
+//routing api admin
+
+Route::get('/api/get-payment-admin', function (Request $request) {
+    // Pastikan user sudah login
+    $user = Auth::user();
+
+    // Periksa apakah user memiliki role Admin (role_id = 1)
+    if (!$user || $user->role_id != 1) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
+
+    // Ambil data untuk feead (jenis_pengajuan = 1)
+    $ditolak_feead = DB::table('payment_mba')
         ->where('status', 1)
         ->where('jenis_pengajuan', 1)
         ->count();
 
-    $diterima_feeadmin = DB::table('payment_mba')
+    $diterima_feead = DB::table('payment_mba')
         ->where('status', 2)
         ->where('jenis_pengajuan', 1)
         ->count();
 
-
-    $belum_divalidasi = DB::table('payment_mba')
+    $belum_divalidasifeead = DB::table('payment_mba')
         ->where('status', 0)
         ->where('jenis_pengajuan', 1)
         ->count();
 
-    return response()->json([
-        'ditolak_feeadmin' => $ditolak_feeadmin,
-        'diterima_feeadmin' => $diterima_feeadmin,
-        'belum_divalidasi' => $belum_divalidasi
-    ]);
-});
-
-Route::get('/api/get-payment-list', function () {
-    $ditolak_feeadmin = DB::table('payment_mba')
+    // Ambil data untuk nofeead (jenis_pengajuan = 2)
+    $ditolak_nofeead = DB::table('payment_mba')
         ->where('status', 1)
         ->where('jenis_pengajuan', 2)
         ->count();
 
-    $diterima_feeadmin = DB::table('payment_mba')
+    $diterima_nofeead = DB::table('payment_mba')
         ->where('status', 2)
         ->where('jenis_pengajuan', 2)
         ->count();
 
-
-    $belum_divalidasi = DB::table('payment_mba')
+    $belum_divalidasinofeead = DB::table('payment_mba')
         ->where('status', 0)
         ->where('jenis_pengajuan', 2)
         ->count();
 
     return response()->json([
-        'ditolak_feeadmin' => $ditolak_feeadmin,
-        'diterima_feeadmin' => $diterima_feeadmin,
-        'belum_divalidasi' => $belum_divalidasi
+        'ditolak_feead' => $ditolak_feead,
+        'diterima_feead' => $diterima_feead,
+        'belum_divalidasifeead' => $belum_divalidasifeead,
+        'ditolak_nofeead' => $ditolak_nofeead,
+        'diterima_nofeead' => $diterima_nofeead,
+        'belum_divalidasinofeead' => $belum_divalidasinofeead
     ]);
 });
 
 
 
-//notif untuk am
+//routing api am untuk menghitung data di tabel utama
 
 Route::get('/api/get-payment-im', function (Request $request) {
     $userId = Auth::id(); // Ambil ID user yang sedang login
 
-    $ditolak_feeadmin = DB::table('payment_mba')
+    $ditolak_feeam = DB::table('payment_mba')
         ->where('status', 1)
         ->where('jenis_pengajuan', 1)
         ->where('user_id', $userId)
         ->count();
 
-    $diterima_feeadmin = DB::table('payment_mba')
+    $diterima_feeam = DB::table('payment_mba')
         ->where('status', 2)
         ->where('jenis_pengajuan', 1)
         ->where('user_id', $userId)
         ->count();
 
-    $belum_divalidasi = DB::table('payment_mba')
+    $belum_divalidasifeeam = DB::table('payment_mba')
         ->where('status', 0)
         ->where('jenis_pengajuan', 1)
         ->where('user_id', $userId)
         ->count();
 
     return response()->json([
-        'ditolak_feeadmin' => $ditolak_feeadmin,
-        'diterima_feeadmin' => $diterima_feeadmin,
-        'belum_divalidasi' => $belum_divalidasi
+        'ditolak_feeam' => $ditolak_feeam,
+        'diterima_feeam' => $diterima_feeam,
+        'belum_divalidasifeeam' => $belum_divalidasifeeam
     ]);
 });
 
 Route::get('/api/get-payment-am', function (Request $request) {
     $userId = Auth::id(); // Ambil ID user yang sedang login
 
-    $ditolak_feeadmin = DB::table('payment_mba')
+    $ditolak_nofeeam = DB::table('payment_mba')
         ->where('status', 1)
         ->where('jenis_pengajuan', 2)
         ->where('user_id', $userId)
         ->count();
 
-    $diterima_feeadmin = DB::table('payment_mba')
+    $diterima_nofeeam = DB::table('payment_mba')
         ->where('status', 2)
         ->where('jenis_pengajuan', 2)
         ->where('user_id', $userId)
         ->count();
 
-    $belum_divalidasi = DB::table('payment_mba')
+    $belum_divalidasinofeeam = DB::table('payment_mba')
         ->where('status', 0)
         ->where('jenis_pengajuan', 2)
         ->where('user_id', $userId)
         ->count();
 
     return response()->json([
-        'ditolak_feeadmin' => $ditolak_feeadmin,
-        'diterima_feeadmin' => $diterima_feeadmin,
-        'belum_divalidasi' => $belum_divalidasi
+        'ditolak_nofeeam' => $ditolak_nofeeam,
+        'diterima_nofeeam' => $diterima_nofeeam,
+        'belum_divalidasinofeeam' => $belum_divalidasinofeeam
     ]);
 });
+
+
+
 
 
 
 //routing admin
 
 //halaman utama
-Route::get('/utama', [Btc0Controller::class, 'index'])->name('index.index0');
+Route::get('/utama', [AdmindashboardController::class, 'index'])->name('admin.utama');
+
+//data user detail
+Route::get('/detailpengguna', [PenggunadetailController::class, 'index'])->name('data.detailpengguna')->middleware('auth');
 
 //data dijukan
 Route::get('/datadiajukan', [DatadiajukanController::class, 'index'])->name('admin.datadiajukan')->middleware('auth');
-
+Route::put('/update_diajukan{id}', [DatadiajukanController::class, 'update'])->name('update.dijaukan');
 //data ditolak
 Route::get('/dataditolak', [DataditolakController::class, 'index'])->name('data.ditolak')->middleware('auth');
 
 //data disetujui
 Route::get('/datadisetujui', [DatadisetujuiController::class, 'index'])->name('data.disetujui')->middleware('auth');
-
-//data detail
-Route::get('/datadetail', [DatadetailpaymentController::class, 'index'])->name('data.detail')->middleware('auth');
-Route::put('/payment/validate/{id}', [DatadetailpaymentController::class, 'update'])->name('payment.update')->middleware('auth');
-
-//data edit payment
-Route::get('/payment/{id}/edit', [DatadetailpaymentController::class, 'edit'])->name('payment.edit');
-
-
-//payment admin
-
-
-//filter bulan dan tahun
-// Route::get('/pengajuan/filter', [Btc0Controller::class, 'index'])->name('pengajuan.filter');
-
 
 //data mitra
 Route::get('/datamitra', [DatamitraController::class, 'index'])->name('data.mitra')->middleware('auth');
@@ -319,5 +330,3 @@ Route::get('/nofeeabelumvalidasi', [NofeeabelumvalidasiController::class, 'index
 Route::get('/nofeeaditolak', [NofeeaditolakController::class, 'index'])->name('nofeea.ditolak');
 Route::get('/nofeeaditerima', [NofeeaditerimaController::class, 'index'])->name('nofeea.diterima');
 
-//data user detail
-Route::get('/detailpengguna', [PenggunadetailController::class, 'index'])->name('data.detailpengguna')->middleware('auth');

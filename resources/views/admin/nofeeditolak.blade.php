@@ -57,7 +57,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="pagetitle">
-                            <h1>Halaman ditolak</h1>
+                            <h1>Data Ditolak</h1>
                             <nav>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>

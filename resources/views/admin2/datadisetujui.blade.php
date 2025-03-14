@@ -33,11 +33,11 @@
 
 @section('content')
     <div class="pagetitle">
-        <h1>Data Tables</h1>
+        <h1>Data Disetujui</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item active">Tables</li>
+                <li class="breadcrumb-item"><a href="{{route('admin.utama')}}">Home</a></li>
+                <li class="breadcrumb-item active">Disetujui</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -106,6 +106,7 @@
                                             <th>Jenis Pajak</th>
                                             <th>Jenis Transaksi</th>
                                             <th>WAG Kordinasi Payment</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -123,6 +124,10 @@
                                                 <td>{{ $list->jenis_pajak_nama }}</td>
                                                 <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                 <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                <td>
+                                                    @if ($list->status == 2)
+                                                        <span class="badge bg-success">Disetujui</span>
+                                                    @endif
                                                 <td>
                                                     <div class="col-3">
                                                         <button class="btn btn-dark btn-sm" data-bs-toggle="modal"

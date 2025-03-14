@@ -38,7 +38,7 @@
         <h1>Dashboard</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('index.index0') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>
         </nav>
@@ -61,23 +61,28 @@
                                     <h5 class="card-title">Integrasi Mitra Feebased </span></h5>
 
                                     <div class="d-flex align-items-center">
+
                                         <div class="ps-3">
                                             <span class="badge bg-warning"
                                                 onclick="window.location.href='/feeabelumvalidasi'"
-                                                style="cursor: pointer;">Belum Validasi</span> </td> |<td> <span id="not-belumvalidasi"
-                                                    class="badge bg-warning" onclick="window.location.href='/feeabelumvalidasi'"
+                                                style="cursor: pointer;">Diajukan</span> </td> |<td> <span
+                                                    id="belum_divalidasifeead" class="badge bg-warning"
+                                                    onclick="window.location.href='/feeabelumvalidasi'"
                                                     style="cursor: pointer;">0</span></td>
                                             | <td> <span class="badge bg-success"
                                                     onclick="window.location.href='/feeaditerima'"
-                                                    style="cursor: pointer;">Diterima</span> </td> | <td> <span id="not-diterima"
-                                                    class="badge bg-success" onclick="window.location.href='/feeaditerima'"
+                                                    style="cursor: pointer;">Disetujui</span> </td> | <td> <span
+                                                    id="diterima_feead" class="badge bg-success"
+                                                    onclick="window.location.href='/feeaditerima'"
                                                     style="cursor: pointer;">0</span></td>
                                             |<td> <span class="badge bg-danger"
                                                     onclick="window.location.href='/feeaditolak'"
-                                                    style="cursor: pointer;">Ditolak</span></td> |<td> <span id="not-ditolak"
-                                                    class="badge bg-danger" onclick="window.location.href='/feeaditolak'"
+                                                    style="cursor: pointer;">Ditolak</span></td> |<td> <span
+                                                    id="ditolak_feead" class="badge bg-danger"
+                                                    onclick="window.location.href='/feeaditolak'"
                                                     style="cursor: pointer;">0</span></td>
                                         </div>
+
                                     </div>
 
                                 </div>
@@ -96,18 +101,21 @@
                                         <div class="ps-3">
                                             <span class="badge bg-warning"
                                                 onclick="window.location.href='/nofeeabelumvalidasi'"
-                                                style="cursor: pointer;">Belum Validasi</span> </td> |<td> <span id="notif-belumvalidasi"
-                                                    class="badge bg-warning" onclick="window.location.href='nofeeabelumvalidasi'"
+                                                style="cursor: pointer;">Diajukan</span> </td> |<td> <span
+                                                    id="belum_divalidasinofeead" class="badge bg-warning"
+                                                    onclick="window.location.href='nofeeabelumvalidasi'"
                                                     style="cursor: pointer;">0</span></td>
                                             | <td> <span class="badge bg-success"
                                                     onclick="window.location.href='/nofeeaditerima'"
-                                                    style="cursor: pointer;">Diterima</span> </td> | <td> <span id="notif-diterima"
-                                                    class="badge bg-success" onclick="window.location.href='/nofeeaditerima'"
+                                                    style="cursor: pointer;">Disetujui</span> </td> | <td> <span
+                                                    id="diterima_nofeead" class="badge bg-success"
+                                                    onclick="window.location.href='/nofeeaditerima'"
                                                     style="cursor: pointer;">0</span></td>
                                             |<td> <span class="badge bg-danger"
                                                     onclick="window.location.href='/nofeeaditolak'"
-                                                    style="cursor: pointer;">Ditolak</span></td> |<td> <span id="notif-ditolak"
-                                                    class="badge bg-danger" onclick="window.location.href='/nofeeaditolak'"
+                                                    style="cursor: pointer;">Ditolak</span></td> |<td> <span
+                                                    id="ditolak_nofeead" class="badge bg-danger"
+                                                    onclick="window.location.href='/nofeeaditolak'"
                                                     style="cursor: pointer;">0</span></td>
                                         </div>
                                     </div>
@@ -115,22 +123,9 @@
                                 </div>
                             </div>
                         </div>
-                        @foreach ($totalpengajuanPerAM as $data)
+                        @foreach ($totalPengajuanPerAM as $data)
                             <div class="col-xxl-4 col-md-4">
                                 <div class="card info-card sales-card">
-                                    {{-- <div class="filter">
-                                        <a class="icon" href="#" data-bs-toggle="dropdown">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            <li class="dropdown-header text-start">
-                                                <h6>Filter</h6>
-                                            </li>
-                                            <li><a class="dropdown-item" href="#">Today</a></li>
-                                            <li><a class="dropdown-item" href="#">This Month</a></li>
-                                            <li><a class="dropdown-item" href="#">This Year</a></li>
-                                        </ul>
-                                    </div> --}}
 
                                     <div class="card-body">
                                         @if ($data->am_id == 2)
@@ -185,8 +180,8 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($paymentmba as $key => $list)
-                                                        <th scope="row"><a
-                                                                href="#">{{ $list->kode_pengajuan }}</a></th>
+                                                        <th scope="row"><a href="#">{{ $list->kode_pengajuan }}</a>
+                                                        </th>
                                                         <td>{{ $list->mitra->nama_mitra }}</td>
                                                         <td>{{ $list->wilayah->nama_wilayah }}</td>
                                                         <td>{{ $list->jenis_pajak_nama }}</td>

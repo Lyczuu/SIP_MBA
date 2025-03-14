@@ -9,6 +9,7 @@ use App\Models\wilayah;
 use App\Models\Penggunabaru;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -80,7 +81,7 @@ class PenggunabaruController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Penggunabaru $penggunabaru)
+    public function show( $penggunabaru)
     {
         //
     }
@@ -88,7 +89,7 @@ class PenggunabaruController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Penggunabaru $penggunabaru)
+    public function edit( $penggunabaru)
     {
         //
     }
@@ -138,7 +139,7 @@ class PenggunabaruController extends Controller
             'role_id'      => $request->role_id,
             'password'     => $request->filled('password') ? Hash::make($request->password) : $user->password,
         ]);
-        
+
         Session::flash('status', 'success');
         Session::flash('message', 'Data berhasil diperbarui');
         return redirect('/penggunabaru');
@@ -150,6 +151,18 @@ class PenggunabaruController extends Controller
     public function destroy($id)
     {
         $user = user::findOrFail($id);
+
+
+        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
+        $isUsed = DB::table('payment_mba')->where('user_id', $user->id)->exists();
+
+        if ($isUsed) {
+            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
+            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
+
+            return redirect('/penggunabaru');
+        }
+
         $user->delete();
         Session::flash('status', 'success');
         Session::flash('message', 'Data Berhasil Di Hapus');

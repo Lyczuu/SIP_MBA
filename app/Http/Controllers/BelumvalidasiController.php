@@ -63,7 +63,7 @@ class BelumvalidasiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(belumvalidasi $belumvalidasi)
+    public function show( $belumvalidasi)
     {
         //
     }
@@ -71,7 +71,7 @@ class BelumvalidasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(belumvalidasi $belumvalidasi)
+    public function edit( $belumvalidasi)
     {
         //
     }
@@ -79,7 +79,7 @@ class BelumvalidasiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, belumvalidasi $belumvalidasi)
+    public function update(Request $request,  $belumvalidasi)
     {
         //
     }
@@ -87,7 +87,7 @@ class BelumvalidasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(belumvalidasi $belumvalidasi)
+    public function destroy( $belumvalidasi)
     {
         //
     }

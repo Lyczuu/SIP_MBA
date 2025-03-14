@@ -33,7 +33,7 @@
         <h1>Provinsi</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('index.index0') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
                 <li class="breadcrumb-item active">Provinsi</li>
             </ol>
         </nav>
@@ -64,9 +64,9 @@
 
                 <div class="card">
                     <div class="card-body">
-
+                        <h5 class="card-title">Data <span>| Provinsi</span></h5>
                         &nbsp;
-                        <h4 class="">Data Provinsi</h4>
+
                         <br>
                         &nbsp;
 

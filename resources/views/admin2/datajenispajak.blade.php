@@ -31,115 +31,109 @@
     collapsed
 @endsection
 @section('content')
+    <div class="pagetitle">
+        <h1>Jenis pajak</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
+                <li class="breadcrumb-item active">pajak</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
 
-        <div class="pagetitle">
-            <h1>Jenis pajak</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('index.index0')}}">Home</a></li>
-                    <li class="breadcrumb-item active">pajak</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
+    {{-- modal flash --}}
+    @if (Session::has('status'))
+        <div id="flash-message" class="alert alert-{{ Session::get('status') }}" role="alert">
+            {{ Session::get('message') }}
+        </div>
+    @endif
 
+    <script>
+        // Hilangkan flash message setelah 3 detik (3000 ms)
+        setTimeout(() => {
+            const flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+                flashMessage.style.transition = 'opacity 0.5s ease';
+                flashMessage.style.opacity = '0';
+                setTimeout(() => flashMessage.remove(), 500); // Hapus dari DOM setelah fade-out
+            }
+        }, 3000);
+    </script>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
 
-        <!-- Modal -->
-        @if (Session::has('status'))
-            <div id="flash-message" class="alert alert-success" role="alert">
-                {{ Session::get('message') }}
-            </div>
-        @endif
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Data <span>| Jenis Pajak</span></h5>
+                        &nbsp;
 
-        <script>
-            // Hilangkan flash message setelah 3 detik (3000 ms)
-            setTimeout(() => {
-                const flashMessage = document.getElementById('flash-message');
-                if (flashMessage) {
-                    flashMessage.style.transition = 'opacity 0.5s ease';
-                    flashMessage.style.opacity = '0';
-                    setTimeout(() => flashMessage.remove(), 500); // Hapus dari DOM setelah fade-out
-                }
-            }, 3000); // Ubah angka ini untuk durasi yang berbeda
-        </script>
-        <section class="section">
-            <div class="row">
-                <div class="col-lg-12">
+                        <br>
+                        &nbsp;
 
-                    <div class="card">
-                        <div class="card-body">
-
-                            &nbsp;
-                            <h4 class="">Data Pajak</h4>
-                            <br>
-                            &nbsp;
-
-                            <!-- Tambah Modal -->
-                            {{-- button modal --}}
-                            <a class="card-title">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#basicModal">
-                                    <i class="bi bi-plus-lg"> </i>
-                                    Tambah
-                                </button></a>
-                            {{-- end button modal --}}
-                            @include('admin2.modal.add_datajenispajak')
-                            <!-- Table with stripped rows -->
-                            <div class="table-responsive">
-                                <table class="table datatable">
-                                    <thead>
+                        <!-- Tambah Modal -->
+                        {{-- button modal --}}
+                        <a class="card-title">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#basicModal">
+                                <i class="bi bi-plus-lg"> </i>
+                                Tambah
+                            </button></a>
+                        {{-- end button modal --}}
+                        @include('admin2.modal.add_datajenispajak')
+                        <!-- Table with stripped rows -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Pajak</th>
+                                        <th>Status</th>
+                                        <th>Dibuat</th>
+                                        <th>Diubah</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($jenis_pajak as $key => $list)
                                         <tr>
-                                            <th>Nama Pajak</th>
-                                            <th>Status</th>
-                                            <th>Dibuat</th>
-                                            <th>Diubah</th>
-                                            <th>Aksi</th>
+                                            <td>{{ $list->nama_jenis_pajak }}</td>
+                                            <td>
+                                                @if ($list->status == 1)
+                                                    <span class="badge bg-success">Aktif</span>
+                                                @elseif ($list->status == 0)
+                                                    <span class="badge bg-danger">Off</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $list->created_at }}</td>
+                                            <td>{{ $list->updated_at }}</td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#Editjenispajak{{ $list->id }}">
+                                                        <i class="bi bi-pencil-square"></i> Edit
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#hapusjenispajak{{ $list->id }}">
+                                                        <i class="bi bi-trash"></i> Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($jenis_pajak as $key => $list)
-                                            <tr>
-                                                <td>{{ $list->nama_jenis_pajak }}</td>
-                                                <td>
-                                                    @if ($list->status == 1)
-                                                   <span class="badge bg-success">Aktif</span>
+                                        @include('admin2.modal.edit_datajenispajak')
+                                        @include('admin2.modal.delete_datajenispajak')
+                                    @endforeach
 
-                                                   @elseif ($list->status == 0)
-                                                   <span class="badge bg-danger">Off</span>
-
-                                                    @endif
-                                                </td>
-                                                <td>{{ $list->created_at }}</td>
-                                                <td>{{ $list->updated_at }}</td>
-                                                <td>
-                                                    <div class="d-flex gap-2">
-                                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                            data-bs-target="#Editjenispajak{{ $list->id }}">
-                                                            <i class="bi bi-pencil-square"></i> Edit
-                                                        </button>
-                                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                            data-bs-target="#hapusjenispajak{{ $list->id }}">
-                                                            <i class="bi bi-trash"></i> Delete
-                                                        </button>
-                                                    </div>
-                                                </td>
-
-                                            </tr>
-                                            @include('admin2.modal.edit_datajenispajak')
-                                            @include('admin2.modal.delete_datajenispajak')
-                                        @endforeach
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- End Table with stripped rows -->
-
+                                </tbody>
+                            </table>
                         </div>
+                        <!-- End Table with stripped rows -->
+
                     </div>
-
                 </div>
+
             </div>
-        </section>
-
-
+        </div>
+    </section>
 @endsection

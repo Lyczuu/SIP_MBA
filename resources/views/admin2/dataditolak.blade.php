@@ -35,11 +35,11 @@
 
 
         <div class="pagetitle">
-            <h1>Data Tables</h1>
+            <h1>Data Ditolak</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Tables</li>
+                    <li class="breadcrumb-item"><a href="{{route('admin.utama')}}">Home</a></li>
+                    <li class="breadcrumb-item active">Ditolak</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->

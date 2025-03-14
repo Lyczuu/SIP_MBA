@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\paymentmba;
 use Illuminate\Http\Request;
 
-class jenispengajuanController extends Controller
+class JenispengajuanController extends Controller
 {
     public function index()
     {
         return view('admin.jenispengajuan');
     }
-
-
 }
