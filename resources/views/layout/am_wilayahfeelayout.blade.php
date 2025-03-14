@@ -293,7 +293,7 @@
             @elseif(auth()->user()->role->nama_role == 'Admin')
                 {{-- Jika pengguna adalah Admin, tampilkan semua menu --}}
                 <li class="nav-item">
-                    <a class="nav-link @yield('side0')" href="{{ route('index.index0') }}">
+                    <a class="nav-link @yield('side0')" href="{{ route('admin.utama') }}">
                         <i class="bi bi-grid"></i>
                         <span>Dashboard</span>
                     </a>
@@ -345,6 +345,13 @@
                     <a class="nav-link @yield('side11')" href="{{ route('data.pengajuanintegrasi') }}">
                         <i class="bi bi-box-seam-fill"></i>
                         <span>Pengajuan Integrasi</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link @yield('side12')" href="{{ route('data.role') }}">
+                        <i class="bi bi-box-seam-fill"></i>
+                        <span>Role</span>
                     </a>
                 </li>
 

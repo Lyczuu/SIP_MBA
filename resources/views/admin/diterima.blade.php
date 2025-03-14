@@ -38,12 +38,12 @@
                             <div class="row">
 
                                 <div class="pagetitle">
-                                    <h1>Halaman diterima</h1>
+                                    <h1>Data Disetujui</h1>
                                     <nav>
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a>
                                             </li>
-                                            <li class="breadcrumb-item active">Diterima</li>
+                                            <li class="breadcrumb-item active">Disetujui</li>
                                         </ol>
                                     </nav>
                                 </div><!-- End Page Title -->
@@ -52,7 +52,7 @@
 
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
+                                        <h5 class="card-title">Terakhir <span>| Disetujui</span></h5>
 
                                         <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified"
                                             role="tablist">
@@ -112,6 +112,7 @@
                                                         <th>Jenis Pajak</th>
                                                         <th>Jenis Transaksi</th>
                                                         <th>WAG Kordinasi Payment</th>
+                                                        <th>Status</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -129,6 +130,12 @@
                                                             <td>{{ $list->jenis_pajak_nama }}</td>
                                                             <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                             <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                            <td>
+                                                                @if ($list->status == 2)
+                                                                    <span class="badge bg-success">Disetujui</span>
+
+                                                                @endif
+                                                            </td>
                                                             <td>
                                                                 <div class="col-3">
                                                                     <button class="btn btn-dark btn-sm"

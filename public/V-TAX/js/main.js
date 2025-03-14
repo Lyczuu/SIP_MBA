@@ -308,6 +308,14 @@
     });
 
 
+
+
+
+
+
+
+
+
     /**
      * Autoresize echart charts
      */
@@ -326,47 +334,35 @@
 
 
 
-
-
-// Fungsi untuk mengambil data notifikasi dari API
-function fetchPaymentCounts() {
-    fetch('/api/get-payment-count') // Panggil API baru
-        .then(response => response.json())
+// Fungsi untuk mengambil data dari API Admin
+function fetchAdminPaymentCounts() {
+    fetch('/api/get-payment-admin', {
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } // Jika menggunakan token
+    })
+        .then(response => {
+            if (!response.ok) throw new Error('Gagal mengambil data');
+            return response.json();
+        })
         .then(data => {
-            // Perbarui elemen notifikasi berdasarkan ID
-            document.getElementById("not-ditolak").innerText = data.ditolak_feeadmin;
-            document.getElementById("not-belumvalidasi").innerText = data.belum_divalidasi;
-            document.getElementById("not-diterima").innerText = data.diterima_feeadmin;
+            // Update elemen dengan ID masing-masing
+            document.getElementById("ditolak_feead").innerText = data.ditolak_feead;
+            document.getElementById("diterima_feead").innerText = data.diterima_feead;
+            document.getElementById("belum_divalidasifeead").innerText = data.belum_divalidasifeead;
+            document.getElementById("ditolak_nofeead").innerText = data.ditolak_nofeead;
+            document.getElementById("diterima_nofeead").innerText = data.diterima_nofeead;
+            document.getElementById("belum_divalidasinofeead").innerText = data.belum_divalidasinofeead;
         })
         .catch(error => console.error('Error:', error));
 }
 
 // Jalankan saat halaman dimuat
-document.addEventListener("DOMContentLoaded", fetchPaymentCounts);
+document.addEventListener("DOMContentLoaded", fetchAdminPaymentCounts);
 
 // Periksa perubahan setiap 5 detik
-setInterval(fetchPaymentCounts, 5000);
+setInterval(fetchAdminPaymentCounts, 5000);
 
+// end admin span id
 
-//nofeeadmin
-// Fungsi untuk mengambil data notifikasi dari API
-function fetchPaymentCount() {
-    fetch('/api/get-payment-list') // Panggil API baru
-        .then(response => response.json())
-        .then(data => {
-            // Perbarui elemen notifikasi berdasarkan ID
-            document.getElementById("notif-ditolak").innerText = data.ditolak_feeadmin;
-            document.getElementById("notif-belumvalidasi").innerText = data.belum_divalidasi;
-            document.getElementById("notif-diterima").innerText = data.diterima_feeadmin;
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-// Jalankan saat halaman dimuat
-document.addEventListener("DOMContentLoaded", fetchPaymentCount);
-
-// Periksa perubahan setiap 5 detik
-setInterval(fetchPaymentCount, 5000);
 
 
 
@@ -381,9 +377,9 @@ function fetchPaymentCounts() {
         .then(response => response.json())
         .then(data => {
             // Perbarui elemen notifikasi berdasarkan ID
-            document.getElementById("nott-ditolak").innerText = data.ditolak_feeadmin;
-            document.getElementById("nott-belumvalidasi").innerText = data.belum_divalidasi;
-            document.getElementById("nott-diterima").innerText = data.diterima_feeadmin;
+            document.getElementById("nott-ditolak").innerText = data.ditolak_feeam;
+            document.getElementById("nott-belumvalidasi").innerText = data.belum_divalidasifeeam;
+            document.getElementById("nott-diterima").innerText = data.diterima_feeam;
         })
         .catch(error => console.error('Error:', error));
 }
@@ -402,9 +398,9 @@ function fetchPaymentCount() {
         .then(response => response.json())
         .then(data => {
             // Perbarui elemen notifikasi berdasarkan ID
-            document.getElementById("noti-ditolak").innerText = data.ditolak_feeadmin;
-            document.getElementById("noti-belumvalidasi").innerText = data.belum_divalidasi;
-            document.getElementById("noti-diterima").innerText = data.diterima_feeadmin;
+            document.getElementById("noti-ditolak").innerText = data.ditolak_nofeeam;
+            document.getElementById("noti-belumvalidasi").innerText = data.belum_divalidasinofeeam;
+            document.getElementById("noti-diterima").innerText = data.diterima_nofeeam;
         })
         .catch(error => console.error('Error:', error));
 }
@@ -415,3 +411,139 @@ document.addEventListener("DOMContentLoaded", fetchPaymentCount);
 // Periksa perubahan setiap 5 detik
 setInterval(fetchPaymentCount, 5000);
 
+
+
+
+
+//script check userwilayah
+document.addEventListener("DOMContentLoaded", function () {
+    let form = document.querySelector("form");
+    let initialSelected = new Set();
+
+    // Simpan wilayah yang sudah tercentang saat halaman dimuat
+    document.querySelectorAll('input[name="wilayah_id[]"]:checked').forEach(cb => {
+        initialSelected.add(cb.value);
+    });
+
+    
+    // Tambahkan event click ke seluruh baris agar bisa diklik
+    document.querySelectorAll('.clickable-row').forEach(row => {
+        let checkbox = row.querySelector('input[type="checkbox"]');
+
+        // Simpan status awal checkbox
+        if (checkbox) {
+            checkbox.dataset.initialChecked = checkbox.checked;
+        }
+
+        row.addEventListener("click", function (event) {
+            if (!event.target.matches('input[type="checkbox"]')) {
+                let checkbox = this.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    // Jika ingin menghapus (uncheck) data lama, tampilkan peringatan
+                    if (!checkbox.checked && !confirm("Apakah Anda yakin ingin menghapus wilayah ini?")) {
+                        return;
+                    }
+
+                    // Jika ingin menghapus centang dari data yang sebelumnya sudah tercentang, beri peringatan
+                    if (checkbox.dataset.initialChecked === "true" && checkbox.checked) {
+                        if (!confirm("Apakah Anda yakin ingin menghapus data yang sebelumnya sudah dicentang?")) {
+                            return;
+                        }
+                    }
+
+                    // Toggle checkbox
+                    checkbox.checked = !checkbox.checked;
+
+                    // Update status awal setelah perubahan
+                    checkbox.dataset.initialChecked = checkbox.checked;
+                }
+            }
+        });
+    });
+
+
+
+    // Saat form disubmit, hanya kirim perubahan
+    form.addEventListener("submit", function (event) {
+        let selectedNow = new Set();
+        document.querySelectorAll('input[name="wilayah_id[]"]:checked').forEach(cb => {
+            selectedNow.add(cb.value);
+        });
+
+        let toAdd = [...selectedNow].filter(id => !initialSelected.has(id));
+        let toRemove = [...initialSelected].filter(id => !selectedNow.has(id));
+
+        // Hapus semua input hidden sebelumnya
+        document.querySelectorAll('.hidden-wilayah').forEach(input => input.remove());
+
+        let hiddenContainer = document.createElement("div");
+        hiddenContainer.style.display = "none";
+
+        // Simpan wilayah yang masih dipilih
+        selectedNow.forEach(id => {
+            let input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "wilayah_id[]";
+            input.value = id;
+            input.classList.add("hidden-wilayah");
+            hiddenContainer.appendChild(input);
+        });
+
+        form.appendChild(hiddenContainer);
+    });
+});
+
+
+//script search wilayah $ provinsi serta dropdown provinsi
+
+// Simpan daftar kode provinsi dari dropdown sebagai referensi pencarian
+let provinsiOptions = {};
+document.querySelectorAll('#kode_prov option').forEach(option => {
+    if (option.value) { // Hindari opsi "Semua Provinsi"
+        provinsiOptions[option.textContent.toLowerCase()] = option.value;
+    }
+});
+
+// Filter berdasarkan dropdown Provinsi
+document.getElementById('kode_prov').addEventListener('change', function () {
+    let selectedKodeProv = this.value;
+    let rows = document.querySelectorAll('#wilayahTable tr');
+
+    rows.forEach(row => {
+        let kodeProv = row.getAttribute('data-kode-prov');
+        row.style.display = (selectedKodeProv === "" || kodeProv === selectedKodeProv) ? "" :
+            "none";
+    });
+
+    // Kosongkan input pencarian saat dropdown dipilih
+    document.getElementById('searchProvinsi').value = "";
+});
+
+// Filter berdasarkan input pencarian (Provinsi atau Wilayah)
+document.getElementById('searchProvinsi').addEventListener('input', function () {
+    let filter = this.value.toLowerCase();
+    let matchedKodeProv = [];
+
+    // Cari di dropdown provinsi, cocokkan teks dengan input
+    Object.keys(provinsiOptions).forEach(nama_provinsi => {
+        if (nama_provinsi.includes(filter)) {
+            matchedKodeProv.push(provinsiOptions[nama_provinsi]); // Simpan kode_prov yang cocok
+        }
+    });
+
+    let rows = document.querySelectorAll('#wilayahTable tr');
+
+    rows.forEach(row => {
+        let kodeProv = row.getAttribute('data-kode-prov');
+        let namaWilayah = row.getAttribute('data-nama-wilayah');
+
+        // Tampilkan jika kode_prov cocok atau nama wilayah cocok
+        let matchProvinsi = matchedKodeProv.includes(kodeProv);
+        let matchWilayah = namaWilayah.includes(filter);
+
+        row.style.display = (matchProvinsi || matchWilayah || filter === "") ? "" : "none";
+    });
+
+    // Reset dropdown provinsi agar tidak mengganggu pencarian
+    document.getElementById('kode_prov').value = "";
+});

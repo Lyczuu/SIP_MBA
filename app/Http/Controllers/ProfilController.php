@@ -33,12 +33,7 @@ class ProfilController extends Controller
 
         // Validasi input
         $request->validate([
-            'username'     => 'required|string|max:255|unique:users,username,' . $user->id,
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'full_name'    => 'required|string|max:255',
-            'alamat'       => 'nullable|string',
-            'phone_number' => 'nullable|string|max:15',
-            'email'        => 'required|email|unique:users,email,' . $user->id,
             'password'     => 'nullable|min:6|max:8|confirmed',
         ]);
         // Cek apakah ada file gambar yang di-upload
@@ -57,12 +52,7 @@ class ProfilController extends Controller
 
         // Update data user
         $user->update([
-            'username'     => $request->username,
             'profile_image' => isset($imagePath) ? $imagePath : $user->profile_image,
-            'full_name'    => $request->full_name,
-            'alamat'       => $request->alamat,
-            'phone_number' => $request->phone_number,
-            'email'        => $request->email,
             'password'     => $request->filled('password') ? Hash::make($request->password) : $user->password,
         ]);
 

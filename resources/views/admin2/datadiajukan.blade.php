@@ -31,13 +31,17 @@
 @section('side11')
     collapsed
 @endsection
+@section('side12')
+    collapsed
+@endsection
+
 @section('content')
     <div class="pagetitle">
-        <h1>Data Tables</h1>
+        <h1>Data Diajukan</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('index.index0') }}">Home</a></li>
-                <li class="breadcrumb-item active">Tables</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
+                <li class="breadcrumb-item active">Diajukan</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->

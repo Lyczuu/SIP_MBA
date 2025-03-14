@@ -4,13 +4,12 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="EditpaymentLabel{{ $list->id }}">Edit Data - ID: {{ $list->id }}</h5>
+                <h5 class="modal-title" id="EditpaymentLabel{{ $list->id }}">Detail Data Ditolak - ID: {{ $list->id }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('payment.update', $list->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
+                <form class="row g-3">
+
 
 
                     <!-- Body Modal -->

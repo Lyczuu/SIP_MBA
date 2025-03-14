@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class ditolakController extends Controller
+class DitolakController extends Controller
 {
     public function index()
     {
@@ -43,7 +43,7 @@ class ditolakController extends Controller
                 // Tambahkan properti nama_pengajuan_integrasi dari relasi pengajuanIntegrasi
                 $item->nama_pengajuan_integrasi = $item->pengajuanIntegrasi?->nama_pengajuan_integrasi ?? '-';
 
-                // Tambahkan properti nama mitra
+                //  nama mitra
                 $item->nama_mitra = $item->mitra?->nama_mitra ?? '-';
                 $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
                 // Tambahkan properti total_fee, fee_mba, dan fee_mitra dari relasi fees
@@ -68,62 +68,70 @@ class ditolakController extends Controller
     public function update(Request $request, $id)
     {
 
-    $validated = $request->validate([
-        'wilayah_id' => 'required|exists:wilayah,id',
-        'transaksi_id' => 'required|exists:jenis_transaksi,id',
-        'mitra_id' => 'required|exists:mitra,id',
-        'jenis_pajak' => 'required|array',
-        'jenis_pajak.*' => 'integer|exists:jenis_pajak,id',
-        'status'          => 'required|string|max:255',
-        'pengajuan_integrasi_id' => 'required|exists:pengajuan_integrasi,id',
-        'cutoff' => 'required|string',
-        'settlement' => 'required|string',
-        'nomor_registrasi_legal' => 'required|string',
-        'total_fee' => 'required|numeric',
-        'fee_mba' => 'required|numeric',
-        'fee_mitra' => 'required|numeric',
-        'pic_payment_mitra' => 'required|string',
-        'telepon_payment_mitra' => 'required|string',
-        'pic_rekon_mitra' => 'required|string',
-        'telepon_rekon_mitra' => 'required|string',
-        'pic_dinas' => 'required|string',
-        'telepon_dinas' => 'required|string',
-        'wag_kordinasi_payment' => 'required|string',
-        'wag_kordinasi_rekon' => 'required|string',
-    ]);
 
-    $payment = PaymentMBA::findOrFail($id);
+        $request->merge([
+            'cutoff' => date('H:i', strtotime($request->cutoff)),
+            'settlement' => date('H:i', strtotime($request->settlement)),
+        ]);
 
-    try {
-        DB::transaction(function () use ($validated, $payment) {
-            $payment->update([
-                'wilayah_id' => $validated['wilayah_id'],
-                'transaksi_id' => $validated['transaksi_id'],
-                'mitra_id' => $validated['mitra_id'],
-                'jenis_pajak_id' => implode(',', $validated['jenis_pajak']),
-                'status'        => $validated['status'],
-                'pengajuan_integrasi_id' => $validated['pengajuan_integrasi_id'],
-                'cutoff' => $validated['cutoff'],
-                'settlement' => $validated['settlement'],
-                'nomor_registrasi_legal' => $validated['nomor_registrasi_legal'],
-                'total_fee' => $validated['total_fee'],
-                'fee_mba' => $validated['fee_mba'],
-                'fee_mitra' => $validated['fee_mitra'],
-                'pic_payment_mitra' => $validated['pic_payment_mitra'],
-                'telepon_payment_mitra' => $validated['telepon_payment_mitra'],
-                'pic_rekon_mitra' => $validated['pic_rekon_mitra'],
-                'telepon_rekon_mitra' => $validated['telepon_rekon_mitra'],
-                'pic_dinas' => $validated['pic_dinas'],
-                'telepon_dinas' => $validated['telepon_dinas'],
-                'wag_kordinasi_payment' => $validated['wag_kordinasi_payment'],
-                'wag_kordinasi_rekon' => $validated['wag_kordinasi_rekon'],
-            ]);
-        });
-        Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Perbarui');
-        return redirect('/ditolak');
-    } catch (\Exception $e) {
-        return back()->withErrors(['error' => 'Gagal memperbarui data: ' . $e->getMessage()]);
-    }
+
+        $validated = $request->validate([
+            'wilayah_id' => 'required|exists:wilayah,id',
+            'transaksi_id' => 'required|exists:jenis_transaksi,id',
+            'mitra_id' => 'required|exists:mitra,id',
+            'jenis_pajak' => 'required|array',
+            'jenis_pajak.*' => 'integer|exists:jenis_pajak,id',
+            'status'          => 'required|string|max:255',
+            'pengajuan_integrasi_id' => 'required|exists:pengajuan_integrasi,id',
+            'cutoff' => 'required|date_format:H:i',
+            'settlement' => 'required|date_format:H:i',
+            'nomor_registrasi_legal' => 'required|string',
+            'total_fee' => 'required|numeric',
+            'fee_mba' => 'required|numeric',
+            'fee_mitra' => 'required|numeric',
+            'pic_payment_mitra' => 'required|string',
+            'telepon_payment_mitra' => 'required|string',
+            'pic_rekon_mitra' => 'required|string',
+            'telepon_rekon_mitra' => 'required|string',
+            'pic_dinas' => 'required|string',
+            'telepon_dinas' => 'required|string',
+            'wag_kordinasi_payment' => 'required|string',
+            'wag_kordinasi_rekon' => 'required|string',
+        ]);
+        // dd($request->all()); // Lihat data sebelum validasi
+
+        $payment = paymentmba::findOrFail($id);
+
+        try {
+            DB::transaction(function () use ($validated, $payment) {
+                $payment->update([
+                    'wilayah_id' => $validated['wilayah_id'],
+                    'transaksi_id' => $validated['transaksi_id'],
+                    'mitra_id' => $validated['mitra_id'],
+                    'jenis_pajak_id' => implode(',', $validated['jenis_pajak']),
+                    'status'        => $validated['status'],
+                    'pengajuan_integrasi_id' => $validated['pengajuan_integrasi_id'],
+                    'cutoff' => $validated['cutoff'],
+                    'settlement' => $validated['settlement'],
+                    'nomor_registrasi_legal' => $validated['nomor_registrasi_legal'],
+                    'total_fee' => $validated['total_fee'],
+                    'fee_mba' => $validated['fee_mba'],
+                    'fee_mitra' => $validated['fee_mitra'],
+                    'pic_payment_mitra' => $validated['pic_payment_mitra'],
+                    'telepon_payment_mitra' => $validated['telepon_payment_mitra'],
+                    'pic_rekon_mitra' => $validated['pic_rekon_mitra'],
+                    'telepon_rekon_mitra' => $validated['telepon_rekon_mitra'],
+                    'pic_dinas' => $validated['pic_dinas'],
+                    'telepon_dinas' => $validated['telepon_dinas'],
+                    'wag_kordinasi_payment' => $validated['wag_kordinasi_payment'],
+                    'wag_kordinasi_rekon' => $validated['wag_kordinasi_rekon'],
+                ]);
+            });
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Di Perbarui');
+            return redirect('/ditolak');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Gagal memperbarui data: ' . $e->getMessage()]);
+        }
     }
 }

@@ -9,14 +9,12 @@ use App\Models\mitra;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use Illuminate\Http\Request;
-use App\Exports\PaymentsExport;
-use App\Models\jenis_transaksi;
+use App\Models\jenistransaksi;
 use App\Models\pengajuanintegrasi;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 
 class PaymentmbaController extends Controller
@@ -36,7 +34,7 @@ class PaymentmbaController extends Controller
         $mitra = mitra::all();
         $jenis_pajak = JenisPajak::where('status', '1')->get();
         $mitras = Mitra::where('flag_agg', 1)->get();
-        $jenis_transaksi = jenis_transaksi::all();
+        $jenis_transaksi = jenistransaksi::all();
         $fees = fees::all();
         $pengajuanintegrasi = pengajuanintegrasi::all();
 
@@ -149,7 +147,7 @@ class PaymentmbaController extends Controller
             ];
             $payment = PaymentMba::create($paymentData);
 
-            // Tentukan prefix berdasarkan ID user
+            // menentukan prefix berdasarkan ID user
             switch (Auth::id()) {
                 case 2:
                     $prefix = 'AM1-';

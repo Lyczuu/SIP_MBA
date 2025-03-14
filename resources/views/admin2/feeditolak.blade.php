@@ -25,6 +25,9 @@
 @section('side5')
     collapsed
 @endsection
+@section('side12')
+    collapsed
+@endsection
 
 @section('title', 'nofeeditolak')
 
@@ -58,10 +61,10 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="pagetitle">
-                            <h1>Halaman ditolak</h1>
+                            <h1>Data Ditolak</h1>
                             <nav>
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
                                     <li class="breadcrumb-item active">Ditolak</li>
                                 </ol>
                             </nav>
@@ -116,12 +119,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($paymentmba->filter(function($item) {
-                                                return (
-                                                    $item->status == 1 && // status 0 = belum divalidasi
-                                                    $item->jenis_pengajuan == 1
-                                                );
-                                            }) as $key => $list)
+                                            @foreach ($paymentmba->filter(function ($item) {
+            return $item->status == 1 && $item->jenis_pengajuan == 1; // status 0 = belum divalidasi
+        }) as $key => $list)
                                                 <tr>
                                                     <td>{{ $list->kode_pengajuan }}</td>
                                                     <td>{{ $list->user->username }}</td>
@@ -132,8 +132,7 @@
                                                     <td>{{ $list->wag_kordinasi_payment }}</td>
                                                     <td>
                                                         @if ($list->status == 1)
-                                                        <span class="badge bg-danger">Ditolak</span>
-
+                                                            <span class="badge bg-danger">Ditolak</span>
                                                         @endif
                                                     </td>
                                                     <td>

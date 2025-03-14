@@ -4,6 +4,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="EditpaymentLabel{{ $list->id }}">Detail Data - ID: {{ $list->id }}</h5>
             </div>
             <div class="modal-body">
                 <form class="row g-3">

@@ -65,13 +65,13 @@
                                                 <div class="ps-3">
                                                     <span class="badge bg-warning"
                                                         onclick="window.location.href='/feebelumvalidasi'"
-                                                        style="cursor: pointer;">Belum Validasi</span> </td> |<td> <span
+                                                        style="cursor: pointer;">Diajaukan</span> </td> |<td> <span
                                                             id="nott-belumvalidasi" class="badge bg-warning"
                                                             onclick="window.location.href='/feebelumvalidasi'"
                                                             style="cursor: pointer;">0</span></td>
                                                     | <td> <span class="badge bg-success"
                                                             onclick="window.location.href='/feediterima'"
-                                                            style="cursor: pointer;">Diterima</span> </td> | <td> <span
+                                                            style="cursor: pointer;">Disetujui</span> </td> | <td> <span
                                                             id="nott-diterima" class="badge bg-success"
                                                             onclick="window.location.href='/feediterima'"
                                                             style="cursor: pointer;">0</span></td>
@@ -101,13 +101,13 @@
                                                 <div class="ps-3">
                                                     <span class="badge bg-warning"
                                                         onclick="window.location.href='/nofeebelumvalidasi'"
-                                                        style="cursor: pointer;">Belum Validasi</span> </td> |<td> <span
+                                                        style="cursor: pointer;">Diajukan</span> </td> |<td> <span
                                                             id="noti-belumvalidasi" class="badge bg-warning"
                                                             onclick="window.location.href='/nofeebelumvalidasi'"
                                                             style="cursor: pointer;">0</span></td>
                                                     | <td> <span class="badge bg-success"
                                                             onclick="window.location.href='/nofeediterima'"
-                                                            style="cursor: pointer;">Diterima</span> </td> | <td> <span
+                                                            style="cursor: pointer;">Disetujui</span> </td> | <td> <span
                                                             id="noti-diterima" class="badge bg-success"
                                                             onclick="window.location.href='/nofeediterima'"
                                                             style="cursor: pointer;">0</span></td>
@@ -128,22 +128,6 @@
                                 <div class="col-xxl-4 col-md-4">
                                     <div class="card info-card sales-card">
 
-                                        {{-- <div class="filter">
-                                            <a class="icon" href="#" data-bs-toggle="dropdown">
-                                                <i class="bi bi-three-dots"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                                <li class="dropdown-header text-start">
-                                                    <h6>Filter</h6>
-                                                </li>
-                                                <li><a class="dropdown-item filter-option" href="#"
-                                                        data-filter="today">Today</a></li>
-                                                <li><a class="dropdown-item filter-option" href="#"
-                                                        data-filter="month">This Month</a></li>
-                                                <li><a class="dropdown-item filter-option" href="#"
-                                                        data-filter="year">This Year</a></li>
-                                            </ul>
-                                        </div> --}}
 
 
                                         <div class="card-body">
@@ -166,11 +150,11 @@
                                     </div>
                                 </div><!-- End Sales Card -->
 
-                                @if (!empty($mitraAgg))
-                                <div class="col-xxl-4 col-md-4">
-                                    <div class="card info-card sales-card">
+                                {{-- @if (!empty($mitraAgg)) --}}
+                                    <div class="col-xxl-4 col-md-4">
+                                        <div class="card info-card sales-card">
 
-                                        {{-- <div class="filter">
+                                            {{-- <div class="filter">
                                             <a class="icon" href="#" data-bs-toggle="dropdown"><i
                                                     class="bi bi-three-dots"></i></a>
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -184,25 +168,25 @@
                                             </ul>
                                         </div> --}}
 
-                                        <div class="card-body">
-                                            <h5 class="card-title">AM Kerja Sama</h5>
+                                            <div class="card-body">
+                                                <h5 class="card-title">AM Kerja Sama</h5>
 
-                                            <div class="d-flex align-items-center">
-                                                <div
-                                                    class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                                    <i class="bi bi-graph-up"></i>
-                                                </div>
-                                                <div class="ps-3">
-                                                    <h6>{{$totalMitraAgg}}</h6>
-                                                    <span class="text-success small pt-1 fw-bold">8%</span> <span
-                                                        class="text-muted small pt-2 ps-1">Jumlah Kerja Sama</span>
+                                                <div class="d-flex align-items-center">
+                                                    <div
+                                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                        <i class="bi bi-graph-up"></i>
+                                                    </div>
+                                                    <div class="ps-3">
+                                                        <h6>{{ $totalMitraAgg }}</h6>
+                                                        <span class="text-success small pt-1 fw-bold">8%</span> <span
+                                                            class="text-muted small pt-2 ps-1">Jumlah Kerja Sama</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </div>
-                                </div><!-- End Revenue Card -->
-                            @endif
+                                        </div>
+                                    </div><!-- End Revenue Card -->
+                                {{-- @endif --}}
 
 
 
@@ -267,7 +251,7 @@
                                                                         @elseif ($list->status == 1)
                                                                             <span class="badge bg-danger">Ditolak</span>
                                                                         @elseif ($list->status == 2)
-                                                                            <span class="badge bg-success">Diterima</span>
+                                                                            <span class="badge bg-success">Disetujui</span>
                                                                         @endif
                                                                     </td>
                                                                     <td>

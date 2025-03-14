@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\jenis_transaksi;
+use App\Models\jenistransaksi;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class DatajenistransaksiController extends Controller
@@ -13,7 +14,7 @@ class DatajenistransaksiController extends Controller
      */
     public function index()
     {
-        $data['jenis_transaksi'] = jenis_transaksi::get();
+        $data['jenis_transaksi'] = jenistransaksi::get();
         return view('admin2.datajenistransaksi', $data);
     }
 
@@ -35,15 +36,24 @@ class DatajenistransaksiController extends Controller
             'nama_jenis_transaksi' => 'required|string|max:255',
         ]);
 
+        // Cek data agar tidak duplikat
+        $exists = jenistransaksi::where('nama_jenis_transaksi', $request['nama_jenis_transaksi'])
+            ->exists();
+
+        if ($exists) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
+            return redirect('/datajenistransaksi');
+        }
+
         // Simpan ke database
-        $data = jenis_transaksi::create([
+        jenistransaksi::create([
             'nama_jenis_transaksi' => $validated['nama_jenis_transaksi'],
         ]);
 
-        Session::flash('status','success');
-        Session::flash('message','Data Berhasil Di Simpan');
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data Berhasil Di Simpan');
         return redirect('/datajenistransaksi');
-
     }
 
     /**
@@ -73,29 +83,64 @@ class DatajenistransaksiController extends Controller
         ]);
 
         // Cari data mitra berdasarkan ID
-        $jenis_transaksi = jenis_transaksi::findOrFail($id);
+        $jenis_transaksi = jenistransaksi::findOrFail($id);
+
+        // Cek data di tabel utama
+        $isUsed = DB::table('payment_mba')->where('transaksi_id', $jenis_transaksi->id)->exists();
+
+        if ($isUsed) {
+            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
+            Session::flash('message', 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.');
+
+            return redirect('/datajenistransaksi');
+        }
+
+
+        // Cek apakah data provinsi dengan nama atau kode yang sama sudah ada
+        $exists = jenistransaksi::where(function ($query) use ($validated) {
+            $query->where('nama_jenis_transaksi', $validated['nama_jenis_transaksi']);
+        })
+            ->where('id', '!=', $id) // Mengecualikan data yang sedang diedit
+            ->first();
+
+        if ($exists !== null) {
+            Session::flash('status', 'danger');
+            Session::flash('message', "Data dengan nama '{$exists->nama_jenis_transaksi}' sudah ada, tidak dapat memperbarui data.");
+            return redirect('/datajenistransaksi');
+        }
+
 
         // Update data mitra
         $jenis_transaksi->update([
             'nama_jenis_transaksi' => $validated['nama_jenis_transaksi'],
         ]);
 
-        Session::flash('status','success');
-        Session::flash('message','Data Berhasil Di Ubah');
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data Berhasil Di Perbarui');
         return redirect('/datajenistransaksi');
-
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-        $jenis_transaksi =jenis_transaksi::findOrFail($id);
-        $jenis_transaksi->delete();
-        Session::flash('status','success');
-        Session::flash('message','Data Berhasil Di Hapus');
-        return redirect('/datajenistransaksi');
+        $jenis_transaksi = jenistransaksi::findOrFail($id);
 
+        // Cek apakah data digunakan di tabel utama (contoh: tabel `payment_mba`)
+        $isUsed = DB::table('payment_mba')
+            ->where('transaksi_id', $jenis_transaksi->id)
+            ->exists();
+
+        if ($isUsed) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
+            return redirect('/datajenistransaksi');
+        }
+
+        $jenis_transaksi->delete();
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil di hapus');
+        return redirect('/datajenistransaksi');
     }
 }

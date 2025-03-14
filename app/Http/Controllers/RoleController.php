@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class RoleController extends Controller
 {
@@ -12,7 +14,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $role = role::all();
+
+        return view('admin2.datarole', compact('role'));
     }
 
     /**
@@ -28,7 +32,28 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_role' => 'required|string|max:255',
+            'keterangan' => 'required|string|max:255',
+        ]);
+
+        $existingData = role::where('nama_role', $validated['nama_role'])->first();
+
+        if ($existingData) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
+            return redirect('/role');
+        }
+
+
+        role::create([
+            'nama_role' => $validated['nama_role'],
+            'keterangan' => $validated['keterangan'],
+        ]);
+
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil di Simpan');
+        return redirect('/role');
     }
 
     /**
@@ -50,16 +75,63 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, role $role)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'nama_role' => 'required|string|max:255',
+            'keterangan' => 'required|string|max:255',
+        ]);
+
+        $role = role::findOrfail($id);
+
+        $isused = DB::table('roles')->where('nama_role', $role->id)->exists() ||
+            DB::table('users')->where('role_id', $role->id)->exists();
+
+        if ($isused) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak bisa dihapus karena masih digunakan di tabel lain');
+            return redirect('/role');
+        }
+
+        $existingData = role::where('nama_role', $validated['nama_role'])->first();
+
+        if ($existingData) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
+            return redirect('/role');
+        }
+
+
+        $role->update([
+            'nama_role' => $validated['nama_role'],
+            'keterangan' => $validated['keterangan'],
+        ]);
+
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil di Update');
+        return redirect('/role');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(role $role)
+    public function destroy($id)
     {
-        //
+        $role = role::findOrfail($id);
+
+        $isused = DB::table('roles')->where('nama_role', $role->id)->exists() ||
+            DB::table('users')->where('role_id', $role->id)->exists();
+
+        if ($isused) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak bisa dihapus karena masih digunakan di tabel lain');
+            return redirect('/role');
+        }
+
+        $role->delete();
+
+        Session::flash('status', 'success');
+        Session::flash('message', 'Data berhasil di Hapus');
+        return redirect('/role');
     }
 }

@@ -30,7 +30,7 @@
                     <div class="col-lg-12">
 
                         <div class="pagetitle">
-                            <h1>Halaman ditolak</h1>
+                            <h1>Data Ditolak</h1>
                             <nav>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
@@ -58,7 +58,7 @@
                         </script>
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
+                                <h5 class="card-title">Terakhir <span>| Ditolak</span></h5>
                                 <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
                                     <li class="nav-item flex-fill" role="presentation">
                                         <a class="nav-link w-50 {{ Request::routeIs('belumvalidasi') ? 'active' : '' }}"
@@ -99,6 +99,7 @@
                                                 <th>Jenis pajak</th>
                                                 <th>Nama Jenis transaksi</th>
                                                 <th>Wag kordinasi payment</th>
+                                                <th>Status</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -115,6 +116,11 @@
                                                     <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                     <td>{{ $list->wag_kordinasi_payment }}</td>
                                                     <td>
+                                                        @if ($list->status == 1)
+                                                            <span class="badge bg-danger">Ditolak</span>
+
+                                                        @endif
+                                                        </td>                                                    <td>
                                                         <div class="col-3">
                                                             <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
                                                                 data-bs-target="#Editpayment{{ $list->id }}">

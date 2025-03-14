@@ -40,24 +40,52 @@ class UserwilayahController extends Controller
     public function store(Request $request)
     {
         // Validasi input
-
-        // dd($request->all());
-            $request->validate([
+        $request->validate([
             'user_id' => 'required|exists:users,id',
-            'wilayah_id' => 'required|array', // Pastikan ada wilayah yang dipilih
+            'wilayah_id' => 'nullable|array', // Bisa kosong jika semua wilayah dihapus
             'wilayah_id.*' => 'exists:wilayah,id', // Pastikan setiap wilayah valid
         ]);
 
         // Ambil user berdasarkan ID
         $user = User::findOrFail($request->user_id);
 
-        // Simpan wilayah yang dipilih untuk user ini
-        $user->wilayah()->sync($request->wilayah_id);
+        // Ambil semua wilayah yang sudah diberikan ke user lain
+        $wilayahTerpakai = DB::table('user_wilayah')
+            ->where('user_id', '!=', $user->id) // Ambil wilayah user lain
+            ->pluck('wilayah_id')
+            ->toArray();
+
+        // Wilayah yang ingin disimpan dari request (jika ada)
+        $requestedWilayahIds = $request->wilayah_id ?? [];
+
+        // Ambil wilayah yang saat ini dimiliki user
+        $currentWilayahIds = $user->wilayah()->pluck('wilayah_id')->toArray();
+
+        // Hapus wilayah yang tidak dicentang
+        $removedWilayahIds = array_diff($currentWilayahIds, $requestedWilayahIds);
+
+        // Cek apakah wilayah yang dihapus sedang digunakan di tabel utama (misalnya payment_mba)
+        $isUsed = DB::table('payment_mba')
+            ->whereIn('wilayah_id', $removedWilayahIds)
+            ->exists();
+
+        if ($isUsed) {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Tidak dapat menghapus wilayah yang sudah digunakan di tabel utama.');
+            return redirect()->back();
+        }
+
+        // Pastikan hanya wilayah yang tidak dipakai user lain yang bisa ditambahkan
+        $filteredWilayahIds = array_diff($requestedWilayahIds, $wilayahTerpakai);
+
+        // Update wilayah user
+        $user->wilayah()->sync($filteredWilayahIds);
 
         Session::flash('status', 'success');
         Session::flash('selected_user_id', $request->user_id);
-        Session::flash('message', 'Data Berhasil Di Simpan');
-        return redirect('/userwilayah');
+        Session::flash('message', 'Data Berhasil Disimpan.');
+
+        return redirect('/penggunabaru');
     }
 
     /**

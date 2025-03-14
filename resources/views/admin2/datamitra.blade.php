@@ -31,12 +31,16 @@
 @section('side11')
     collapsed
 @endsection
+@section('side12')
+    collapsed
+@endsection
+
 @section('content')
     <div class="pagetitle">
         <h1>Mitra</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('index.index0') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
                 <li class="breadcrumb-item active">Mitra</li>
             </ol>
         </nav>
@@ -67,9 +71,9 @@
 
                 <div class="card">
                     <div class="card-body">
-
+                        <h5 class="card-title">Data <span>| Mitra</span></h5>
                         &nbsp;
-                        <h4 class="">Data Mitra</h4>
+
                         <br>
                         &nbsp;
 

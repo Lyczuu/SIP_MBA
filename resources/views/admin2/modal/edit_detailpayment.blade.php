@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('payment.update', $list->id) }}" method="POST">
+                <form action="{{ route('update.dijaukan', $list->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -48,7 +48,7 @@
                             <div class="col-12 col-md-6">
                                 <label for="nama_jenis_pajak" class="form-label">jenis pajak</label>
                                 <input type="text" name="nama_jenis_pajak" id="nama_jenis_pajak" class="form-control"
-                                    placeholder="" value="{{ $list->jenis_pajak_nama}}" disabled>
+                                    placeholder="" value="{{ $list->jenis_pajak_nama }}" disabled>
                             </div>
                             {{-- end  jenis pajak --}}
 
@@ -93,7 +93,8 @@
                                 <label for="pengajuan_integrasi" class="form-label">Pengajuan Integrasi</label>
                                 <input type="text" name="pengajuan_integrasi" id="pengajuan_integrasi"
                                     class="form-control" placeholder=""
-                                    value="{{ $list->pengajuanIntegrasi->nama_pengajuan_integrasi ?? 'Tidak Ada Data' }}" disabled>
+                                    value="{{ $list->pengajuanIntegrasi->nama_pengajuan_integrasi ?? 'Tidak Ada Data' }}"
+                                    disabled>
                             </div>
                             {{-- end  pengajuan integrasi --}}
 
@@ -122,142 +123,142 @@
                             <div class="col-12 col-md-6">
                                 <label for="statusDisplay" class="form-label">Status</label>
                                 <input type="text" name="status_display" id="statusDisplay" class="form-control"
-                                       placeholder="" value="{{ $list->status == 0 ? 'Di Ajukan' : ''}}" disabled>
+                                    placeholder="" value="{{ $list->status == 0 ? 'Di Ajukan' : '' }}" disabled>
                             </div>
                             {{-- end status display --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="jenis_pengajuan" class="form-label">Jenis pengajuan</label>
-                                <input type="text" name="jenis_pengajuan" id="jenis_pengajuan" class="form-control"
-                                       placeholder="" value="{{ $list->jenis_pengajuan  == 1 ? 'Fee based (Admin)' : ($list->jenis_pengajuan == 2 ? 'No Fee Based (Admin)' : '')}}" disabled>
+                                <input type="text" name="jenis_pengajuan" id="jenis_pengajuan"
+                                    class="form-control" placeholder=""
+                                    value="{{ $list->jenis_pengajuan == 1 ? 'Fee based (Admin)' : ($list->jenis_pengajuan == 2 ? 'No Fee Based (Admin)' : '') }}"
+                                    disabled>
                             </div>
                             {{-- end jenis pengajuan display --}}
 
-                                <div class="col-12 col-md-6">
-                                    <label for="pic_payment_mitra" class="form-label">Pic Payment Mitra</label>
-                                    <input type="text" name="pic_payment_mitra" id="pic_payment_mitra"
-                                        class="form-control" placeholder="" value="{{ $list->pic_payment_mitra }}"
-                                        disabled>
-                                </div>
-                                {{-- end  pic_payment_mitra --}}
+                            <div class="col-12 col-md-6">
+                                <label for="pic_payment_mitra" class="form-label">Pic Payment Mitra</label>
+                                <input type="text" name="pic_payment_mitra" id="pic_payment_mitra"
+                                    class="form-control" placeholder="" value="{{ $list->pic_payment_mitra }}"
+                                    disabled>
+                            </div>
+                            {{-- end  pic_payment_mitra --}}
 
-                                <div class="col-12 col-md-6">
-                                    <label for="telepon_payment_mitra" class="form-label">Telepon Payment
-                                        Mitra</label>
-                                    <input type="text" name="telepon_payment_mitra" id="telepon_payment_mitra"
-                                        class="form-control" placeholder=""
-                                        value="{{ $list->telepon_payment_mitra }}" disabled>
-                                </div>
-                                {{-- end  telepon_payment_mitra --}}
+                            <div class="col-12 col-md-6">
+                                <label for="telepon_payment_mitra" class="form-label">Telepon Payment
+                                    Mitra</label>
+                                <input type="text" name="telepon_payment_mitra" id="telepon_payment_mitra"
+                                    class="form-control" placeholder="" value="{{ $list->telepon_payment_mitra }}"
+                                    disabled>
+                            </div>
+                            {{-- end  telepon_payment_mitra --}}
 
-                                <div class="col-12 col-md-6">
-                                    <label for="pic_rekon_mitra" class="form-label">Pic Rekon Mitra</label>
-                                    <input type="text" name="pic_rekon_mitra" id="pic_rekon_mitra"
-                                        class="form-control" placeholder="" value="{{ $list->pic_rekon_mitra }}"
-                                        disabled>
-                                </div>
-                                {{-- end  pic_rekon_mitra --}}
+                            <div class="col-12 col-md-6">
+                                <label for="pic_rekon_mitra" class="form-label">Pic Rekon Mitra</label>
+                                <input type="text" name="pic_rekon_mitra" id="pic_rekon_mitra"
+                                    class="form-control" placeholder="" value="{{ $list->pic_rekon_mitra }}"
+                                    disabled>
+                            </div>
+                            {{-- end  pic_rekon_mitra --}}
 
-                                <div class="col-12 col-md-6">
-                                    <label for="telepon_rekon_mitra" class="form-label">Telepon Rekon
-                                        Mitra</label>
-                                    <input type="text" name="telepon_rekon_mitra" id="telepon_rekon_mitra"
-                                        class="form-control" placeholder="" value="{{ $list->telepon_rekon_mitra }}"
-                                        disabled>
-                                </div>
-                                {{-- end  telepon_rekon_mitra --}}
+                            <div class="col-12 col-md-6">
+                                <label for="telepon_rekon_mitra" class="form-label">Telepon Rekon
+                                    Mitra</label>
+                                <input type="text" name="telepon_rekon_mitra" id="telepon_rekon_mitra"
+                                    class="form-control" placeholder="" value="{{ $list->telepon_rekon_mitra }}"
+                                    disabled>
+                            </div>
+                            {{-- end  telepon_rekon_mitra --}}
 
-                                    <div class="col-12 col-md-6">
-                                        <label for="pic_dinas" class="form-label">Pic Dinas</label>
-                                        <input type="text" name="pic_dinas" id="pic_dinas" class="form-control"
-                                            placeholder="" value="{{ $list->pic_dinas }}" disabled>
-                                    </div>
-                                    {{-- end  pic dinas --}}
+                            <div class="col-12 col-md-6">
+                                <label for="pic_dinas" class="form-label">Pic Dinas</label>
+                                <input type="text" name="pic_dinas" id="pic_dinas" class="form-control"
+                                    placeholder="" value="{{ $list->pic_dinas }}" disabled>
+                            </div>
+                            {{-- end  pic dinas --}}
 
-                                    <div class="col-12 col-md-6">
-                                        <label for="telepon_dinas" class="form-label">Telepon Dinas</label>
-                                        <input type="text" name="telepon_dinas" id="telepon_dinas"
-                                            class="form-control" placeholder="" value="{{ $list->telepon_dinas }}"
-                                            disabled>
-                                    </div>
-                                    {{-- end  telepon dinas --}}
+                            <div class="col-12 col-md-6">
+                                <label for="telepon_dinas" class="form-label">Telepon Dinas</label>
+                                <input type="text" name="telepon_dinas" id="telepon_dinas" class="form-control"
+                                    placeholder="" value="{{ $list->telepon_dinas }}" disabled>
+                            </div>
+                            {{-- end  telepon dinas --}}
 
-                                        <div class="col-12 col-md-6">
-                                            <label for="wag_kordinasi_payment" class="form-label">Wag Kordinasi
-                                                Payment</label>
-                                            <input type="text" name="wag_kordinasi_payment"
-                                                id="wag_kordinasi_payment" class="form-control" placeholder=""
-                                                value="{{ $list->wag_kordinasi_payment }}" disabled>
-                                        </div>
-                                        {{-- end  Wag Kordinasi Payment --}}
+                            <div class="col-12 col-md-6">
+                                <label for="wag_kordinasi_payment" class="form-label">Wag Kordinasi
+                                    Payment</label>
+                                <input type="text" name="wag_kordinasi_payment" id="wag_kordinasi_payment"
+                                    class="form-control" placeholder="" value="{{ $list->wag_kordinasi_payment }}"
+                                    disabled>
+                            </div>
+                            {{-- end  Wag Kordinasi Payment --}}
 
-                                        <div class="col-12 col-md-6">
-                                            <label for="wag_kordinasi_rekon" class="form-label">Wag Kordinasi
-                                                Rekon</label>
-                                            <input type="text" name="wag_kordinasi_rekon" id="wag_kordinasi_rekon"
-                                                class="form-control" placeholder=""
-                                                value="{{ $list->wag_kordinasi_rekon }}" disabled>
-                                        </div>
-                                        {{-- end  Wag Kordinasi Rekon --}}
+                            <div class="col-12 col-md-6">
+                                <label for="wag_kordinasi_rekon" class="form-label">Wag Kordinasi
+                                    Rekon</label>
+                                <input type="text" name="wag_kordinasi_rekon" id="wag_kordinasi_rekon"
+                                    class="form-control" placeholder="" value="{{ $list->wag_kordinasi_rekon }}"
+                                    disabled>
+                            </div>
+                            {{-- end  Wag Kordinasi Rekon --}}
+
+                            {{-- validasi --}}
+                            <div class="col-12 col-md-6">
+                                <label for="statusSelect{{ $list->id }}" class="form-label">Ubah Status</label>
+                                <select name="status" id="statusSelect{{ $list->id }}" class="form-control">
+                                    <option value="">-- Pilih Status --</option>
+                                    <option value="2">Disetujui</option>
+                                    <option value="1">Ditolak</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6" id="alasanContainer{{ $list->id }}"
+                                style="display: none;">
+                                <label for="alasan_penolakan{{ $list->id }}" class="form-label">Alasan
+                                    Penolakan</label>
+                                <input type="text" name="alasan_penolakan"
+                                    id="alasan_penolakan{{ $list->id }}" class="form-control"
+                                    placeholder="Masukkan alasan ditolak">
+                            </div>
 
 
-                                        <!-- Elemen select untuk memilih status -->
-                                        <div class="col-12 col-md-6">
-                                            <label for="statusSelect" class="form-label">Ubah Status</label>
-                                            <select name="status" id="statusSelect" class="form-control">
-                                                <option value="">-- Pilih Status --</option>
-                                                <option value="2">Disetujui</option>
-                                                <option value="1">Ditolak</option>
-                                            </select>
-                                        </div>
 
-                                        <!-- Container untuk alasan penolakan, disembunyikan secara default -->
-                                        <div class="col-12 col-md-6" id="alasanContainer" style="display: none;">
-                                            <label for="alasan_penolakan" class="form-label">Alasan Penolakan</label>
-                                            <input type="text" name="alasan_penolakan" id="alasan_penolakan"
-                                                class="form-control" placeholder="Masukkan alasan ditolak">
-                                        </div>
-
-
-
-                                     <div class="row">
-                                    </div>
-                                </div>
+                            <div class="row">
                             </div>
                         </div>
-                        <br>
-
-                        <!-- Footer Modal -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        </div>
-
-                </form><!-- Vertical Form -->
+                    </div>
             </div>
+            <br>
+
+            <!-- Footer Modal -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+
+            </form><!-- Vertical Form -->
         </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var statusSelect = document.getElementById('statusSelect');
-                var alasanContainer = document.getElementById('alasanContainer');
-                var alasanInput = document.getElementById('alasan_penolakan');
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('[id^="statusSelect"]').forEach(function(select) {
+                var id = select.id.replace("statusSelect", "");
+                var alasanContainer = document.getElementById('alasanContainer' + id);
+                var alasanInput = document.getElementById('alasan_penolakan' + id);
 
                 function toggleAlasan() {
-                    // Jika status "Ditolak" (value "1") dipilih, tampilkan container
-                    if (statusSelect.value === "1") {
+                    if (select.value === "1") {
                         alasanContainer.style.display = "block";
                         alasanInput.required = true;
                     } else {
-                        // Jika status bukan "Ditolak", sembunyikan container dan hilangkan attribute required
                         alasanContainer.style.display = "none";
                         alasanInput.required = false;
                     }
                 }
 
-                // Panggil fungsi toggleAlasan saat halaman dimuat
                 toggleAlasan();
-
-                // Panggil fungsi toggleAlasan setiap kali nilai select berubah
-                statusSelect.addEventListener('change', toggleAlasan);
+                select.addEventListener('change', toggleAlasan);
             });
-            </script>
+        });
+    </script>

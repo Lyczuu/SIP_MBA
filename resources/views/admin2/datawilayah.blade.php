@@ -31,12 +31,15 @@
 @section('side11')
     collapsed
 @endsection
+@section('side12')
+    collapsed
+@endsection
 @section('content')
     <div class="pagetitle">
         <h1>Wilayah</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('index.index0') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
                 <li class="breadcrumb-item active">Wilayah</li>
             </ol>
         </nav>
@@ -65,9 +68,9 @@
 
                 <div class="card">
                     <div class="card-body">
-
+                        <h5 class="card-title">Data <span>| Wilayah</span></h5>
                         &nbsp;
-                        <h4 class="">Data Wilayah</h4>
+
                         <br>
                         &nbsp;
 
@@ -103,8 +106,8 @@
                                             <td>{{ $list->nama_wilayah }}</td>
                                             <td>{{ $list->provinsi->nama_provinsi }}</td>
                                             <td>{{ $list->kode_area }}</td>
-                                            <td>12/3/21</td>
-                                            <td>12/3/26</td>
+                                            <td>{{ $list->created_at }}</td>
+                                            <td>{{ $list->updated_at }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
                                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
