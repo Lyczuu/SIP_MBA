@@ -40,6 +40,16 @@
         .r {
             color: red;
         }
+
+        .no-spinner::-webkit-inner-spin-button,
+        .no-spinner::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .no-spinner {
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 
@@ -110,20 +120,6 @@
                 {{-- rows 2 --}}
                 <!-- Dropdown Mitra -->
                 <div class="row">
-                    <div class="col-6 mb-4">
-                        <label for="mitra" class="form-label">Nama Mitra</label>
-                        <select id="mitra" name="mitra_id" class="form-select" required>
-                            <option value="">-- Pilih Mitra --</option>
-                            @foreach ($mitra as $m)
-                                <option value="{{ $m->id }}" data-flag-bank="{{ $m->flag_bank }}"
-                                    {{ old('mitra_id') == $m->id ? 'selected' : '' }}>
-                                    {{ $m->nama_mitra }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    {{-- end mitra --}}
-
                     {{-- aggregator --}}
                     <div class="col-6" id="aggregator-input-container" style="display: none;">
                         <label for="mitra_agg" class="form-label">Informasi Tambahan untuk AGGREGATOR</label>
@@ -140,8 +136,26 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    {{-- end aggregator --}}
+
+                    <div class="col-6 mb-4">
+                        <label for="mitra" class="form-label">Nama Mitra</label>
+                        <select id="mitra" name="mitra_id" class="form-select" required>
+                            <option value="">-- Pilih Mitra --</option>
+                            @foreach ($mitra as $m)
+                                <option value="{{ $m->id }}" data-flag-bank="{{ $m->flag_bank }}"
+                                    {{ old('mitra_id') == $m->id ? 'selected' : '' }}>
+                                    {{ $m->nama_mitra }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    {{-- end mitra --}}
+
+
+
                 </div>
-                {{-- end aggregator --}}
+
                 {{-- endrows --}}
                 <p></p>
 
@@ -154,16 +168,16 @@
                         <label class="form-label">Jenis Pajak <span class="r">*</span></label>
                         <div>
                             @foreach ($jenis_pajak as $jak)
-                            <div class="form-check">
-                                <input type="checkbox" name="jenis_pajak[]" value="{{ $jak->id }}"
-                                    class="form-check-input @error('jenis_pajak') is-invalid @enderror"
-                                    id="jenis_pajak_{{ $jak->id }}"
-                                    {{ in_array($jak->id, old('jenis_pajak', [])) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="jenis_pajak_{{ $jak->id }}">
-                                    {{ $jak->nama_jenis_pajak }}
-                                </label>
-                            </div>
-                        @endforeach
+                                <div class="form-check">
+                                    <input type="checkbox" name="jenis_pajak[]" value="{{ $jak->id }}"
+                                        class="form-check-input @error('jenis_pajak') is-invalid @enderror"
+                                        id="jenis_pajak_{{ $jak->id }}"
+                                        {{ in_array($jak->id, old('jenis_pajak', [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="jenis_pajak_{{ $jak->id }}">
+                                        {{ $jak->nama_jenis_pajak }}
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
 
                     </div>
@@ -226,11 +240,11 @@
                     <!-- Nomor Registrasi Legal -->
                     <div class="col-4 mb-4">
                         <label class="form-label">Nomor Registrasi Legal <span class="r">*</span></label>
-                        <input type="number" class="form-control" name="nomor_registrasi_legal"
+                        <input type="text" class="form-control" name="nomor_registrasi_legal"
                             placeholder="Masukan Nomor Registrasi Legal" required
                             value="{{ old('nomor_registrasi_legal') }}">
                         <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
+                            Harap isi kolom ini
                         </div>
                     </div>
                 </div>
@@ -255,14 +269,14 @@
                         <label class="form-label">PIC Payment Mitra <span class="r">*</span></label>
                         <input type="text" class="form-control" name="pic_payment_mitra"
                             placeholder="Masukan PIC Payment Mitra" required value="{{ old('pic_payment_mitra') }}">
-                            <div class="invalid-feedback">
-                                Harap isi kolom ini
-                            </div>
+                        <div class="invalid-feedback">
+                            Harap isi kolom ini
+                        </div>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Telepon Payment Mitra <span class="r">*</span></label>
                         <input type="number" name="telepon_payment_mitra" id="telepon_payment_mitra"
-                            class="form-control"
+                            class="form-control no-spinner"
                             value="{{ old('telepon_payment_mitra', $paymentMba->telepon_payment_mitra ?? '') }}"
                             required>
                         <div class="invalid-feedback">
@@ -275,9 +289,9 @@
                         <label class="form-label">PIC Rekon Mitra <span class="r">*</span></label>
                         <input type="text" class="form-control" name="pic_rekon_mitra"
                             placeholder="Masukan PIC Rekon Mitra" required value="{{ old('pic_rekon_mitra') }}">
-                            <div class="invalid-feedback">
-                                Harap isi kolom ini
-                            </div>
+                        <div class="invalid-feedback">
+                            Harap isi kolom ini
+                        </div>
                     </div>
                 </div>
                 <p></p>
@@ -291,7 +305,7 @@
                     <div class="col-4">
                         <label class="form-label">Telepon Rekon Mitra <span class="r">*</span></label>
                         <input type="number" name="telepon_rekon_mitra" id="telepon_rekon_mitra"
-                            class="form-control"
+                            class="form-control no-spinner"
                             value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}" required>
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
@@ -301,11 +315,11 @@
                     <!-- PIC Dinas -->
                     <div class="col-4">
                         <label class="form-label">PIC Dinas <span class="r">*</span></label>
-                        <input type="text" class="form-control" name="pic_dinas" placeholder="Masukan Pic Dinas"
+                        <input type="text" class="form-control no-spinner" name="pic_dinas" placeholder="Masukan Pic Dinas"
                             required value="{{ old('pic_dinas') }}">
-                            <div class="invalid-feedback">
-                                Harap isi kolom ini
-                            </div>
+                        <div class="invalid-feedback">
+                            Harap isi kolom ini
+                        </div>
                     </div>
 
                     <div class="col-4 mb-4">
@@ -408,9 +422,6 @@
             }
         });
         // end script tambahan aggregator
-
-
-
     </script>
 
 

@@ -85,7 +85,7 @@ class PaymentmbafeeController extends Controller
             'jenis_pengajuan' => 'required|string|max:255',
             'cutoff' => 'required|date_format:H:i',
             'settlement' => 'required|date_format:H:i',
-            'nomor_registrasi_legal' => 'required|numeric',
+            'nomor_registrasi_legal' => 'required|string|max:255',
             'pic_payment_mitra' => 'required|string|max:255',
             'pic_rekon_mitra' => 'required|string|max:255',
             'pic_dinas' => 'required|string|max:255',
