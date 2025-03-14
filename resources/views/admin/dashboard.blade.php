@@ -150,7 +150,7 @@
                                     </div>
                                 </div><!-- End Sales Card -->
 
-                                @if (!empty($mitraAgg))
+                                {{-- @if (!empty($mitraAgg)) --}}
                                     <div class="col-xxl-4 col-md-4">
                                         <div class="card info-card sales-card">
 
@@ -186,7 +186,7 @@
 
                                         </div>
                                     </div><!-- End Revenue Card -->
-                                @endif
+                                {{-- @endif --}}
 
 
 

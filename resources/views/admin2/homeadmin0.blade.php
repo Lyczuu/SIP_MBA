@@ -33,6 +33,10 @@
 @section('side11')
     collapsed
 @endsection
+@section('side12')
+    collapsed
+@endsection
+
 @section('content')
     <div class="pagetitle">
         <h1>Dashboard</h1>

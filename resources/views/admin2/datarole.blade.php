@@ -7,7 +7,7 @@
     collapsed
 @endsection
 
-@section('side3')
+@section('side4')
     collapsed
 @endsection
 @section('side5')
@@ -22,22 +22,26 @@
 @section('side8')
     collapsed
 @endsection
-@section('side4')
+@section('side9')
+    collapsed
+@endsection
+@section('side10')
     collapsed
 @endsection
 @section('side11')
     collapsed
 @endsection
-@section('side12')
+@section('side3')
     collapsed
 @endsection
+
 @section('content')
     <div class="pagetitle">
-        <h1>Provinsi</h1>
+        <h1>Role</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
-                <li class="breadcrumb-item active">Provinsi</li>
+                <li class="breadcrumb-item active">Role</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -67,12 +71,11 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Data <span>| Provinsi</span></h5>
+                        <h5 class="card-title">Data <span>| Role</span></h5>
                         &nbsp;
 
                         <br>
                         &nbsp;
-
 
                         <!-- Tambah Modal -->
                         {{-- button modal --}}
@@ -83,46 +86,43 @@
                                 Tambah
                             </button></a>
                         {{-- end button modal --}}
-
-
-                        @include('admin2.modal.add_dataprovinsi')
+                        @include('admin2.modal.add_datarole')
                         <!-- Table with stripped rows -->
                         <div class="table-responsive">
                             <table class="table datatable">
                                 <thead>
                                     <tr>
-                                        <th>Nama Provinsi</th>
-                                        <th>Kode Provinsi</th>
+                                        <th>Nama Role</th>
+                                        <th>Keterangan</th>
                                         <th>Dibuat</th>
                                         <th>Diubah</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($provinsi as $key => $list)
+                                    @foreach ($role as $key => $list)
                                         <tr>
-                                            <td>{{ $list->nama_provinsi }}</td>
-                                            <td>{{ $list->kode_prov }}</td>
-                                            <td>{{ $list->created_at}}</td>
-                                            <td>{{ $list->updated_at}}</td>
+                                            <td>{{ $list->nama_role}}</td>
+                                            <td>{{ $list->keterangan }}</td>
+                                            <td>{{ $list->created_at }}</td>
+                                            <td>{{ $list->updated_at }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
                                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#Editprovinsi{{ $list->id }}">
+                                                        data-bs-target="#Editrole{{ $list->id }}">
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </button>
                                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#hapusprovinsi{{ $list->id }}">
+                                                        data-bs-target="#hapusrole{{ $list->id }}">
                                                         <i class="bi bi-trash"></i> Delete
                                                     </button>
                                                 </div>
                                             </td>
+
                                         </tr>
-                                        @include('admin2.modal.edit_dataprovinsi')
-                                        @include('admin2.modal.delete_dataprovinsi')
+                                        @include('admin2.modal.edit_datarole')
+                                        @include('admin2.modal.delete_datarole')
                                     @endforeach
-
-
 
                                 </tbody>
                             </table>

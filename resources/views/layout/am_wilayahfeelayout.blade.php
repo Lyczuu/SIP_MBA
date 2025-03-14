@@ -349,6 +349,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link @yield('side12')" href="{{ route('data.role') }}">
+                        <i class="bi bi-box-seam-fill"></i>
+                        <span>Role</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link @yield('side5')" href="{{ route('pengguna.baru') }}">
                         <i class="bi bi-person"></i>
                         <span>Pengguna</span>

@@ -25,6 +25,9 @@
 @section('side5')
     collapsed
 @endsection
+@section('side12')
+    collapsed
+@endsection
 @section('title', 'nofeeditolak')
 
 @section('content')

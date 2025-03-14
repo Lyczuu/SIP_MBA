@@ -137,12 +137,12 @@ class ProvinsiController extends Controller
     {
         $provinsi = provinsi::findOrFail($id);
 
-        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
+        // Cek data provinsi digunakan di tabel `wilayah` atau `payment_mba`
         $isUsed = DB::table('wilayah')->where('kode_prov', $provinsi->id)->exists() ||
             DB::table('payment_mba')->where('wilayah_id', $provinsi->id)->exists();
 
         if ($isUsed) {
-            Session::flash('status', 'danger'); // ✅ Perbaikan dari "dangger" ke "danger"
+            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
             Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
 
             return redirect('/dataprovinsi');

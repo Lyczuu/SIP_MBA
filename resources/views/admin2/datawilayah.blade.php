@@ -31,6 +31,9 @@
 @section('side11')
     collapsed
 @endsection
+@section('side12')
+    collapsed
+@endsection
 @section('content')
     <div class="pagetitle">
         <h1>Wilayah</h1>
@@ -103,8 +106,8 @@
                                             <td>{{ $list->nama_wilayah }}</td>
                                             <td>{{ $list->provinsi->nama_provinsi }}</td>
                                             <td>{{ $list->kode_area }}</td>
-                                            <td>12/3/21</td>
-                                            <td>12/3/26</td>
+                                            <td>{{ $list->created_at }}</td>
+                                            <td>{{ $list->updated_at }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
                                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"

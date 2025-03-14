@@ -28,6 +28,9 @@
 @section('side10')
     collapsed
 @endsection
+@section('side12')
+    collapsed
+@endsection
 
 @section('content')
     <div class="pagetitle">

@@ -142,7 +142,7 @@ class PaymentmbaController extends Controller
             ];
             $payment = PaymentMba::create($paymentData);
 
-            // Tentukan prefix berdasarkan ID user
+            // menentukan prefix berdasarkan ID user
             switch (Auth::id()) {
                 case 2:
                     $prefix = 'AM1-';

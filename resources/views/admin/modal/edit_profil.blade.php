@@ -124,72 +124,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <label for="username" class="col-md-4 col-lg-3 col-form-label">Username</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="username" type="text"
-                                                class="form-control @error('username') is-invalid @enderror"
-                                                id="username" value="{{ old('username', auth()->user()->username) }}"
-                                                autocomplete="off">
-                                            @error('username')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
 
-                                    <div class="row mb-3">
-                                        <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Nama
-                                            Lengkap</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="full_name" type="text"
-                                                class="form-control @error('full_name') is-invalid @enderror"
-                                                id="full_name"
-                                                value="{{ old('full_name', auth()->user()->full_name) }}"
-                                                autocomplete="off">
-                                            @error('full_name')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="alamat" class="col-md-4 col-lg-3 col-form-label">Alamat</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror" id="alamat"
-                                                autocomplete="off">{{ old('alamat', auth()->user()->alamat) }}</textarea>
-                                            @error('alamat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="phone_number" class="col-md-4 col-lg-3 col-form-label">No
-                                            Telepon</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="phone_number" type="text"
-                                                class="form-control @error('phone_number') is-invalid @enderror"
-                                                id="phone_number"
-                                                value="{{ old('phone_number', auth()->user()->phone_number) }}"
-                                                autocomplete="off">
-                                            @error('phone_number')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="email" type="email"
-                                                class="form-control @error('email') is-invalid @enderror"
-                                                id="email" value="{{ old('email', auth()->user()->email) }}"
-                                                autocomplete="off">
-                                            @error('email')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
 
                                     <div class="row mb-3">
                                         <label for="password" class="col-md-4 col-lg-3 col-form-label">Password

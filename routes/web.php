@@ -39,7 +39,7 @@ use App\Http\Controllers\DatajenistransaksiController;
 use App\Http\Controllers\NofeebelumvalidasiController;
 use App\Http\Controllers\NofeeabelumvalidasiController;
 use App\Http\Controllers\DatapengajuanintegrasiController;
-
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -264,6 +264,11 @@ Route::get('/utama', [AdmindashboardController::class, 'index'])->name('admin.ut
 //data user detail
 Route::get('/detailpengguna', [PenggunadetailController::class, 'index'])->name('data.detailpengguna')->middleware('auth');
 
+//Role
+Route::get('/role',[RoleController::class, 'index'])->name('data.role')->middleware('auth');
+Route::put('/update_role{id}', [RoleController::class, 'update'])->name('update_role');
+Route::delete('/role_delete{id}', [RoleController::class, 'destroy'])->name('role_delete');
+Route::post('/role', [RoleController::class, 'store'])->name('role');
 //data dijukan
 Route::get('/datadiajukan', [DatadiajukanController::class, 'index'])->name('admin.datadiajukan')->middleware('auth');
 Route::put('/update_diajukan{id}', [DatadiajukanController::class, 'update'])->name('update.dijaukan');
