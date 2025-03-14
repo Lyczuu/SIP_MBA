@@ -88,7 +88,7 @@ class PaymentmbaController extends Controller
             'jenis_pengajuan'          => 'required|string|max:255',
             'cutoff' => 'required|date_format:H:i',
             'settlement' => 'required|date_format:H:i',
-            'nomor_registrasi_legal'   => 'required|numeric',
+            'nomor_registrasi_legal'   => 'required|string|max:255',
             'total_fee'                => 'required|numeric',
             'fee_mba'                  => 'required|numeric',
             'fee_mitra'                => 'required|numeric',
@@ -100,6 +100,11 @@ class PaymentmbaController extends Controller
             'telepon_dinas'            => 'required|numeric',
             'wag_kordinasi_payment'    => 'required|string|max:255',
             'wag_kordinasi_rekon'      => 'required|string|max:255',
+            'jenis_pajak' => 'required|array|min:1',
+
+        ],
+        [
+            'jenis_pajak.required' => 'Minimal pilih satu jenis pajak.',
         ]);
         $jenisPajakStr = isset($validated['jenis_pajak']) ? implode(',', $validated['jenis_pajak']) : null;
 

@@ -105,7 +105,13 @@ class PaymentmbafeeController extends Controller
             'fees' => 'nullable|numeric',
             'fee_mba' => 'nullable|numeric',
             'fee_mitra' => 'nullable|numeric',
-        ]);
+            'jenis_pajak' => 'required|array|min:1',
+        ],
+
+        [
+            'jenis_pajak.required' => 'Minimal pilih satu jenis pajak.',
+        ]
+    );
         $jenisPajakStr = isset($validated['jenis_pajak']) ? implode(',', $validated['jenis_pajak']) : null;
 
 
