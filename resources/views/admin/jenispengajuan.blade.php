@@ -93,7 +93,7 @@
             </label><br>
             <label class="option @yield('side4')">
                 <input type="radio" name="kemitraan" value="non-fee-based" onchange="handleSelection()">
-                Non Fee Based (tanpa admin)
+                Non Fee Based (Tanpa Admin)
             </label>
         </div>
         <button id="nextButton" class="next-button">Berikutnya</button>

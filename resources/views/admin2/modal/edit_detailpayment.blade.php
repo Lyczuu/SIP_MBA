@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="EditpaymentLabel{{ $list->id }}">Edit Data - ID: {{ $list->id }}</h5>
+                <h5 class="modal-title" id="EditpaymentLabel{{ $list->id }}">Validasi Data - ID: {{ $list->id }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -62,14 +62,15 @@
                             <div class="col-12 col-md-6">
                                 <label for="cutoff" class="form-label">Cutoff</label>
                                 <input type="text" name="cutoff" id="cutoff" class="form-control" placeholder=""
-                                    value="{{ $list->cutoff }}" disabled>
+                                value="{{ \Carbon\Carbon::parse($list->cutoff)->format('H:i') }}" disabled>
                             </div>
                             {{-- end  cutoff --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="settlemen" class="form-label">Settlemnet</label>
                                 <input type="text" name="settlement" id="settlement" class="form-control"
-                                    placeholder="" value="{{ $list->settlement }}" disabled>
+                                placeholder=""
+                                value="{{ \Carbon\Carbon::parse($list->settlement)->format('H:i') }}" disabled>
                             </div>
                             {{-- end  settlement --}}
 

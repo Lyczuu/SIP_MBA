@@ -21,10 +21,13 @@
                         <select class="form-control" id="kode_prov" name="kode_prov" required>
                             <option value="">-- Pilih Provinsi --</option>
                             @foreach ($provinsi as $p)
-                                <option value="{{ $p->kode_prov }}">{{ $p->nama_provinsi }}</option>
+                                <option value="{{ $p->kode_prov }}" {{ old('kode_prov') == $p->kode_prov ? 'selected' : '' }}>
+                                    {{ $p->nama_provinsi }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
+
 
                     <div class="mb-3">
                         <label for="kode_area" class="form-label">Kode Area</label>

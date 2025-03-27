@@ -16,36 +16,35 @@
                     <!-- Input Hidden untuk Jenis Pengajuan -->
                     <input type="hidden" name="status" value="0">
                     <div class="row">
-                        <div class="col-12 col-md-6">
-                            <label for="kode_pengajuan" class="form-label">Kode Pengajuan</label>
+                        <div class="col-6 mb-3">
+                            <label for="kode_pengajuan" class="form-label"><strong>Kode Pengajuan</strong></label>
                             <input type="text" name="kode_pengajuan" id="kode_pengajuan" class="form-control"
                                 placeholder="" value="{{ $list->kode_pengajuan }}" disabled>
                         </div>
                         {{-- end kode_pengajuan --}}
 
-                        <div class="col-12 col-md-6">
-                            <label for="username" class="form-label">Nama Am</label>
+                        <div class="col-6 mb-3">
+                            <label for="username" class="form-label"><strong>Nama Am</strong></label>
                             <input type="text" name="username" id="username" class="form-control" placeholder=""
                                 value="{{ $list->user->username }}" disabled>
                         </div>
                         {{-- end username --}}
-                        <div class="col-12 col-md-6">
-                            <label for="alasan_penolakan" class="form-label">Alasan Penolakan</label>
+                        <div class="col-6 mb-3">
+                            <label for="alasan_penolakan" class="form-label"><strong>Alasan Penolakan</strong></label>
                             <input type="text" name="alasan_penolakan" id="alasan_penolakan" class="form-control" placeholder=""
                                 value="{{ $list->alasan_penolakan }}" disabled>
                         </div>
                         {{-- end alasan penolakan--}}
-                        <div class="col-12 col-md-6">
-                            <label for="ditolak_oleh" class="form-label">Ditolak Oleh</label>
+                        <div class="col-6 mb-3">
+                            <label for="ditolak_oleh" class="form-label"><strong>Ditolak Oleh</strong></label>
                             <input type="text" name="ditolak_oleh" id="ditolak_oleh" class="form-control" placeholder=""
                                 value="{{ $list->ditolak_oleh }}" disabled>
                         </div>
                         {{-- end ditolak oleh --}}
 
                         <!-- Dropdown Wilayah -->
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="wilayah" class="form-label">Nama Wilayah</label>
+                            <div class="col-6 mb-3">
+                                <label for="wilayah" class="form-label"><strong>Nama Wilayah <span class="text-danger">*</span></strong></label>
                                 <select id="wilayah" name="wilayah_id" class="form-select" required>
                                     @foreach ($wilayah as $w)
                                         <option value="{{ $w->id }}"
@@ -58,7 +57,7 @@
 
                             <!-- Pilihan Jenis Transaksi -->
                             <div class="col-3 mb-4">
-                                <label class="form-label">Jenis Transaksi <span class="text-danger">*</span></label>
+                                <label class="form-label"><strong>Jenis Transaksi</strong><span class="text-danger">*</span></label>
                                 <div>
                                     @foreach ($jenistransaksi as $transaksi)
                                         <div class="form-check">
@@ -77,7 +76,7 @@
 
                             <!-- Aggregator Input (ditampilkan jika jenis transaksi AGGREGATOR) -->
                             <div class="col-6" id="aggregator-input-container" style="display: none;">
-                                <label for="mitra_agg" class="form-label">Informasi Tambahan untuk AGGREGATOR</label>
+                                <label for="mitra_agg" class="form-label"><strong>Informasi Tambahan untuk AGGREGATOR</strong></label>
                                 <select name="mitra_agg" id="mitra_agg" class="form-control">
                                     <option value="">-- Pilih agg --</option>
                                     @foreach ($mitras as $m)
@@ -94,7 +93,7 @@
 
                             <!-- Dropdown Mitra -->
                             <div class="col-6 mb-4">
-                                <label for="mitra" class="form-label">Nama Mitra</label>
+                                <label for="mitra" class="form-label"><strong>Nama Mitra <span class="text-danger">*</span></strong></label>
                                 <select id="mitra" name="mitra_id" class="form-select" required>
                                     <option value="">-- Pilih Mitra --</option>
                                     @foreach ($mitra as $m)
@@ -108,7 +107,7 @@
 
                             <!-- Jenis Pajak -->
                             <div class="col-6 mb-4">
-                                <label class="form-label">Jenis Pajak <span class="text-danger">*</span></label>
+                                <label class="form-label"><strong>Jenis Pajak</strong><span class="text-danger">*</span></label>
                                 <div>
                                     @php
                                         $selectedjenispajak = old(
@@ -138,7 +137,7 @@
                             <!-- Pengajuan Integrasi -->
                             <div class="row">
                                 <div class="col-4 mb-4">
-                                    <label class="form-label">Pengajuan Integrasi</label>
+                                    <label class="form-label"><strong>Pengajuan Integrasi <span class="text-danger">*</span></strong></label>
                                     <div class="d-flex justify-content-between">
                                         @foreach ($PengajuanIntegrasi as $pengajuan)
                                             <div class="form-check">
@@ -158,22 +157,21 @@
 
                             <!-- Cutoff, Settlement & Nomor Registrasi Legal -->
                             <label class="cuttoff-settlement-label mb-3">
-                                <strong>Cuttoff & Settlement & Nomor Registrasi Legal <span
-                                        class="text-danger">*</span></strong>
+                                <strong>Cuttoff & Settlement & Nomor Registrasi Legal <span class="text-danger">*</span></strong>
                             </label>
                             <div class="col-4">
-                                <label class="form-label">Cutoff</label>
+                                <label class="form-label"><strong>Cutoff <span class="text-danger">*</span></strong></label>
                                 <input type="time" class="form-control" name="cutoff"
                                     placeholder="Masukan cutoff" value="{{ old('cutoff', $list->cutoff ?? '') }}">
                             </div>
                             <div class="col-4">
-                                <label class="form-label">Settlement</label>
+                                <label class="form-label"><strong>Settlement <span class="text-danger">*</span></strong></label>
                                 <input type="time" class="form-control" name="settlement"
                                     placeholder="Masukan Settlement"
                                     value="{{ old('settlement', $list->settlement ?? '') }}">
                             </div>
                             <div class="col-4 mb-5">
-                                <label class="form-label">Nomor Registrasi Legal</label>
+                                <label class="form-label"><strong>Nomor Registrasi Legal <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="nomor_registrasi_legal"
                                     placeholder="Masukan Nomor Registrasi Legal"
                                     value="{{ old('nomor_registrasi_legal', $list->nomor_registrasi_legal ?? '') }}"
@@ -185,19 +183,19 @@
                                 <label class="fees-label mb-3"><strong>Fees <span
                                             class="text-danger">*</span></strong></label>
                                 <div class="col-4">
-                                    <label class="form-label">Total Fee</label>
+                                    <label class="form-label"><strong>Total Fee <span class="text-danger">*</span></strong></label>
                                     <input type="text" class="form-control" name="total_fee"
                                         placeholder="Masukan Total Fee"
                                         value="{{ old('total_fee', $list->total_fee ?? '') }}" required>
                                 </div>
                                 <div class="col-4">
-                                    <label class="form-label">Fee MBA</label>
+                                    <label class="form-label"><strong>Fee MBA <span class="text-danger">*</span></strong></label>
                                     <input type="text" class="form-control" name="fee_mba"
                                         placeholder="Masukkan Fee MBA"
                                         value="{{ old('fee_mba', $list->fee_mba ?? '') }}" required>
                                 </div>
                                 <div class="col-4 mb-5">
-                                    <label class="form-label">Fee Mitra</label>
+                                    <label class="form-label"><strong>Fee Mitra <span class="text-danger">*</span></strong></label>
                                     <input type="text" class="form-control" name="fee_mitra"
                                         placeholder="Masukkan Fee Mitra"
                                         value="{{ old('fee_mitra', $list->fee_mitra ?? '') }}" required>
@@ -208,13 +206,13 @@
                             <label class="pic-telepon-label mb-3"><strong>PIC & TELEPON <span
                                         class="text-danger">*</span></strong></label>
                             <div class="col-4">
-                                <label class="form-label">PIC Payment Mitra</label>
+                                <label class="form-label"><strong>PIC Payment Mitra <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="pic_payment_mitra"
                                     placeholder="Masukan PIC Payment Mitra"
                                     value="{{ old('pic_payment_mitra', $list->pic_payment_mitra ?? '') }}" required>
                             </div>
                             <div class="col-4">
-                                <label class="form-label">Telepon Payment Mitra</label>
+                                <label class="form-label"><strong>Telepon Payment Mitra <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="telepon_payment_mitra"
                                     placeholder="Masukan Telepon Payment Mitra"
                                     value="{{ old('telepon_payment_mitra', $list->telepon_payment_mitra ?? '') }}"
@@ -223,13 +221,13 @@
 
                             <!-- PIC Rekon Mitra & Telepon Rekon Mitra -->
                             <div class="col-4 mb-3">
-                                <label class="form-label">PIC Rekon Mitra</label>
+                                <label class="form-label"><strong>PIC Rekon Mitra <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="pic_rekon_mitra"
                                     placeholder="Masukan PIC Rekon Mitra"
                                     value="{{ old('pic_rekon_mitra', $list->pic_rekon_mitra ?? '') }}" required>
                             </div>
                             <div class="col-4">
-                                <label class="form-label">Telepon Rekon Mitra</label>
+                                <label class="form-label"><strong>Telepon Rekon Mitra <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="telepon_rekon_mitra"
                                     placeholder="Masukan Telepon Rekon Mitra"
                                     value="{{ old('telepon_rekon_mitra', $list->telepon_rekon_mitra ?? '') }}"
@@ -238,25 +236,25 @@
 
                             <!-- PIC Dinas & Telepon Dinas -->
                             <div class="col-4">
-                                <label class="form-label">PIC Dinas</label>
+                                <label class="form-label"><strong>PIC Dinas <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="pic_dinas"
                                     placeholder="Masukan PIC Dinas"
                                     value="{{ old('pic_dinas', $list->pic_dinas ?? '') }}" required>
                             </div>
                             <div class="col-4 mb-5">
-                                <label class="form-label">Telepon Dinas</label>
+                                <label class="form-label"><strong>Telepon Dinas <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="telepon_dinas"
                                     placeholder="Masukan Telepon Dinas"
                                     value="{{ old('telepon_dinas', $list->telepon_dinas ?? '') }}" required>
                             </div>
 
                             <!-- WAG Koordinasi Payment & Rekon -->
-                            {{-- <div class="row mt-3"> --}}
+                            {{-- < class="row mt-3"> --}}
                             <label class="cuttoff-settlement-label mb-3">
                                 <strong>WAG Koordinasi Payment & Rekon <span class="text-danger">*</span></strong>
                             </label>
                             <div class="col-6">
-                                <label class="form-label">WAG Koordinasi Payment</label>
+                                <label class="form-label"><strong>WAG Koordinasi Payment <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="wag_kordinasi_payment"
                                     placeholder="Masukan WAG Koordinasi Payment"
                                     value="{{ old('wag_kordinasi_payment', $list->wag_kordinasi_payment ?? '') }}"
@@ -264,13 +262,13 @@
                             </div>
 
                             <div class="col-6 mb-5">
-                                <label class="form-label">WAG Koordinasi Rekon</label>
+                                <label class="form-label"><strong>WAG Koordinasi Rekon <span class="text-danger">*</span></strong></label>
                                 <input type="text" class="form-control" name="wag_kordinasi_rekon"
                                     placeholder="Masukan WAG Koordinasi Rekon"
                                     value="{{ old('wag_kordinasi_rekon', $list->wag_kordinasi_rekon ?? '') }}"
                                     required>
                             </div>
-                        </div>
+
                         <div class="row">
                             <!-- Script untuk menampilkan input tambahan aggregator dan filter dropdown mitra -->
                             <script>

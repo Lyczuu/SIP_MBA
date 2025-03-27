@@ -261,9 +261,9 @@
                 <div class="row">
                     <label class="fees-label mb-3"><strong>Fees <span class="r">*</span></strong></label>
                     <div class="col-4">
-                        <label class="form-label">Total_Fee <span class="r">*</span></label>
+                        <label class="form-label">Total Fee <span class="r">*</span></label>
                         <input type="number" class="form-control no-spinner" name="total_fee" placeholder="Masukan Total fee"
-                            required value="{{ old('total_fee') }}">
+                          min="0"  required value="{{ old('total_fee') }}">
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -271,7 +271,7 @@
                     <div class="col-4">
                         <label class="form-label">Fee MBA <span class="r">*</span></label>
                         <input type="number" class="form-control no-spinner" name="fee_mba" placeholder="Masukkan Fee MBA"
-                            required value="{{ old('fee_mba') }}">
+                          min="0"  required value="{{ old('fee_mba') }}">
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -279,7 +279,7 @@
                     <div class="col-4 mb-5">
                         <label class="form-label">Fee Mitra <span class="r">*</span></label>
                         <input type="number" class="form-control no-spinner" name="fee_mitra" placeholder="Masukkan Fee Mitra"
-                            required value="{{ old('fee_mitra') }}">
+                           min="0" required value="{{ old('fee_mitra') }}">
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -310,10 +310,10 @@
                     <div class="col-4">
                         <label for="telepon_payment_mitra" class="form-label">Telepon Payment Mitra <span
                                 class="r">*</span></label>
-                        <input type="number" name="telepon_payment_mitra" id="telepon_payment_mitra"
+                        <input type="number" name="telepon_payment_mitra" placeholder="Masukan Telepon Payment Mitra" id="telepon_payment_mitra"
                             class="form-control no-spinner"
                             value="{{ old('telepon_payment_mitra', $paymentMba->telepon_payment_mitra ?? '') }}"
-                            required>
+                             min="0" required>
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -339,9 +339,9 @@
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Telepon Rekon Mitra <span class="r">*</span></label>
-                        <input type="number" name="telepon_rekon_mitra" id="telepon_rekon_mitra"
+                        <input type="number" name="telepon_rekon_mitra" placeholder="Masukan Telepon Rekon Mitra" id="telepon_rekon_mitra"
                             class="form-control no-spinner"
-                            value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}" required>
+                            value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}" min="0" required>
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -360,8 +360,8 @@
                     <div class="col-4 mb-5">
 
                         <label class="form-label">Telepon Dinas <span class="r">*</span></label>
-                        <input type="number" name="telepon_dinas" id="telepon_dinas" class="form-control no-spinner"
-                            value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}" required>
+                        <input type="number" name="telepon_dinas" placeholder="Masukan Telepon Dinas" id="telepon_dinas" class="form-control no-spinner"
+                            value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}" min="0" required>
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>

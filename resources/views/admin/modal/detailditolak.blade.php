@@ -63,14 +63,15 @@
                             <div class="col-12 col-md-6">
                                 <label for="cutoff" class="form-label">Cutoff</label>
                                 <input type="text" name="cutoff" id="cutoff" class="form-control" placeholder=""
-                                    value="{{ $list->cutoff }}" disabled>
+                                    value="{{ \Carbon\Carbon::parse($list->cutoff)->format('H:i') }}" disabled>
                             </div>
                             {{-- end  cutoff --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="settlemen" class="form-label">Settlemnet</label>
                                 <input type="text" name="settlement" id="settlement" class="form-control"
-                                    placeholder="" value="{{ $list->settlement }}" disabled>
+                                placeholder=""
+                                value="{{ \Carbon\Carbon::parse($list->settlement)->format('H:i') }}" disabled>
                             </div>
                             {{-- end  settlement --}}
 

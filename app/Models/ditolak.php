@@ -28,11 +28,13 @@ class ditolak extends Model
     // Relasi ke tabel users (user yang menolak)
     public function ditolakOleh()
     {
-        return $this->belongsTo(User::class, 'ditolak_oleh');
+        return $this->belongsTo(User::class, 'ditolak_oleh','id');
     }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'ditolak_oleh');
     }
+
+
 }

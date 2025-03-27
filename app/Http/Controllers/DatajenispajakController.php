@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\jenispajak;
+use App\Models\paymentmba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -14,7 +15,7 @@ class DatajenispajakController extends Controller
      */
     public function index()
     {
-        $data['jenis_pajak'] = jenispajak::get();
+        $data['jenis_pajak'] = jenispajak::orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
         return view('admin2.datajenispajak', $data);
     }
 
@@ -38,13 +39,14 @@ class DatajenispajakController extends Controller
         ]);
 
         // Cek data agar tidak duplikat
-        $exists = jenispajak::where('nama_jenis_pajak', $request['nama_jenis_pajak'])
-            ->exists();
+        $existingData = jenispajak::where('nama_jenis_pajak', $request['nama_jenis_pajak'])
+            ->first();
 
-        if ($exists) {
+        if ($existingData) {
             Session::flash('status', 'danger');
-            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
-            return redirect('/datajenispajak');
+            Session::flash('message',  "Data dengan nama '{$existingData->nama_jenis_pajak}' sudah ada, tidak dapat menambahkan data yang sama.");
+
+            return redirect()->back()->withInput();
         }
 
         // Simpan ke database
@@ -54,7 +56,8 @@ class DatajenispajakController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Simpan');
+        Session::flash('message', 'Data Berhasil Disimpan');
+
         return redirect('/datajenispajak');
     }
 
@@ -88,29 +91,30 @@ class DatajenispajakController extends Controller
         // Cari data mitra berdasarkan ID
         $jenis_pajak = jenispajak::findOrFail($id);
 
-        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
-        $isUsed = DB::table('payment_mba')->where('jenis_pajak_id', $jenis_pajak->id)->exists();
+        // Cek apakah data digunakan di tabel lain
+        $isUsed = paymentmba::where('jenis_pajak_id', $jenis_pajak->id)->exists();
 
         if ($isUsed) {
-            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
-            Session::flash('message', 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.');
-
-            return redirect('/datajenispajak');
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'message' => 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.'
+            ]);
         }
 
 
-        // Cek data agar tidak duplikat
-        $existingData = JenisPajak::where('nama_jenis_pajak', $request['nama_jenis_pajak'])
-            ->where('id', '!=', $id)
-            ->where('status', 'aktif')
-            ->first(); // Mengambil data yang sudah ada
+        // Cek apakah nama jenis pajak berubah
+        if ($request['nama_jenis_pajak'] !== $jenis_pajak->nama_jenis_pajak) {
+            // Cek apakah nama sudah ada di database (tanpa filter status)
+            $existingData = JenisPajak::where('nama_jenis_pajak', $request['nama_jenis_pajak'])
+                ->where('id', '!=', $id)
+                ->first();
 
-        if ($existingData !== null) { // Pastikan data tidak null sebelum mengakses propertinya
-            Session::flash('status', 'danger');
-            Session::flash('message', "Data dengan nama '{$existingData->nama_jenis_pajak}' sudah ada, tidak dapat memperbarui data.");
-            return redirect('/datajenispajak');
+            if ($existingData) {
+                Session::flash('status', 'danger');
+                Session::flash('message', "Data dengan nama '{$existingData->nama_jenis_pajak}' sudah ada, tidak dapat memperbarui data.");
+                return redirect()->back()->withInput();
+            }
         }
-
 
 
         // Update data mitra
@@ -120,7 +124,8 @@ class DatajenispajakController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Perbarui');
+        Session::flash('message', 'Data Berhasil Diperbarui');
+
         return redirect('/datajenispajak');
     }
 
@@ -131,19 +136,21 @@ class DatajenispajakController extends Controller
     {
         $jenis_pajak = jenispajak::findOrFail($id);
 
-        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
-        $isUsed = DB::table('payment_mba')->where('jenis_pajak_id', $jenis_pajak->id)->exists();
+        // Cek apakah data digunakan di tabel lain
+        $isUsed = paymentmba::where('jenis_pajak_id', $jenis_pajak->id)->exists();
 
         if ($isUsed) {
-            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
-            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
-
-            return redirect('/datajenispajak');
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain.'
+            ]);
         }
 
+
         $jenis_pajak->delete();
+
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di hapus');
+        Session::flash('message', 'Data Berhasil Dihapus');
         return redirect('/datajenispajak');
     }
 }

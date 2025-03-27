@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\wilayah;
 use App\Models\provinsi;
+use App\Models\paymentmba;
 use App\Models\datawilayah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,9 +17,33 @@ class DatawilayahController extends Controller
      */
     public function index()
     {
-        $wilayah = Wilayah::with('provinsi')->get();
+
+        $wilayah = Wilayah::with(['provinsi' => function ($query) {
+            $query->withTrashed(); // Menampilkan provinsi yang sudah dihapus
+        }])
+        ->withTrashed() // Menampilkan wilayah yang sudah dihapus
+        ->orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')
+        ->get();
+
+
         $provinsi = provinsi::all();
         return view('admin2.datawilayah', compact('wilayah', 'provinsi'));
+    }
+
+    public function restore($id)
+    {
+        $wilayah = wilayah::withTrashed()->where('id', $id)->first();
+
+        if ($wilayah) {
+            $wilayah->restore(); // Mengembalikan data
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Dikembalikan.');
+        } else {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak ditemukan.');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -39,14 +64,15 @@ class DatawilayahController extends Controller
         ]);
 
         // Cek apakah data provinsi dengan nama atau kode yang sama sudah ada
-        $exists = Wilayah::where('nama_wilayah', $request['nama_wilayah'])
+        $existingData = Wilayah::where('nama_wilayah', $request['nama_wilayah'])
             ->orWhere('kode_area', $request['kode_area'])
-            ->exists();
+            ->first();
 
-        if ($exists) {
+        if ($existingData) {
             Session::flash('status', 'danger');
-            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
-            return redirect('/datawilayah');
+            Session::flash('message',  "Data dengan nama '{$existingData->nama_wilayah}' atau kode area '{$existingData->kode_area}' sudah ada, tidak dapat menambahkan data yang sama.");
+
+            return redirect()->back()->withInput();
         }
 
         // Simpan data ke dalam tabel wilayah
@@ -57,7 +83,8 @@ class DatawilayahController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Simpan');
+        Session::flash('message', 'Data Berhasil Disimpan');
+
         return redirect('/datawilayah');
     }
 
@@ -74,22 +101,11 @@ class DatawilayahController extends Controller
             'kode_area' => 'required|string|max:255',
         ]);
 
-        // Cari data mitra berdasarkan ID
+        // Cari data wilayah berdasarkan ID
         $wilayah = wilayah::findOrFail($id);
 
 
-        // Cek apakah data wilayah digunakan di tabel utama (contoh: tabel `payment_mba`)
-        $isUsed = DB::table('payment_mba')
-            ->where('wilayah_id', $wilayah->id)
-            ->exists();
-
-        if ($isUsed) {
-            Session::flash('status', 'danger');
-            Session::flash('message', 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.');
-            return redirect('/datawilayah');
-        }
-
-        // Cek apakah data provinsi dengan nama atau kode yang sama sudah ada
+        // Cek apakah data wilayah dengan nama atau kode yang sama sudah ada
         $existingData = Wilayah::where(function ($query) use ($request) {
             $query->whereRaw('LOWER(nama_wilayah) = LOWER(?)', [$request['nama_wilayah']])
                 ->orWhereRaw('LOWER(kode_area) = LOWER(?)', [$request['kode_area']]);
@@ -100,12 +116,11 @@ class DatawilayahController extends Controller
         if ($existingData !== null) {
             Session::flash('status', 'danger');
             Session::flash('message', "Data dengan nama '{$existingData->nama_wilayah}' atau kode area '{$existingData->kode_area}' sudah ada, tidak dapat memperbarui data.");
-            return redirect('/datawilayah');
+
+            return redirect()->back()->withInput();
         }
 
-
-
-        // Update data mitra
+        // Update data wilayah
         $wilayah->update([
             'nama_wilayah' => $validated['nama_wilayah'],
             'kode_prov' => $validated['kode_prov'],
@@ -113,7 +128,8 @@ class DatawilayahController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Perbarui');
+        Session::flash('message', 'Data Berhasil Diperbarui');
+
         return redirect('/datawilayah');
     }
 
@@ -124,22 +140,12 @@ class DatawilayahController extends Controller
     {
         $wilayah = wilayah::findOrFail($id);
 
-        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
-        $isUsed = DB::table('payment_mba')->where('wilayah_id', $wilayah->id)->exists();
-
-        if ($isUsed) {
-            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
-            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
-
-            return redirect('/datawilayah');
-        }
 
         // Jika tidak digunakan, hapus data
         $wilayah->delete();
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil dihapus.');
-
+        Session::flash('message', 'Data Berhasil Dihapus.');
         return redirect('/datawilayah');
     }
 }

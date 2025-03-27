@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\paymentmba;
 use Illuminate\Http\Request;
 use App\Models\PengajuanIntegrasi;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ class DatapengajuanintegrasiController extends Controller
      */
     public function index()
     {
-        $data['pengajuanintegrasi'] = PengajuanIntegrasi::get();
+        $data['pengajuanintegrasi'] = PengajuanIntegrasi::orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
         return view('admin2.datapengajuanintegrasi', $data);
     }
 
@@ -38,15 +39,18 @@ class DatapengajuanintegrasiController extends Controller
         ]);
 
 
-        // Cek apakah data provinsi dengan nama atau kode yang sama sudah ada
-        $exists = PengajuanIntegrasi::where('nama_pengajuan_integrasi', $request['nama_pengajuan_integrasi'])
-            ->exists();
 
-        if ($exists) {
+        // Cek apakah data dengan nama yang sama sudah ada
+        $existingData = PengajuanIntegrasi::where('nama_pengajuan_integrasi', $request['nama_pengajuan_integrasi'])
+            ->first();
+
+        if ($existingData) {
             Session::flash('status', 'danger');
-            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
-            return redirect('/datapengajuanintegrasi');
+            Session::flash('message', "Data dengan nama '{$existingData->nama_pengajuan_integrasi}' sudah ada, tidak dapat menambahkan data yang sama.");
+
+            return redirect()->back()->withInput();
         }
+
 
         // Simpan ke database
         pengajuanintegrasi::create([
@@ -89,13 +93,13 @@ class DatapengajuanintegrasiController extends Controller
 
 
         // Cek data di tabel utama
-        $isUsed = DB::table('payment_mba')->where('pengajuan_integrasi_id', $pengajuan_integrasi->id)->exists();
+        $isUsed = paymentmba::where('pengajuan_integrasi_id', $pengajuan_integrasi->id)->exists();
 
         if ($isUsed) {
-            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
-            Session::flash('message', 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.');
-
-            return redirect('/datapengajuanintegrasi');
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'message' => 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.'
+            ]);
         }
 
 
@@ -109,7 +113,8 @@ class DatapengajuanintegrasiController extends Controller
         if ($exists !== null) {
             Session::flash('status', 'danger');
             Session::flash('message', "Data dengan nama '{$exists->nama_pengajuan_integrasi}' sudah ada, tidak dapat memperbarui data.");
-            return redirect('/datapengajuanintegrasi');
+
+            return redirect()->back()->withInput();
         }
 
         // Update data mitra
@@ -130,19 +135,20 @@ class DatapengajuanintegrasiController extends Controller
         $pengajuan_integrasi = pengajuanintegrasi::findOrFail($id);
 
         // Cek data di tabel utama
-        $isUsed = DB::table('payment_mba')->where('pengajuan_integrasi_id', $pengajuan_integrasi->id)->exists();
+        $isUsed = paymentmba::where('pengajuan_integrasi_id', $pengajuan_integrasi->id)->exists();
 
         if ($isUsed) {
-            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
-            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
-
-            return redirect('/datapengajuanintegrasi');
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain.'
+            ]);
         }
+
 
         $pengajuan_integrasi->delete();
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil di hapus');
+        Session::flash('message', 'Data Berhasil Dihapus');
         return redirect('/datapengajuanintegrasi');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\wilayah;
 use App\Models\provinsi;
+use App\Models\paymentmba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -14,7 +16,7 @@ class ProvinsiController extends Controller
      */
     public function index()
     {
-        $provinsi = provinsi::all();
+        $provinsi = Provinsi::withTrashed()->orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
         return view('admin2.dataprovinsi', compact('provinsi'));
     }
 
@@ -26,6 +28,22 @@ class ProvinsiController extends Controller
         //
     }
 
+
+    public function restore($id)
+    {
+        $provinsi = provinsi::withTrashed()->where('id', $id)->first();
+
+        if ($provinsi) {
+            $provinsi->restore(); // Mengembalikan data
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Dikembalikan.');
+        } else {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak ditemukan.');
+        }
+
+        return redirect()->back();
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -38,15 +56,17 @@ class ProvinsiController extends Controller
 
         ]);
 
-        // Cek apakah data provinsi dengan nama atau kode yang sama sudah ada
-        $exists = Provinsi::where('nama_provinsi', $validated['nama_provinsi'])
-            ->orWhere('kode_prov', $validated['kode_prov'])
-            ->exists();
 
-        if ($exists) {
+        // Cek apakah data dengan nama atau kode provinsi yang sama sudah ada
+        $existingData = Provinsi::where('nama_provinsi', $validated['nama_provinsi'])
+            ->orWhere('kode_prov', $validated['kode_prov'])
+            ->first();
+
+        if ($existingData) {
             Session::flash('status', 'danger');
-            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
-            return redirect('/dataprovinsi');
+            Session::flash('message', "Data dengan nama '{$existingData->nama_provinsi}' atau kode prov '{$existingData->kode_prov}' sudah ada, tidak dapat menambahkan data yang sama.");
+
+            return redirect()->back()->withInput();
         }
 
 
@@ -57,7 +77,7 @@ class ProvinsiController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil di Simpan');
+        Session::flash('message', 'Data Berhasil Disimpan');
         return redirect('/dataprovinsi');
     }
 
@@ -94,16 +114,8 @@ class ProvinsiController extends Controller
         $provinsi = provinsi::findOrFail($id);
 
 
-        // Cek apakah data provinsi digunakan di tabel `wilayah` atau `payment_mba`
-        $isUsed = DB::table('wilayah')->where('kode_prov', $provinsi->id)->exists() ||
-            DB::table('payment_mba')->where('wilayah_id', $provinsi->id)->exists();
+        // Cek apakah data provinsi masih digunakan di `wilayah` atau `payment_mba`
 
-        if ($isUsed) {
-            Session::flash('status', 'danger'); //Perbaikan dari "dangger" ke "danger"
-            Session::flash('message', 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.');
-
-            return redirect('/dataprovinsi');
-        }
 
         // Cek apakah data provinsi dengan nama atau kode yang sama sudah ada
         $existingData = Provinsi::where(function ($query) use ($validated) {
@@ -116,7 +128,8 @@ class ProvinsiController extends Controller
         if ($existingData  !== null) {
             Session::flash('status', 'danger');
             Session::flash('message', "Data dengan nama '{$existingData->nama_provinsi}' atau kode_prov '{$existingData->kode_prov}' sudah ada, tidak dapat memperbarui data.");
-            return redirect('/dataprovinsi');
+
+            return redirect()->back()->withInput();
         }
 
         // Update data provinsi
@@ -126,7 +139,7 @@ class ProvinsiController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Perbarui');
+        Session::flash('message', 'Data Berhasil Diperbarui');
         return redirect('/dataprovinsi');
     }
 
@@ -135,25 +148,13 @@ class ProvinsiController extends Controller
      */
     public function destroy($id)
     {
-        $provinsi = provinsi::findOrFail($id);
-
-        // Cek data provinsi digunakan di tabel `wilayah` atau `payment_mba`
-        $isUsed = DB::table('wilayah')->where('kode_prov', $provinsi->id)->exists() ||
-            DB::table('payment_mba')->where('wilayah_id', $provinsi->id)->exists();
-
-        if ($isUsed) {
-            Session::flash('status', 'danger'); //  Perbaikan dari "dangger" ke "danger"
-            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
-
-            return redirect('/dataprovinsi');
-        }
+        $provinsi = Provinsi::findOrFail($id);
 
         // Jika tidak digunakan, hapus data
         $provinsi->delete();
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil dihapus.');
-
+        Session::flash('message', 'Data Berhasil Dihapus.');
         return redirect('/dataprovinsi');
     }
 }

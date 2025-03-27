@@ -101,44 +101,49 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($mitra as $key => $list)
+                                    @foreach ($mitra as $list)
                                         <tr>
                                             <td>{{ $list->nama_mitra }}</td>
                                             <td>
                                                 @if ($list->flag_agg == 1)
                                                     <span class="badge bg-success">Aktif</span>
-                                                @elseif ($list->flag_agg == 0)
+                                                @else
                                                     <span class="badge bg-danger">Off</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @if ($list->flag_bank == 1)
                                                     <span class="badge bg-success">Aktif</span>
-                                                @elseif ($list->flag_bank == 0)
+                                                @else
                                                     <span class="badge bg-danger">Off</span>
                                                 @endif
                                             </td>
-                                            <td>{{ $list->created_at }}</td>
-                                            <td>{{ $list->updated_at }}</td>
+                                            <td>{{ $list->created_at->format('d-m-Y H:i') }}</td>
+                                            <td>{{ $list->updated_at->format('d-m-Y H:i') }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
-                                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#Editmitra{{ $list->id }}">
-                                                        <i class="bi bi-pencil-square"></i> Edit
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#hapusmitra{{ $list->id }}">
-                                                        <i class="bi bi-trash"></i> Delete
-                                                    </button>
+                                                    @if ($list->deleted_at)
+                                                        <a href="{{ url('/mitra/restore/'.$list->id) }}" class="btn btn-success btn-sm">
+                                                            <i class="bi bi-arrow-counterclockwise"></i> Restore
+                                                        </a>
+                                                    @else
+                                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#Editmitra{{ $list->id }}">
+                                                            <i class="bi bi-pencil-square"></i> Edit
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#hapusmitra{{ $list->id }}">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </td>
-
                                         </tr>
                                         @include('admin2.modal.edit_datamitra')
                                         @include('admin2.modal.delete_datamitra')
                                     @endforeach
-
                                 </tbody>
+
                             </table>
                         </div>
                         <!-- End Table with stripped rows -->

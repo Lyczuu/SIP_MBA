@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_mitra', 255)->unique();
             $table->string('flag_agg', 255)->default('0');
             $table->string('flag_bank', 255)->default('0');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

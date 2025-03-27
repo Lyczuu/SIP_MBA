@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('kode_area')->unique();
             $table->string('nama_wilayah', 255)->unique();
             $table->string('kode_prov', 255); // Relasi ke tabel provinsi
-
+            $table->softDeletes();
             $table->foreign('kode_prov')->references('kode_prov')->on('provinsi')->onDelete('cascade');
             $table->timestamps();
         });

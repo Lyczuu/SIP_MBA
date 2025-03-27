@@ -73,7 +73,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Form Integrasi Payment MBA No Fee Base(admin)</h5>
+            <h5 class="card-title">Form Integrasi Payment MBA Non Fee Base(admin)</h5>
             <form class="row g-3 needs-validation" action="/sok" method="post" enctype="multipart/form-data"
                 novalidate>
                 @csrf
@@ -86,7 +86,7 @@
                 <!-- Dropdown Wilayah -->
                 <div class="row">
                     <div class="col-6">
-                        <label for="wilayah" class="form-label">Nama Wilayah</label>
+                        <label for="wilayah" class="form-label">Nama Wilayah <span class="text-danger">*</span></label>
                         <select id="wilayah" name="wilayah_id" class="form-select" required>
                             @foreach ($wilayah as $w)
                                 <option value="{{ $w->id }}" {{ old('wilayah_id') == $w->id ? 'selected' : '' }}>
@@ -139,7 +139,7 @@
                     {{-- end aggregator --}}
 
                     <div class="col-6 mb-4">
-                        <label for="mitra" class="form-label">Nama Mitra</label>
+                        <label for="mitra" class="form-label">Nama Mitra <span class="text-danger">*</span></label>
                         <select id="mitra" name="mitra_id" class="form-select" required>
                             <option value="">-- Pilih Mitra --</option>
                             @foreach ($mitra as $m)
@@ -275,10 +275,10 @@
                     </div>
                     <div class="col-4">
                         <label class="form-label">Telepon Payment Mitra <span class="r">*</span></label>
-                        <input type="number" name="telepon_payment_mitra" id="telepon_payment_mitra"
+                        <input type="number" name="telepon_payment_mitra" placeholder="Masukan Telepon Payment Mitra" id="telepon_payment_mitra"
                             class="form-control no-spinner"
                             value="{{ old('telepon_payment_mitra', $paymentMba->telepon_payment_mitra ?? '') }}"
-                            required>
+                             min="0"  required>
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -304,9 +304,9 @@
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Telepon Rekon Mitra <span class="r">*</span></label>
-                        <input type="number" name="telepon_rekon_mitra" id="telepon_rekon_mitra"
+                        <input type="number" name="telepon_rekon_mitra" placeholder="Masukan Telepon Rekon Mitra" id="telepon_rekon_mitra"
                             class="form-control no-spinner"
-                            value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}" required>
+                            value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}" min="0" required>
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -323,9 +323,9 @@
                     </div>
 
                     <div class="col-4 mb-4">
-                        <label class="form-label">Telepon Dinas <span class="r">*</span></label>
-                        <input type="number" name="telepon_dinas" id="telepon_dinas" class="form-control"
-                            value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}" required>
+                        <label class="form-label">Telepon Dinas <span class="text-danger">*</span></label>
+                        <input type="number" name="telepon_dinas" placeholder="Masukan Telepon Dinas"  id="telepon_dinas" class="form-control no-spinner"
+                            value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}" min="0" required>
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -334,11 +334,10 @@
                 <p></p>
                 <!-- WAG Koordinasi Payment -->
                 <div class="row">
-                    <label class="cutof-setlement-formlabel"><strong>WAG kordinasi Payment & Payment<span
-                                class="text-danger">*</span></strong></label>
+                    <label class="cutof-setlement-formlabel"><strong>WAG kordinasi Payment & Payment <span class="text-danger">*</span></strong></label>
                     <p></p>
                     <div class="col-6">
-                        <label class="form-label">WAG Koordinasi Payment <span class="r">*</span></label>
+                        <label class="form-label">WAG Koordinasi Payment <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="wag_kordinasi_payment"
                             placeholder="Masukan WAG Koordinasi Payment" required
                             value="{{ old('wag_kordinasi_payment') }}">
@@ -348,7 +347,7 @@
                     </div>
                     <!-- WAG Koordinasi Rekon -->
                     <div class="col-6">
-                        <label class="form-label">WAG Koordinasi Rekon <span class="r">*</span></label>
+                        <label class="form-label">WAG Koordinasi Rekon <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="wag_kordinasi_rekon"
                             placeholder="Masukan WAG Koordinasi Rekon" required
                             value="{{ old('wag_kordinasi_rekon') }}">

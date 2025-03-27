@@ -5,14 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class wilayah extends Model
 {
     //
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'wilayah';
     protected $fillable = ['nama_wilayah','kode_prov', 'kode_area'];
+
+
+    protected $dates = ['deleted_at'];
 
     public function payments()
     {
@@ -27,7 +31,7 @@ class wilayah extends Model
 
     public function provinsi()
     {
-        return $this->belongsTo(Provinsi::class, 'kode_prov', 'kode_prov');
+        return $this->belongsTo(Provinsi::class, 'kode_prov', 'kode_prov')->withTrashed();
     }
 
 }

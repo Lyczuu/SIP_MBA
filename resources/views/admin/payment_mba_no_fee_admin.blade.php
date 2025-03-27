@@ -17,9 +17,9 @@
         </nav>
     </div><!-- End Page Title -->
 
-    {{-- modal flash --}}
+    <!-- Modal -->
     @if (Session::has('status'))
-        <div id="flash-message" class="alert alert-{{ Session::get('status') }}" role="alert">
+        <div id="flash-message" class="alert alert-success" role="alert">
             {{ Session::get('message') }}
         </div>
     @endif
@@ -33,8 +33,9 @@
                 flashMessage.style.opacity = '0';
                 setTimeout(() => flashMessage.remove(), 500); // Hapus dari DOM setelah fade-out
             }
-        }, 3000);
+        }, 3000); // Ubah angka ini untuk durasi yang berbeda
     </script>
+
 
     @include('admin.modal.payment_mba_no_fee_admin_add')
 

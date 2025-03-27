@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jenis_transaksi', function (Blueprint $table) {
             $table->id();
             $table->string('nama_jenis_transaksi', 255)->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

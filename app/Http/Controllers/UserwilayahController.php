@@ -71,7 +71,7 @@ class UserwilayahController extends Controller
 
         if ($isUsed) {
             Session::flash('status', 'danger');
-            Session::flash('message', 'Tidak dapat menghapus wilayah yang sudah digunakan di tabel utama.');
+            Session::flash('message', 'Tidak dapat menghapus wilayah yang sudah diberikan ke user dan sudah digunakan di tabel utama.');
             return redirect()->back();
         }
 

@@ -6,12 +6,25 @@
     <div class="container mt-4">
         {{-- <h1 class="mb-4">Halaman Belum validasi</h1> --}}
 
-        {{-- Jika ada pesan status --}}
+        <!-- Modal -->
         @if (Session::has('status'))
-            <div class="alert alert-success" role="alert">
+            <div id="flash-message" class="alert alert-success" role="alert">
                 {{ Session::get('message') }}
             </div>
         @endif
+
+        <script>
+            // Hilangkan flash message setelah 3 detik (3000 ms)
+            setTimeout(() => {
+                const flashMessage = document.getElementById('flash-message');
+                if (flashMessage) {
+                    flashMessage.style.transition = 'opacity 0.5s ease';
+                    flashMessage.style.opacity = '0';
+                    setTimeout(() => flashMessage.remove(), 500); // Hapus dari DOM setelah fade-out
+                }
+            }, 3000); // Ubah angka ini untuk durasi yang berbeda
+        </script>
+
         <!DOCTYPE html>
         <html lang="en">
 
@@ -51,8 +64,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
                                         <button type="button" class="btn btn-info  @yield('side2')"
-                                            onclick="window.location.href='{{ route('admin.pengajuan') }}'"><span class="bi bi-plus-lg">Pengajuan</span>
-                                           </button>
+                                            onclick="window.location.href='{{ route('admin.pengajuan') }}'"><span
+                                                class="bi bi-plus-lg">Pengajuan</span>
+                                        </button>
 
                                         <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified"
                                             role="tablist">

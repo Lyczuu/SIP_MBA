@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('phone_number');
             $table->string('alamat');
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

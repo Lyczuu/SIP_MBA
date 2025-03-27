@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="col-13">
                         <label for="nama_pengajuan_integrasi" class="form-label">Nama Pengajuan Integrasi</label>
-                        <input type="text" class="form-control" id="nama_pengajuan_integrasi" name="nama_pengajuan_integrasi">
+                        <input type="text" class="form-control" id="nama_pengajuan_integrasi" name="nama_pengajuan_integrasi" value="{{old('nama_pengajuan_integrasi')}}" required>
                     </div>
                     <br>
                 </div>

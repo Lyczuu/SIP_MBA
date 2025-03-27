@@ -31,16 +31,11 @@ class DatadiajukanController extends Controller
 
         $ditolak = ditolak::with('user')->get();
         $user = Auth::user();
-        $paymentmbafee = PaymentMBA::where('user_id', $user->id)->get();
 
         return view('admin2.datadiajukan', compact('paymentmba', 'user'));
-
-        // // Kirim data yang sudah difilter ke view
-        // return view('admin2.datadiajukan', [
-        //     'paymentmba' => $paymentmba,
-        //     'paymentmbafee' => $paymentmbafee,
-        // ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.

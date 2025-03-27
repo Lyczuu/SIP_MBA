@@ -103,18 +103,25 @@
                                         <tr>
                                             <td>{{ $list->nama_provinsi }}</td>
                                             <td>{{ $list->kode_prov }}</td>
-                                            <td>{{ $list->created_at}}</td>
-                                            <td>{{ $list->updated_at}}</td>
+                                            <td>{{ $list->created_at->format('d-m-Y H:i') }}</td>
+                                            <td>{{ $list->updated_at->format('d-m-Y H:i') }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
-                                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#Editprovinsi{{ $list->id }}">
-                                                        <i class="bi bi-pencil-square"></i> Edit
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#hapusprovinsi{{ $list->id }}">
-                                                        <i class="bi bi-trash"></i> Delete
-                                                    </button>
+                                                    @if ($list->deleted_at)
+                                                        <a href="{{ url('/provinsi/restore/' . $list->id) }}"
+                                                            class="btn btn-success btn-sm">
+                                                            <i class="bi bi-arrow-counterclockwise"></i> Restore
+                                                        </a>
+                                                    @else
+                                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#Editprovinsi{{ $list->id }}">
+                                                            <i class="bi bi-pencil-square"></i> Edit
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#hapusprovinsi{{ $list->id }}">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                        @endif
                                                 </div>
                                             </td>
                                         </tr>

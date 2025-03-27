@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\ditolak;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use Illuminate\Http\Request;
@@ -46,14 +47,36 @@ class DashboardController extends Controller
         // Hitung total pengajuan berdasarkan user yang login
         $totalpengajuan = PaymentMBA::where('user_id', $userId)->count();
 
-        // Hitung total mitra_agg yang berisi angka
-        $totalMitraAgg = PaymentMBA::whereNotNull('mitra_agg')
-            ->whereRaw("mitra_agg REGEXP '^[0-9]+$'")
+        // Hitung total semua pengajuan dari semua user
+        $totalSemuaPengajuan = PaymentMBA::count();
+
+        // tidak terjadi pembagian dengan nol
+        $persentasePengajuan = $totalSemuaPengajuan > 0
+            ? ($totalpengajuan / $totalSemuaPengajuan) * 100
+            : 0;
+
+        $totalMitraAgg = PaymentMBA::where('user_id', $userId) // Filter berdasarkan user yang login
+            ->whereNotNull('mitra_agg') // Pastikan mitra_agg tidak NULL
+            ->where('mitra_agg', '!=', '') // Pastikan mitra_agg tidak kosong
+            ->whereRaw("mitra_agg REGEXP '^[0-9]+$'") // Hanya angka yang valid
             ->count();
 
-        // Ambil mitra_agg dari payment_mba berdasarkan user yang login
-        $mitraAgg = PaymentMba::where('user_id', $userId)->value('mitra_agg');
 
-        return view('admin.dashboard', compact('paymentmba', 'totalpengajuan', 'totalMitraAgg', 'mitraAgg'));
+
+        // $rejectedCount = PaymentMBA::where('status', 1)
+        //     ->where('user_id', $userId) // Hanya data milik user yang login
+        //     ->count();
+
+
+
+        //     $rejectedMessages = Ditolak::with('ditolakOleh') // Load relasi admin untuk ambil namanya
+        //     ->whereHas('paymentMba', function ($query) use ($userId) {
+        //         $query->where('user_id', $userId);
+        //     })
+        //     ->latest()
+        //     ->limit(3) // Ambil 3 data terbaru
+        //     ->get();
+
+        return view('admin.dashboard', compact('paymentmba', 'totalpengajuan', 'totalMitraAgg', 'persentasePengajuan'));
     }
 }

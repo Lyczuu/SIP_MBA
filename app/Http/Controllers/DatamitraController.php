@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\mitra;
 use App\Models\datamitra;
+use App\Models\paymentmba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -15,13 +16,31 @@ class DatamitraController extends Controller
      */
     public function index()
     {
-        $data['mitra'] = mitra::get();
+        $data['mitra'] = Mitra::withTrashed()->orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
         return view('admin2.datamitra', $data);
     }
 
     /**
      * Show the form for creating a new resource.
      */
+
+
+    public function restore($id)
+    {
+        $mitra = Mitra::withTrashed()->where('id', $id)->first();
+
+        if ($mitra) {
+            $mitra->restore(); // Mengembalikan data
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Dikembalikan.');
+        } else {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak ditemukan.');
+        }
+
+        return redirect()->back();
+    }
+
     public function create()
     {
         //
@@ -40,12 +59,13 @@ class DatamitraController extends Controller
         ]);
 
         // cek data agar tidak duplikat
-        $exists = Mitra::where('nama_mitra', $validated['nama_mitra'])->exists();
+        $existingData = Mitra::where('nama_mitra', $validated['nama_mitra'])->first();
 
-        if ($exists) {
+        if ($existingData) {
             Session::flash('status', 'danger');
-            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
-            return redirect('/datamitra');
+            Session::flash('message',  "Data dengan nama '{$existingData->nama_mitra}' sudah ada, tidak dapat menambahkan data yang sama.");
+
+            return redirect()->back()->withInput();
         }
 
         // Simpan ke database
@@ -56,7 +76,7 @@ class DatamitraController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil di Simpan');
+        Session::flash('message', 'Data Berhasil Disimpan');
         return redirect('/datamitra');
     }
 
@@ -77,27 +97,16 @@ class DatamitraController extends Controller
         // Cari data mitra berdasarkan ID
         $mitra = Mitra::findOrFail($id);
 
-        // Cek data di tabel utama
-        $isUsed = DB::table('payment_mba')
-            ->where('mitra_agg', $mitra->id)
-            ->orWhere('mitra_id', $mitra->id)
-            ->exists();
-
-        if ($isUsed) {
-            Session::flash('status', 'danger');
-            Session::flash('message', 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.');
-            return redirect('/datamitra');
-        }
 
         // Cek data agar tidak duplikat
         $existingData = Mitra::where('nama_mitra', $request['nama_mitra'])
             ->where('id', '!=', $id) // Mengecualikan ID yang sedang diedit
-            ->first();//mengambil data yang sudah ada
+            ->first();
 
         if ($existingData !== null) {
             Session::flash('status', 'danger');
             Session::flash('message',  "Data dengan nama '{$existingData->nama_mitra}' sudah ada, tidak dapat memperbarui data.");
-            return redirect('/datamitra');
+            return redirect()->back()->withInput();
         }
 
 
@@ -109,7 +118,7 @@ class DatamitraController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data Berhasil Di Perbarui');
+        Session::flash('message', 'Data Berhasil Diperbarui');
         return redirect('/datamitra');
     }
 
@@ -121,24 +130,11 @@ class DatamitraController extends Controller
 
         $mitra = Mitra::findOrFail($id);
 
-        // Cek apakah data mitra digunakan di tabel utama (contoh: tabel `payment_mba`)
-        $isUsed = DB::table('payment_mba')
-            ->where('mitra_agg', $mitra->id)
-            ->orWhere('mitra_id', $mitra->id) // Tambahkan pengecekan mitra_id
-            ->exists();
-
-        if ($isUsed) {
-            Session::flash('status', 'danger');
-            Session::flash('message', 'Data tidak dapat dihapus karena masih digunakan di tabel lain.');
-
-            return redirect('/datamitra');
-        }
-
         // Jika tidak digunakan, hapus data
         $mitra->delete();
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil dihapus.');
+        Session::flash('message', 'Data Berhasil Dihapus.');
 
         return redirect('/datamitra');
     }

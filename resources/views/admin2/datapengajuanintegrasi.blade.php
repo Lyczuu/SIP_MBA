@@ -85,7 +85,7 @@
                         @include('admin2.modal.add_datapengajuanintegrasi')
                         <!-- Table with stripped rows -->
                         <div class="table-responsive">
-                            <table class="datatable">
+                            <table class="table datatable">
                                 <thead>
                                     <tr>
                                         <th>Nama Pengajuan Integrasi</th>
@@ -98,8 +98,8 @@
                                     @foreach ($pengajuanintegrasi as $key => $list)
                                         <tr>
                                             <td>{{ $list->nama_pengajuan_integrasi }}</td>
-                                            <td>{{ $list->created_at }}</td>
-                                            <td>{{ $list->updated_at }}</td>
+                                            <td>{{ $list->created_at->format('d-m-Y H:i') }}</td>
+                                            <td>{{ $list->updated_at->format('d-m-Y H:i') }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
                                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"

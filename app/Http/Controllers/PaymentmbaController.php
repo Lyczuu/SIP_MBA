@@ -32,7 +32,7 @@ class PaymentmbaController extends Controller
 
         $wilayah = $user->wilayah; // Ambil wilayah sesuai dengan user yang login
         $mitra = mitra::all();
-        $jenis_pajak = JenisPajak::where('status', '1')->get();
+        $jenis_pajak = JenisPajak::get();
         $mitras = Mitra::where('flag_agg', 1)->get();
         $jenis_transaksi = jenistransaksi::all();
         $fees = fees::all();

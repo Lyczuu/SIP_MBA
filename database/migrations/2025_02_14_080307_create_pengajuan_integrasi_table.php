@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pengajuan_integrasi', function (Blueprint $table) {
             $table->id();
             $table->string('nama_pengajuan_integrasi', 255)->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -69,13 +69,7 @@ class DataditolakController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
-
-        if ($user) {
-            return view('admin2.dataditolak', ['user' => $user]);
-        } else {
-            return abort(404, "User tidak ditemukan");
-        }
+       
     }
 
     /**

@@ -13,7 +13,7 @@
                 <div class="modal-body">
                     <div class="col-13">
                         <label for="nama_jenis_transaksi" class="form-label">Nama Jenis transaksi</label>
-                        <input type="text" class="form-control" id="nama_jenis_transaksi" name="nama_jenis_transaksi">
+                        <input type="text" class="form-control" id="nama_jenis_transaksi" name="nama_jenis_transaksi" value="{{old ('nama_jenis_transaksi')}}" required>
                     </div>
                     <br>
                 </div>

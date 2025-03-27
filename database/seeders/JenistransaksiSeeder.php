@@ -16,25 +16,21 @@ class JenistransaksiSeeder extends Seeder
         DB::table('jenis_transaksi')->insert([
             [
                 'nama_jenis_transaksi' => 'H2H',
-                'status' => '1',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'nama_jenis_transaksi' => 'VA',
-                'status' => '1',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'nama_jenis_transaksi' => 'QRIS',
-                'status' => '1',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'nama_jenis_transaksi' => 'AGGREGATOR',
-                'status' => '1',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

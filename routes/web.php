@@ -40,6 +40,7 @@ use App\Http\Controllers\NofeebelumvalidasiController;
 use App\Http\Controllers\NofeeabelumvalidasiController;
 use App\Http\Controllers\DatapengajuanintegrasiController;
 use App\Http\Controllers\RoleController;
+use App\Models\provinsi;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -272,6 +273,10 @@ Route::post('/role', [RoleController::class, 'store'])->name('role');
 //data dijukan
 Route::get('/datadiajukan', [DatadiajukanController::class, 'index'])->name('admin.datadiajukan')->middleware('auth');
 Route::put('/update_diajukan{id}', [DatadiajukanController::class, 'update'])->name('update.dijaukan');
+//ajax diajukan
+Route::get('/get-latest-payments', [DatadiajukanController::class, 'getLatestPayments'])->name('get.latest.payments');
+
+
 //data ditolak
 Route::get('/dataditolak', [DataditolakController::class, 'index'])->name('data.ditolak')->middleware('auth');
 
@@ -283,12 +288,16 @@ Route::get('/datamitra', [DatamitraController::class, 'index'])->name('data.mitr
 Route::delete('/mitra_delete{id}', [Datamitracontroller::class, 'destroy'])->name('mitra_delete');
 Route::put('/update_mitra{id}', [DatamitraController::class, 'update'])->name('update_mitra');
 Route::post('/masuk', [DatamitraController::class, 'store'])->name('masuk');
+//restore data mitra
+Route::get('/mitra/restore/{id}', [DatamitraController::class, 'restore']);
 
 //data wilayah
 Route::get('/datawilayah', [DatawilayahController::class, 'index'])->name('data.wilayah')->middleware('auth');
 Route::delete('/wilayah_delete{id}', [Datawilayahcontroller::class, 'destroy'])->name('wilayah_delete');
 Route::put('/update_wilayah{id}', [DatawilayahController::class, 'update'])->name('update_wilayah');
 Route::post('/gowlet', [DatawilayahController::class, 'store'])->name('gow.let');
+//restore data
+Route::get('/wilayah/restore/{id}', [DatawilayahController::class, 'restore']);
 
 //data jenis pajak
 Route::get('/datajenispajak', [DatajenispajakController::class, 'index'])->name('data.jenispajak')->middleware('auth');
@@ -323,7 +332,8 @@ Route::get('/dataprovinsi',[ProvinsiController::class,'index'])->name('data.prov
 Route::post('/godaw',[ProvinsiController::class,'store'])->name('godaw')->middleware('auth');
 Route::put('/update_provinsi{id}', [ProvinsiController::class, 'update'])->name('update_provinsi');
 Route::delete('/dataprovinsi_delete{id}', [ProvinsiController::class, 'destroy'])->name('dataprovinsi_delete');
-
+//restore data
+Route::get('/provinsi/restore/{id}', [ProvinsiController::class, 'restore']);
 
 //feeadmin
 Route::get('/feeabelumvalidasi',[FeeabelumvalidasiController::class, 'index'])->name('feea.belumvalidasi');

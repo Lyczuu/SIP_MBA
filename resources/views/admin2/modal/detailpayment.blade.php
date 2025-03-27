@@ -4,7 +4,8 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="EditpaymentLabel{{ $list->id }}">Detail Data - ID: {{ $list->id }}</h5>
+                <h5 class="modal-title" id="EditpaymentLabel{{ $list->id }}">Detail Data - ID: {{ $list->id }}
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -62,14 +63,15 @@
                             <div class="col-12 col-md-6">
                                 <label for="cutoff" class="form-label">Cutoff</label>
                                 <input type="text" name="cutoff" id="cutoff" class="form-control" placeholder=""
-                                    value="{{ $list->cutoff }}" disabled>
+                                    value="{{ \Carbon\Carbon::parse($list->cutoff)->format('H:i') }}" disabled>
                             </div>
                             {{-- end  cutoff --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="settlemen" class="form-label">Settlemnet</label>
                                 <input type="text" name="settlement" id="settlement" class="form-control"
-                                    placeholder="" value="{{ $list->settlement }}" disabled>
+                                    placeholder=""
+                                    value="{{ \Carbon\Carbon::parse($list->settlement)->format('H:i') }}" disabled>
                             </div>
                             {{-- end  settlement --}}
 
@@ -92,8 +94,8 @@
                             <div class="col-12 col-md-6">
                                 <label for="pengajuan_integrasi" class="form-label">Pengajuan Integrasi</label>
                                 <input type="text" name="pengajuan_integrasi" id="pengajuan_integrasi"
-                                    class="form-control" placeholder="" value="{{ $list->pengajuanIntegrasi->nama_pengajuan_integrasi }}"
-                                    disabled>
+                                    class="form-control" placeholder=""
+                                    value="{{ $list->pengajuanIntegrasi->nama_pengajuan_integrasi }}" disabled>
                             </div>
                             {{-- end  pengajuan integrasi --}}
 
@@ -121,97 +123,100 @@
                             <div class="col-12 col-md-6">
                                 <label for="status" class="form-label">Status</label>
                                 <input type="text" name="status" id="status" class="form-control"
-                                    placeholder="" value="{{ $list->status == 2 ? 'Diterima' : ($list->status == 1 ? 'Ditolak' : ($list->status == 0 ? 'Di Ajukan' :'')) }}" disabled>
+                                    placeholder=""
+                                    value="{{ $list->status == 2 ? 'Diterima' : ($list->status == 1 ? 'Ditolak' : ($list->status == 0 ? 'Di Ajukan' : '')) }}"
+                                    disabled>
                             </div>
                             {{-- end  status --}}
 
                             <div class="col-12 col-md-6">
                                 <label for="jenis_pengajuan" class="form-label">Jenis pengajuan</label>
-                                <input type="text" name="jenis_pengajuan" id="jenis_pengajuan" class="form-control"
-                                    placeholder="" value="{{ $list->jenis_pengajuan == 1 ? 'Fee Based (Admin)' : ($list->jenis_pengajuan == 2 ? 'No Fee Based (Admin)' : '') }}" disabled>
+                                <input type="text" name="jenis_pengajuan" id="jenis_pengajuan"
+                                    class="form-control" placeholder=""
+                                    value="{{ $list->jenis_pengajuan == 1 ? 'Fee Based (Admin)' : ($list->jenis_pengajuan == 2 ? 'No Fee Based (Admin)' : '') }}"
+                                    disabled>
                             </div>
                             {{-- end  jenis --}}
 
                             {{-- <div class="row"> --}}
-                                <div class="col-12 col-md-6">
-                                    <label for="pic_payment_mitra" class="form-label">Pic Payment Mitra</label>
-                                    <input type="text" name="pic_payment_mitra" id="pic_payment_mitra"
-                                        class="form-control" placeholder="" value="{{ $list->pic_payment_mitra }}"
-                                        disabled>
-                                </div>
-                                {{-- end  pic_payment_mitra --}}
-
-                                <div class="col-12 col-md-6">
-                                    <label for="telepon_payment_mitra" class="form-label">Telepon Payment
-                                      Mitra</label>
-                                    <input type="text" name="telepon_payment_mitra" id="telepon_payment_mitra"
-                                        class="form-control" placeholder=""
-                                        value="{{ $list->telepon_payment_mitra }}" disabled>
-                                </div>
-                                {{-- end  telepon_payment_mitra --}}
-
-                                <div class="col-12 col-md-6">
-                                    <label for="pic_rekon_mitra" class="form-label">Pic Rekon Mitra</label>
-                                    <input type="text" name="pic_rekon_mitra" id="pic_rekon_mitra"
-                                        class="form-control" placeholder="" value="{{ $list->pic_rekon_mitra }}"
-                                        disabled>
-                                </div>
-                                {{-- end  pic_rekon_mitra --}}
-
-                                <div class="col-12 col-md-6">
-                                    <label for="telepon_rekon_mitra" class="form-label">Telepon Rekon
-                                        Mitra</label>
-                                    <input type="text" name="telepon_rekon_mitra" id="telepon_rekon_mitra"
-                                        class="form-control" placeholder="" value="{{ $list->telepon_rekon_mitra }}"
-                                        disabled>
-                                </div>
-                                {{-- end  telepon_rekon_mitra --}}
-
-                                {{-- <div class="row"> --}}
-                                    <div class="col-12 col-md-6">
-                                        <label for="pic_dinas" class="form-label">Pic Dinas</label>
-                                        <input type="text" name="pic_dinas" id="pic_dinas" class="form-control"
-                                            placeholder="" value="{{ $list->pic_dinas }}" disabled>
-                                    </div>
-                                    {{-- end  pic dinas --}}
-
-                                    <div class="col-12 col-md-6">
-                                        <label for="telepon_dinas" class="form-label">Telepon Dinas</label>
-                                        <input type="text" name="telepon_dinas" id="telepon_dinas"
-                                            class="form-control" placeholder="" value="{{ $list->telepon_dinas }}"
-                                            disabled>
-                                    </div>
-                                    {{-- end  telepon dinas --}}
-
-                                    {{-- <div class="row"> --}}
-                                        <div class="col-12 col-md-6">
-                                            <label for="wag_kordinasi_payment" class="form-label">Wag Kordinasi
-                                                Payment</label>
-                                            <input type="text" name="wag_kordinasi_payment"
-                                                id="wag_kordinasi_payment" class="form-control" placeholder=""
-                                                value="{{ $list->wag_kordinasi_payment }}" disabled>
-                                        </div>
-                                        {{-- end  Wag Kordinasi Payment --}}
-
-                                        <div class="col-12 col-md-6">
-                                            <label for="wag_kordinasi_rekon" class="form-label">Wag Kordinasi
-                                                Rekon</label>
-                                            <input type="text" name="wag_kordinasi_rekon" id="wag_kordinasi_rekon"
-                                                class="form-control" placeholder=""
-                                                value="{{ $list->wag_kordinasi_rekon }}" disabled>
-                                        </div>
-                                        {{-- end  Wag Kordinasi Rekon --}}
-
-                                    </div>
-                                </div>
+                            <div class="col-12 col-md-6">
+                                <label for="pic_payment_mitra" class="form-label">Pic Payment Mitra</label>
+                                <input type="text" name="pic_payment_mitra" id="pic_payment_mitra"
+                                    class="form-control" placeholder="" value="{{ $list->pic_payment_mitra }}"
+                                    disabled>
                             </div>
+                            {{-- end  pic_payment_mitra --}}
+
+                            <div class="col-12 col-md-6">
+                                <label for="telepon_payment_mitra" class="form-label">Telepon Payment
+                                    Mitra</label>
+                                <input type="text" name="telepon_payment_mitra" id="telepon_payment_mitra"
+                                    class="form-control" placeholder="" value="{{ $list->telepon_payment_mitra }}"
+                                    disabled>
+                            </div>
+                            {{-- end  telepon_payment_mitra --}}
+
+                            <div class="col-12 col-md-6">
+                                <label for="pic_rekon_mitra" class="form-label">Pic Rekon Mitra</label>
+                                <input type="text" name="pic_rekon_mitra" id="pic_rekon_mitra"
+                                    class="form-control" placeholder="" value="{{ $list->pic_rekon_mitra }}"
+                                    disabled>
+                            </div>
+                            {{-- end  pic_rekon_mitra --}}
+
+                            <div class="col-12 col-md-6">
+                                <label for="telepon_rekon_mitra" class="form-label">Telepon Rekon
+                                    Mitra</label>
+                                <input type="text" name="telepon_rekon_mitra" id="telepon_rekon_mitra"
+                                    class="form-control" placeholder="" value="{{ $list->telepon_rekon_mitra }}"
+                                    disabled>
+                            </div>
+                            {{-- end  telepon_rekon_mitra --}}
+
+                            {{-- <div class="row"> --}}
+                            <div class="col-12 col-md-6">
+                                <label for="pic_dinas" class="form-label">Pic Dinas</label>
+                                <input type="text" name="pic_dinas" id="pic_dinas" class="form-control"
+                                    placeholder="" value="{{ $list->pic_dinas }}" disabled>
+                            </div>
+                            {{-- end  pic dinas --}}
+
+                            <div class="col-12 col-md-6">
+                                <label for="telepon_dinas" class="form-label">Telepon Dinas</label>
+                                <input type="text" name="telepon_dinas" id="telepon_dinas" class="form-control"
+                                    placeholder="" value="{{ $list->telepon_dinas }}" disabled>
+                            </div>
+                            {{-- end  telepon dinas --}}
+
+                            {{-- <div class="row"> --}}
+                            <div class="col-12 col-md-6">
+                                <label for="wag_kordinasi_payment" class="form-label">Wag Kordinasi
+                                    Payment</label>
+                                <input type="text" name="wag_kordinasi_payment" id="wag_kordinasi_payment"
+                                    class="form-control" placeholder="" value="{{ $list->wag_kordinasi_payment }}"
+                                    disabled>
+                            </div>
+                            {{-- end  Wag Kordinasi Payment --}}
+
+                            <div class="col-12 col-md-6">
+                                <label for="wag_kordinasi_rekon" class="form-label">Wag Kordinasi
+                                    Rekon</label>
+                                <input type="text" name="wag_kordinasi_rekon" id="wag_kordinasi_rekon"
+                                    class="form-control" placeholder="" value="{{ $list->wag_kordinasi_rekon }}"
+                                    disabled>
+                            </div>
+                            {{-- end  Wag Kordinasi Rekon --}}
+
                         </div>
-                        <br>
                     </div>
-
-                </form><!-- Vertical Form -->
             </div>
-
         </div>
-      </div>
+        <br>
+    </div>
+
+    </form><!-- Vertical Form -->
+</div>
+
+</div>
+</div>
 </div>

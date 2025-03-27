@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('kode_prov')->unique();
             $table->string('nama_provinsi')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

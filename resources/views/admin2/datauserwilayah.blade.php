@@ -91,11 +91,11 @@
 
 
                                 <!-- Search Bar untuk Provinsi dan Wilayah -->
-                                <div class="col-md-4">
-                                    <label for="searchProvinsi"><strong>Cari Provinsi / Wilayah:</strong></label>
-                                    <input type="text" id="searchProvinsi" class="form-control"
-                                        placeholder="Cari Provinsi atau Wilayah">
+                                <div class="col-md-4" id="searchWilayahContainer" style="display: none;">
+                                    <label for="searchProvinsi"><strong>Cari Wilayah:</strong></label>
+                                    <input type="text" id="searchProvinsi" class="form-control" placeholder="Cari Wilayah">
                                 </div>
+
 
                                 <!-- Pilih Provinsi -->
                                 <div class="col-md-4">
@@ -125,8 +125,8 @@
                                             $isChecked = in_array($w->id, $selectedWilayah);
                                         @endphp
                                         <tr data-kode-prov="{{ $w->kode_prov }}"
-                                            data-nama-wilayah="{{ strtolower($w->nama_wilayah) }}" class="clickable-row"
-                                            onclick="toggleCheckbox(this)">
+                                            data-nama-wilayah="{{ strtolower($w->nama_wilayah) }}"
+                                            class="clickable-row">
                                             <td>{{ $w->kode_area }}</td>
                                             <td>{{ $w->nama_wilayah }}</td>
                                             <td>
@@ -135,15 +135,149 @@
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
+
+
                             </table>
                            <div class="footer">
                             <button type="button" class="btn btn-danger" onclick="history.back()">Tutup</button>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>
+{{-- <script>
+                        //script check userwilayah
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let form = document.querySelector("form");
+                            let initialSelected = new Set();
 
+                            // Simpan wilayah yang sudah tercentang saat halaman dimuat
+                            document.querySelectorAll('input[name="wilayah_id[]"]:checked').forEach(cb => {
+                                initialSelected.add(cb.value);
+                            });
+
+
+                            // Tambahkan event click ke seluruh baris agar bisa diklik
+                            document.querySelectorAll('.clickable-row').forEach(row => {
+                                let checkbox = row.querySelector('input[type="checkbox"]');
+
+                                // Simpan status awal checkbox
+                                if (checkbox) {
+                                    checkbox.dataset.initialChecked = checkbox.checked;
+                                }
+
+                                row.addEventListener("click", function (event) {
+                                    if (!event.target.matches('input[type="checkbox"]')) {
+                                        let checkbox = this.querySelector('input[type="checkbox"]');
+                                        if (checkbox) {
+                                            // Jika ingin menghapus (uncheck) data lama, tampilkan peringatan
+                                            if (!checkbox.checked && !confirm("Apakah Anda yakin ingin menghapus wilayah ini?")) {
+                                                return;
+                                            }
+
+                                            // Jika ingin menghapus centang dari data yang sebelumnya sudah tercentang, beri peringatan
+                                            if (checkbox.dataset.initialChecked === "true" && checkbox.checked) {
+                                                if (!confirm("Apakah Anda yakin ingin menghapus data yang sebelumnya sudah dicentang?")) {
+                                                    return;
+                                                }
+                                            }
+
+                                            // Toggle checkbox
+                                            checkbox.checked = !checkbox.checked;
+
+                                            // Update status awal setelah perubahan
+                                            checkbox.dataset.initialChecked = checkbox.checked;
+                                        }
+                                    }
+                                });
+                            });
+                        </script
+
+<script>
+                            // Saat form disubmit, hanya kirim perubahan
+                            form.addEventListener("submit", function (event) {
+                                let selectedNow = new Set();
+                                document.querySelectorAll('input[name="wilayah_id[]"]:checked').forEach(cb => {
+                                    selectedNow.add(cb.value);
+                                });
+
+                                let toAdd = [...selectedNow].filter(id => !initialSelected.has(id));
+                                let toRemove = [...initialSelected].filter(id => !selectedNow.has(id));
+
+                                // Hapus semua input hidden sebelumnya
+                                document.querySelectorAll('.hidden-wilayah').forEach(input => input.remove());
+
+                                let hiddenContainer = document.createElement("div");
+                                hiddenContainer.style.display = "none";
+
+                                // Simpan wilayah yang masih dipilih
+                                selectedNow.forEach(id => {
+                                    let input = document.createElement("input");
+                                    input.type = "hidden";
+                                    input.name = "wilayah_id[]";
+                                    input.value = id;
+                                    input.classList.add("hidden-wilayah");
+                                    hiddenContainer.appendChild(input);
+                                });
+
+                                form.appendChild(hiddenContainer);
+                            });
+                        });
+
+
+                        //script search wilayah $ provinsi serta dropdown provinsi
+
+                        // Simpan daftar kode provinsi dari dropdown sebagai referensi pencarian
+                        let provinsiOptions = {};
+                        document.querySelectorAll('#kode_prov option').forEach(option => {
+                            if (option.value) { // Hindari opsi "Semua Provinsi"
+                                provinsiOptions[option.textContent.toLowerCase()] = option.value;
+                            }
+                        });
+
+                        // Filter berdasarkan dropdown Provinsi
+                        document.getElementById('kode_prov').addEventListener('change', function () {
+                            let selectedKodeProv = this.value;
+                            let rows = document.querySelectorAll('#wilayahTable tr');
+
+                            rows.forEach(row => {
+                                let kodeProv = row.getAttribute('data-kode-prov');
+                                row.style.display = (selectedKodeProv === "" || kodeProv === selectedKodeProv) ? "" :
+                                    "none";
+                            });
+
+                            // Kosongkan input pencarian saat dropdown dipilih
+                            document.getElementById('searchProvinsi').value = "";
+                        });
+
+                        // Filter berdasarkan input pencarian (Provinsi atau Wilayah)
+                        document.getElementById('searchProvinsi').addEventListener('input', function () {
+                            let filter = this.value.toLowerCase();
+                            let matchedKodeProv = [];
+
+                            // Cari di dropdown provinsi, cocokkan teks dengan input
+                            Object.keys(provinsiOptions).forEach(nama_provinsi => {
+                                if (nama_provinsi.includes(filter)) {
+                                    matchedKodeProv.push(provinsiOptions[nama_provinsi]); // Simpan kode_prov yang cocok
+                                }
+                            });
+
+                            let rows = document.querySelectorAll('#wilayahTable tr');
+
+                            rows.forEach(row => {
+                                let kodeProv = row.getAttribute('data-kode-prov');
+                                let namaWilayah = row.getAttribute('data-nama-wilayah');
+
+                                // Tampilkan jika kode_prov cocok atau nama wilayah cocok
+                                let matchProvinsi = matchedKodeProv.includes(kodeProv);
+                                let matchWilayah = namaWilayah.includes(filter);
+
+                                row.style.display = (matchProvinsi || matchWilayah || filter === "") ? "" : "none";
+                            });
+
+                            // Reset dropdown provinsi agar tidak mengganggu pencarian
+                            document.getElementById('kode_prov').value = "";
+                        });
+                    </script> --}}
 
                     </div>
                     <!-- End Table with stripped rows -->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -14,7 +15,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $role = role::all();
+        $role = role::orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
 
         return view('admin2.datarole', compact('role'));
     }
@@ -41,8 +42,9 @@ class RoleController extends Controller
 
         if ($existingData) {
             Session::flash('status', 'danger');
-            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
-            return redirect('/role');
+            Session::flash('message',  "Data dengan nama '{$existingData->nama_role}' sudah ada, tidak dapat menambahkan data yang sama.");
+
+            return redirect()->back()->withInput();
         }
 
 
@@ -52,7 +54,7 @@ class RoleController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil di Simpan');
+        Session::flash('message', 'Data Berhasil Disimpan');
         return redirect('/role');
     }
 
@@ -84,21 +86,27 @@ class RoleController extends Controller
 
         $role = role::findOrfail($id);
 
-        $isused = DB::table('roles')->where('nama_role', $role->id)->exists() ||
-            DB::table('users')->where('role_id', $role->id)->exists();
+        //check data di tabel utama
+        $isUsed = Role::where('nama_role', $role->id)->exists() ||
+            User::where('role_id', $role->id)->exists();
 
-        if ($isused) {
-            Session::flash('status', 'danger');
-            Session::flash('message', 'Data tidak bisa dihapus karena masih digunakan di tabel lain');
-            return redirect('/role');
+        if ($isUsed) {
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'message' => 'Data tidak bisa diperbarui karena masih digunakan di tabel lain'
+            ]);
         }
 
-        $existingData = role::where('nama_role', $validated['nama_role'])->first();
+        //check data yang duplikat
+        $existingData = role::where('nama_role', $validated['nama_role'])
+            ->where('id', '!=', $id)
+            ->first();
 
-        if ($existingData) {
+        if ($existingData != null) {
             Session::flash('status', 'danger');
-            Session::flash('message', 'Data sudah ada, tidak dapat menambahkan data yang sama.');
-            return redirect('/role');
+            Session::flash('message', "Data dengan nama '{$existingData->nama_role}' sudah ada, tidak dapat memperbarui data.");
+
+            return redirect()->back()->withInput();
         }
 
 
@@ -108,7 +116,7 @@ class RoleController extends Controller
         ]);
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil di Update');
+        Session::flash('message', 'Data Berhasil Diperbarui');
         return redirect('/role');
     }
 
@@ -119,19 +127,30 @@ class RoleController extends Controller
     {
         $role = role::findOrfail($id);
 
-        $isused = DB::table('roles')->where('nama_role', $role->id)->exists() ||
-            DB::table('users')->where('role_id', $role->id)->exists();
-
-        if ($isused) {
-            Session::flash('status', 'danger');
-            Session::flash('message', 'Data tidak bisa dihapus karena masih digunakan di tabel lain');
-            return redirect('/role');
+        
+        if ($role->nama_role === 'Admin') {
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'message' => 'Role "Admin" tidak dapat dihapus!'
+            ]);
         }
+
+        //check data di tabel utama
+        $isUsed = Role::where('nama_role', $role->id)->exists() ||
+            User::where('role_id', $role->id)->exists();
+
+        if ($isUsed) {
+            return redirect()->back()->with([
+                'status' => 'danger',
+                'message' => 'Data tidak bisa dihapus karena masih digunakan di tabel lain'
+            ]);
+        }
+
 
         $role->delete();
 
         Session::flash('status', 'success');
-        Session::flash('message', 'Data berhasil di Hapus');
+        Session::flash('message', 'Data Berhasil Dihapus');
         return redirect('/role');
     }
 }

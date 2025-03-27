@@ -13,13 +13,13 @@
                 <div class="modal-body">
                     <div class="col-13">
                         <label for="nama_role" class="form-label">Nama Role</label>
-                        <input type="text" class="form-control" id="nama_role" name="nama_role" required>
+                        <input type="text" class="form-control" id="nama_role" name="nama_role" value="{{old('nama_role')}}" required>
                     </div>
                     <br>
 
                     <div class="col-13">
                         <label for="keterangan" class="form-label">Keterangan</label>
-                        <input type="text" class="form-control" id="keterangan" name="keterangan" required>
+                        <input type="text" class="form-control" id="keterangan" name="keterangan" value="{{old('keterangan')}}" required>
                     </div>
 
                     <br>
