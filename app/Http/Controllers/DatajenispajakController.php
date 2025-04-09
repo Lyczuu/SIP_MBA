@@ -15,9 +15,28 @@ class DatajenispajakController extends Controller
      */
     public function index()
     {
-        $data['jenis_pajak'] = jenispajak::orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
+        $data['jenis_pajak'] = jenispajak::withTrashed()->orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
         return view('admin2.datajenispajak', $data);
     }
+
+
+
+    public function restore($id)
+    {
+        $jenispajak = jenispajak::withTrashed()->where('id', $id)->first();
+
+        if ($jenispajak) {
+            $jenispajak->restore(); // Mengembalikan data
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Dikembalikan.');
+        } else {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak ditemukan.');
+        }
+
+        return redirect()->back();
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +54,6 @@ class DatajenispajakController extends Controller
         // Validasi input
         $request->validate([
             'nama_jenis_pajak' => 'required|string|max:255',
-            'status' => 'required|boolean',
         ]);
 
         // Cek data agar tidak duplikat
@@ -52,7 +70,6 @@ class DatajenispajakController extends Controller
         // Simpan ke database
         JenisPajak::create([
             'nama_jenis_pajak' => $request->nama_jenis_pajak,
-            'status' => $request->status,
         ]);
 
         Session::flash('status', 'success');
@@ -85,21 +102,10 @@ class DatajenispajakController extends Controller
         // Validasi input
         $validated = $request->validate([
             'nama_jenis_pajak' => 'required|string|max:255',
-            'status' => 'required|boolean',
         ]);
 
-        // Cari data mitra berdasarkan ID
+        // Cari data jenispajak berdasarkan ID
         $jenis_pajak = jenispajak::findOrFail($id);
-
-        // Cek apakah data digunakan di tabel lain
-        $isUsed = paymentmba::where('jenis_pajak_id', $jenis_pajak->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.'
-            ]);
-        }
 
 
         // Cek apakah nama jenis pajak berubah
@@ -117,10 +123,9 @@ class DatajenispajakController extends Controller
         }
 
 
-        // Update data mitra
+        // Update data jenispajak
         $jenis_pajak->update([
             'nama_jenis_pajak' => $validated['nama_jenis_pajak'],
-            'status' => $request->status,
         ]);
 
         Session::flash('status', 'success');
@@ -135,17 +140,6 @@ class DatajenispajakController extends Controller
     public function destroy($id)
     {
         $jenis_pajak = jenispajak::findOrFail($id);
-
-        // Cek apakah data digunakan di tabel lain
-        $isUsed = paymentmba::where('jenis_pajak_id', $jenis_pajak->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain.'
-            ]);
-        }
-
 
         $jenis_pajak->delete();
 

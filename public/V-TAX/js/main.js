@@ -314,8 +314,6 @@
 
 
 
-
-
     /**
      * Autoresize echart charts
      */
@@ -413,122 +411,73 @@ setInterval(fetchPaymentCount, 5000);
 
 
 
+//notif diajukan admin
+fetch('/api/get-payment-diajukan')
+    .then(response => response.json())
+    .then(data => {
+        // Contoh: tampilkan hasilnya di console
+        console.log('Diajukan:', data.diajukan_am);
+
+        // Atau tampilkan ke elemen HTML
+        document.getElementById('diajukan-badge').textContent = data.diajukan_am;
+    })
+    .catch(error => {
+        console.error('Gagal ambil data:', error);
+    });
+
+
+//notif ditolak am
+fetch('/api/get-payment-ditolak-am')
+    .then(response => response.json())
+    .then(data => {
+        // Contoh: tampilkan hasilnya di console
+        console.log('Ditolak-am:', data.ditolak_am);
+
+        // Atau tampilkan ke elemen HTML
+        document.getElementById('Ditolak-am').textContent = data.ditolak_am;
+    })
+    .catch(error => {
+        console.error('Gagal ambil data:', error);
+    });
+
+
+
+
 
 
 //script user wilayah
-// document.addEventListener("DOMContentLoaded", function () {
-//     let form = document.querySelector("form");
-//     let wilayahTable = document.getElementById("wilayahTable");
-//     let searchInput = document.getElementById("searchProvinsi");
-//     let searchContainer = document.getElementById("searchWilayahContainer");
-//     let provinsiDropdown = document.getElementById("kode_prov");
-
-//     if (!wilayahTable || !searchContainer || !searchInput || !provinsiDropdown) {
-//         console.error("Elemen yang dibutuhkan tidak ditemukan di halaman.");
-//         return;
-//     }
-
-//     let rows = wilayahTable.querySelectorAll("tr");
-
-//     // Sembunyikan input pencarian & tabel saat pertama kali dimuat
-//     searchContainer.style.display = "none";
-//     rows.forEach(row => row.style.display = "none");
-
-//     // Tambahkan event click ke seluruh baris agar bisa diklik
-//     document.querySelectorAll('.clickable-row').forEach(row => {
-//         let checkbox = row.querySelector('input[type="checkbox"]');
-
-//         row.addEventListener("click", function (event) {
-//             if (event.target.closest('input[type="checkbox"]')) return;
-
-//             if (checkbox) {
-//                 checkbox.checked = !checkbox.checked;
-//             }
-//         });
-//     });
-
-//     // Saat form disubmit, hanya kirim perubahan
-//     form.addEventListener("submit", function () {
-//         let selectedNow = new Set();
-//         document.querySelectorAll('input[name="wilayah_id[]"]:checked').forEach(cb => {
-//             selectedNow.add(cb.value);
-//         });
-
-//         let hiddenContainer = document.createElement("div");
-//         hiddenContainer.style.display = "none";
-
-//         selectedNow.forEach(id => {
-//             let input = document.createElement("input");
-//             input.type = "hidden";
-//             input.name = "wilayah_id[]";
-//             input.value = id;
-//             hiddenContainer.appendChild(input);
-//         });
-
-//         form.appendChild(hiddenContainer);
-//     });
-
-//     // Event listener saat provinsi dipilih
-//     provinsiDropdown.addEventListener("change", function () {
-//         let selectedKodeProv = this.value;
-
-//         rows.forEach(row => row.style.display = "none");
-//         searchContainer.style.display = "none";
-
-//         if (selectedKodeProv) {
-//             searchContainer.style.display = "block";
-
-//             rows.forEach(row => {
-//                 if (row.getAttribute("data-kode-prov") === selectedKodeProv) {
-//                     row.style.display = "";
-//                 }
-//             });
-
-//             searchInput.value = "";
-//         }
-//     });
-
-//     // Event listener untuk pencarian wilayah
-//     searchInput.addEventListener("input", function () {
-//         let filter = this.value.toLowerCase();
-//         let selectedKodeProv = provinsiDropdown.value;
-
-//         if (!selectedKodeProv) {
-//             rows.forEach(row => row.style.display = "none");
-//             return;
-//         }
-
-//         rows.forEach(row => {
-//             let kodeProv = row.getAttribute("data-kode-prov");
-//             let namaWilayah = row.getAttribute("data-nama-wilayah")?.toLowerCase();
-
-//             if (kodeProv === selectedKodeProv && namaWilayah.includes(filter)) {
-//                 row.style.display = "";
-//             } else {
-//                 row.style.display = "none";
-//             }
-//         });
-//     });
-// });
 
 
+
+//
 document.addEventListener("DOMContentLoaded", function () {
     let form = document.querySelector("form");
     let wilayahTable = document.getElementById("wilayahTable");
     let searchInput = document.getElementById("searchProvinsi");
     let searchContainer = document.getElementById("searchWilayahContainer");
     let provinsiDropdown = document.getElementById("kode_prov");
+    let selectAllCheckbox = document.getElementById("selectAll");
 
-    if (!wilayahTable || !searchContainer || !searchInput || !provinsiDropdown) {
+    if (!wilayahTable || !searchContainer || !searchInput || !provinsiDropdown || !selectAllCheckbox) {
         console.error("Elemen yang dibutuhkan tidak ditemukan di halaman.");
         return;
     }
 
     let rows = wilayahTable.querySelectorAll("tr");
 
+
     // Sembunyikan input pencarian & tabel saat pertama kali dimuat
     searchContainer.style.display = "none";
     rows.forEach(row => row.style.display = "none");
+
+    // Event untuk Select All
+    selectAllCheckbox.addEventListener("change", function () {
+        let visibleCheckboxes = wilayahTable.querySelectorAll('tr[style=""] .wilayah-checkbox');
+
+        visibleCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    });
 
     // Tambahkan event click ke seluruh baris agar bisa diklik
     document.querySelectorAll('.clickable-row').forEach(row => {
@@ -551,8 +500,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Tambahkan event listener untuk setiap checkbox secara langsung
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    // Event listener untuk setiap checkbox
+    document.querySelectorAll('input[type="checkbox"].wilayah-checkbox').forEach(checkbox => {
         checkbox.addEventListener("change", function () {
             if (!this.checked) {
                 let confirmUncheck = confirm("Anda yakin ingin menghapus wilayah ini dari daftar?");
@@ -560,8 +509,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.checked = true;
                 }
             }
+
+            // Update Select All checkbox status
+            updateSelectAllState();
         });
     });
+
+    // Fungsi untuk update status Select All
+    function updateSelectAllState() {
+        let visibleCheckboxes = wilayahTable.querySelectorAll('tr[style=""] .wilayah-checkbox');
+        let checkedCheckboxes = wilayahTable.querySelectorAll('tr[style=""] .wilayah-checkbox:checked');
+
+        selectAllCheckbox.checked = visibleCheckboxes.length > 0 && visibleCheckboxes.length === checkedCheckboxes.length;
+    }
 
     // Saat form disubmit, hanya kirim perubahan
     form.addEventListener("submit", function () {
@@ -601,6 +561,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             searchInput.value = "";
+
+            // Perbarui status Select All
+            updateSelectAllState();
         }
     });
 
@@ -624,5 +587,45 @@ document.addEventListener("DOMContentLoaded", function () {
                 row.style.display = "none";
             }
         });
+
+        // Perbarui status Select All
+        updateSelectAllState();
     });
 });
+
+
+
+//script telepon
+function onlyAllowNumbers(inputId, minLength = 10) {
+    const input = document.getElementById(inputId);
+
+    // Bikin elemen untuk peringatan panjang
+    const warning = document.createElement('small');
+    warning.classList.add('text-danger');
+    warning.style.display = 'none';
+    warning.innerText = `Nomor harus minimal ${minLength} digit.`;
+    input.parentNode.appendChild(warning);
+
+    input.addEventListener('keypress', function (e) {
+        if (!/[0-9]/.test(e.key)) {
+            e.preventDefault();
+        }
+    });
+
+    input.addEventListener('input', function () {
+        // Bersihkan karakter non-angka
+        this.value = this.value.replace(/[^0-9]/g, '');
+
+        // Tampilkan atau sembunyikan peringatan
+        if (this.value.length > 0 && this.value.length < minLength) {
+            warning.style.display = 'block';
+        } else {
+            warning.style.display = 'none';
+        }
+    });
+}
+
+// Terapkan ke semua input telepon
+onlyAllowNumbers('telepon_payment_mitra');
+onlyAllowNumbers('telepon_dinas');
+onlyAllowNumbers('telepon_rekon_mitra');

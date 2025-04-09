@@ -23,11 +23,37 @@ class PenggunabaruController extends Controller
      */
     public function index()
     {
-        $user = User::orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
-        $role = role::all();
+        $user = User::withTrashed()->whereHas('role', function ($query) {
+            $query->where('nama_role', '!=', 'Admin');
+        })
+        ->orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')
+        ->get();
+
+        $role = Role::where('nama_role', '!=', 'Admin')->get();
         $wilayah = wilayah::all();
         return view('admin2.datapenggunabaru', compact('user', 'role', 'wilayah'));
     }
+
+
+
+    public function restore($id)
+    {
+        $user = User::withTrashed()->where('id', $id)->first();
+
+        if ($user) {
+            $user->restore(); // Mengembalikan data
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Dikembalikan.');
+        } else {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak ditemukan.');
+        }
+
+        return redirect()->back();
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -129,33 +155,27 @@ class PenggunabaruController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Ambil data pengguna berdasarkan ID
         $user = User::findOrFail($id);
 
-        // Field yang diperbolehkan diubah meskipun user sedang digunakan di tabel payment_mba
-        $allowedFields = ['profile_image', 'password'];
 
-        // Cek apakah perubahan hanya terjadi di profile_image atau password
-        $updatedFields = [];
-        foreach ($allowedFields as $field) {
-            if ($request->has($field) && $request->$field !== null) {
-                $updatedFields[$field] = $field === 'password' ? Hash::make($request->password) : $request->$field;
-            }
-        }
+        // Validasi input
+        $request->validate([
+            'username'     => 'required|string|max:255|unique:users,username,' . $id,
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'full_name'    => 'required|string|max:255',
+            'alamat'       => 'nullable|string',
+            'phone_number' => 'nullable|string|max:15',
+            'email'        => 'required|email|unique:users,email,' . $id,
+            'role_id'      => 'required|exists:roles,id',
+            'password'     => 'nullable|min:6|confirmed',
+        ]);
 
-        // Jika perubahan terjadi di luar field yang diperbolehkan, cek apakah user_id digunakan di payment_mba
-        $isOtherChanges = count(array_diff_key($request->except('_token'), array_flip($allowedFields))) > 0;
 
-        if ($isOtherChanges) {
-            $isUsed = DB::table('payment_mba')->where('user_id', $id)->exists();
-            if ($isUsed) {
-                Session::flash('status', 'danger');
-                Session::flash('message', 'Data tidak dapat diperbarui karena masih digunakan di tabel lain, kecuali password & foto profil.');
-                return redirect('/penggunabaru');
-            }
-        }
 
         // Cek apakah ada file gambar yang di-upload
         if ($request->hasFile('profile_image')) {
+            // Simpan gambar ke dalam storage/app/public/profile_images
             $imagePath = $request->file('profile_image')->store('profile_images', 'public');
 
             // Hapus gambar lama jika ada
@@ -163,13 +183,21 @@ class PenggunabaruController extends Controller
                 Storage::disk('public')->delete($user->profile_image);
             }
 
-            $updatedFields['profile_image'] = $imagePath;
+            // Simpan path gambar baru ke database
+            $user->profile_image = $imagePath;
         }
 
-        // Jika ada perubahan, lakukan update
-        if (!empty($updatedFields)) {
-            $user->update($updatedFields);
-        }
+        // Update data pengguna
+        $user->update([
+            'username'     => $request->username,
+            'profile_image' => isset($imagePath) ? $imagePath : $user->profile_image,
+            'full_name'    => $request->full_name,
+            'alamat'       => $request->alamat,
+            'phone_number' => $request->phone_number,
+            'email'        => $request->email,
+            'role_id'      => $request->role_id,
+            'password'     => $request->filled('password') ? Hash::make($request->password) : $user->password,
+        ]);
 
         Session::flash('status', 'success');
         Session::flash('message', 'Data Berhasil Diperbarui');
@@ -182,18 +210,6 @@ class PenggunabaruController extends Controller
     public function destroy($id)
     {
         $user = user::findOrFail($id);
-
-
-        // Cek apakah data provinsi digunakan di tabel `wi
-        $isUsed = paymentmba::where('user_id', $user->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain.'
-            ]);
-        }
-
 
         $user->delete();
 

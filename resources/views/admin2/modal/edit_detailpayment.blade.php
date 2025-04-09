@@ -213,15 +213,11 @@
                                 </select>
                             </div>
 
-                            <div class="col-12 col-md-6" id="alasanContainer{{ $list->id }}"
-                                style="display: none;">
-                                <label for="alasan_penolakan{{ $list->id }}" class="form-label">Alasan
-                                    Penolakan</label>
-                                <input type="text" name="alasan_penolakan"
-                                    id="alasan_penolakan{{ $list->id }}" class="form-control"
-                                    placeholder="Masukkan alasan ditolak">
+                           
+                            <div class="col-12 col-md-6" id="alasanContainer{{ $list->id }}" style="display: none;">
+                                <label for="alasan_penolakan{{ $list->id }}" class="form-label">Alasan Penolakan</label>
+                                <textarea name="alasan_penolakan" id="alasan_penolakan{{ $list->id }}" class="form-control" rows="3" placeholder="Masukkan alasan ditolak"></textarea>
                             </div>
-
 
 
                             <div class="row">

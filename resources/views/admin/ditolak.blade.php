@@ -73,7 +73,7 @@
                                             id="ditolak-tab" href="{{ route('ditolak') }}" role="tab"
                                             aria-controls="ditolak"
                                             aria-selected="{{ Request::routeIs('ditolak') ? 'true' : 'false' }}">
-                                            Ditolak
+                                            Ditolak <span id="Ditolak-am" class="badge bg-danger ms-1">0</span>
                                         </a>
                                     </li>
                                     <li class="nav-item flex-fill" role="presentation">

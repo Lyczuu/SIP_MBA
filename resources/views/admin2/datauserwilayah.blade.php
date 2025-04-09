@@ -111,12 +111,14 @@
 
                             <br>
 
-                            <table class="table ">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Kode Area</th>
                                         <th>Nama Wilayah</th>
-                                        <th>Check</th>
+                                        <th>
+                                            <input type="checkbox" id="selectAll"> Select All
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody id="wilayahTable">
@@ -131,14 +133,13 @@
                                             <td>{{ $w->nama_wilayah }}</td>
                                             <td>
                                                 <input type="checkbox" name="wilayah_id[]" value="{{ $w->id }}"
-                                                    {{ $isChecked ? 'checked' : '' }}>
+                                                    class="wilayah-checkbox" {{ $isChecked ? 'checked' : '' }}>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
-
-
                             </table>
+
                            <div class="footer">
                             <button type="button" class="btn btn-danger" onclick="history.back()">Tutup</button>
                             <button type="submit" class="btn btn-primary">Simpan</button>

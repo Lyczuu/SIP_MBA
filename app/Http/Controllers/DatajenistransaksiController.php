@@ -15,9 +15,39 @@ class DatajenistransaksiController extends Controller
      */
     public function index()
     {
-        $data['jenis_transaksi'] = jenistransaksi::orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
+        $data['jenistransaksi'] = jenistransaksi::withTrashed()->orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
         return view('admin2.datajenistransaksi', $data);
     }
+
+
+
+    public function restore($id)
+    {
+        $jenistransaksi = jenistransaksi::withTrashed()->where('id', $id)->first();
+
+        if ($jenistransaksi) {
+            $jenistransaksi->restore(); // Mengembalikan data
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Dikembalikan.');
+        } else {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak ditemukan.');
+        }
+
+        return redirect()->back();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -85,17 +115,7 @@ class DatajenistransaksiController extends Controller
         ]);
 
 
-        $jenis_transaksi = jenistransaksi::findOrFail($id);
-
-        // Cek data di tabel utama
-        $isUsed = paymentmba::where('transaksi_id', $jenis_transaksi->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.'
-            ]);
-        }
+        $jenistransaksi = jenistransaksi::findOrFail($id);
 
 
         // Cek apakah data jenistransaksi dengan nama atau kode yang sama sudah ada
@@ -113,8 +133,8 @@ class DatajenistransaksiController extends Controller
         }
 
 
-        // Update data mitra
-        $jenis_transaksi->update([
+        // Update data jenis$jenistransaksi
+        $jenistransaksi->update([
             'nama_jenis_transaksi' => $validated['nama_jenis_transaksi'],
         ]);
 
@@ -128,20 +148,10 @@ class DatajenistransaksiController extends Controller
      */
     public function destroy($id)
     {
-        $jenis_transaksi = jenistransaksi::findOrFail($id);
-
-        // Cek apakah data digunakan di tabel utama
-        $isUsed = paymentmba::where('transaksi_id', $jenis_transaksi->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain.'
-            ]);
-        }
+        $jenistransaksi = jenistransaksi::findOrFail($id);
 
 
-        $jenis_transaksi->delete();
+        $jenistransaksi->delete();
         Session::flash('status', 'success');
         Session::flash('message', 'Data Berhasil Dihapus');
         return redirect('/datajenistransaksi');

@@ -40,6 +40,7 @@ use App\Http\Controllers\NofeebelumvalidasiController;
 use App\Http\Controllers\NofeeabelumvalidasiController;
 use App\Http\Controllers\DatapengajuanintegrasiController;
 use App\Http\Controllers\RoleController;
+use App\Models\jenispajak;
 use App\Models\provinsi;
 
 Route::get('/', function () {
@@ -253,6 +254,31 @@ Route::get('/api/get-payment-am', function (Request $request) {
 });
 
 
+//notif admin
+Route::get('/api/get-payment-diajukan', function (Request $request) {
+    $diajukan_am = DB::table('payment_mba')
+        ->where('status', 0)
+        ->count();
+
+    return response()->json([
+        'diajukan_am' => $diajukan_am
+    ]);
+});
+
+
+//notif am
+Route::middleware('auth')->get('/api/get-payment-ditolak-am', function (Request $request) {
+    $userId = Auth::id(); // ambil ID user yang sedang login
+
+    $ditolak_am = DB::table('payment_mba')
+        ->where('status', 1)
+        ->where('user_id', $userId) // filter berdasarkan user login
+        ->count();
+
+    return response()->json([
+        'ditolak_am' => $ditolak_am
+    ]);
+});
 
 
 
@@ -262,14 +288,22 @@ Route::get('/api/get-payment-am', function (Request $request) {
 //halaman utama
 Route::get('/utama', [AdmindashboardController::class, 'index'])->name('admin.utama');
 
-//data user detail
-Route::get('/detailpengguna', [PenggunadetailController::class, 'index'])->name('data.detailpengguna')->middleware('auth');
 
 //Role
 Route::get('/role',[RoleController::class, 'index'])->name('data.role')->middleware('auth');
 Route::put('/update_role{id}', [RoleController::class, 'update'])->name('update_role');
 Route::delete('/role_delete{id}', [RoleController::class, 'destroy'])->name('role_delete');
 Route::post('/role', [RoleController::class, 'store'])->name('role');
+//restore data
+Route::get('/role/restore/{id}', [RoleController::class, 'restore']);
+
+
+
+
+
+
+
+
 //data dijukan
 Route::get('/datadiajukan', [DatadiajukanController::class, 'index'])->name('admin.datadiajukan')->middleware('auth');
 Route::put('/update_diajukan{id}', [DatadiajukanController::class, 'update'])->name('update.dijaukan');
@@ -299,29 +333,54 @@ Route::post('/gowlet', [DatawilayahController::class, 'store'])->name('gow.let')
 //restore data
 Route::get('/wilayah/restore/{id}', [DatawilayahController::class, 'restore']);
 
+
+
+
 //data jenis pajak
 Route::get('/datajenispajak', [DatajenispajakController::class, 'index'])->name('data.jenispajak')->middleware('auth');
 Route::delete('/datajenispajak_delete{id}', [DatajenispajakController::class, 'destroy'])->name('datajenispajak_delete');
 Route::put('/update_datajenispajak{id}', [DatajenispajakController::class, 'update'])->name('update_datajenispajak');
 Route::post('/datapajak', [DatajenispajakController::class, 'store'])->name('datapajak');
+//restore data
+Route::get('/jenispajak/restore/{id}', [DatajenispajakController::class, 'restore']);
+
+
+
 
 //data jenis transaksi
 Route::get('/datajenistransaksi', [DatajenistransaksiController::class, 'index'])->name('data.jenistransaksi')->middleware('auth');
 Route::delete('/datajenistransaksi_delete{id}', [DatajenistransaksiController::class, 'destroy'])->name('datajenistransaksi_delete');
 Route::put('/update_datajenistransaksi{id}', [DatajenistransaksiController::class, 'update'])->name('update_datajenistransaksi');
 Route::post('/datatransaksi', [DatajenistransaksiController::class, 'store'])->name('datatransaksi');
+//restore data
+Route::get('/jenistransaksi/restore/{id}', [DatajenistransaksiController::class, 'restore']);
+
+
+
+
 
 //data pengajuan integrasi
 Route::get('/datapengajuanintegrasi', [DatapengajuanintegrasiController::class, 'index'])->name('data.pengajuanintegrasi')->middleware('auth');
 Route::delete('/datapengajuanintegrasi_delete{id}', [DatapengajuanintegrasiController::class, 'destroy'])->name('datapengajuanintegrasi_delete');
 Route::put('/update_datapengajuanintegrasi{id}', [DatapengajuanintegrasiController::class, 'update'])->name('update_datapengajuanintegrasi');
 Route::post('/datapengajuan', [DatapengajuanintegrasiController::class, 'store'])->name('datapengajuan');
+//restore data
+Route::get('/pengajuanintegrasi/restore/{id}', [DatapengajuanintegrasiController::class, 'restore']);
+
+
+
+
 
 //Pegguna baru
 Route::get('/penggunabaru', [PenggunabaruController::class, 'index'])->name('pengguna.baru')->middleware('auth');
 Route::post('/grit', [PenggunabaruController::class,'store'])->name('grit')->middleware('auth');
 Route::put('/update_pengguna{id}', [PenggunabaruController::class, 'update'])->name('update_pengguna');
 Route::delete('/datapenggunabaru_delete{id}',[PenggunabaruController::class, 'destroy'])->name('datapenggunabaru_delete');
+//restore data
+Route::get('/user/restore/{id}', [PenggunabaruController::class, 'restore']);
+
+
+
 
 //UserWilayah
 Route::get('/userwilayah', [UserwilayahController::class, 'index'])->name('user.wilayah')->middleware('auth');

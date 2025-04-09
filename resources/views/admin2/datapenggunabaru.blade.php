@@ -120,20 +120,27 @@
                                             <td>{{ $list->updated_at->format('d-m-Y H:i') }}</td>
                                             <td>
                                                 <div class="d-flex gap-1">
-                                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#Editdatapengguna{{ $list->id }}">
-                                                        <i class="bi bi-pencil-square"></i> Edit
-                                                    </button>
-                                                    <button
-                                                        onclick="window.location='{{ route('user.wilayah', ['user_id' => $list->id]) }}'"
-                                                        class="bi bi-crosshair2"></button>
+                                                    @if ($list->deleted_at)
+                                                        <a href="{{ url('/user/restore/' . $list->id) }}"
+                                                            class="btn btn-success btn-sm">
+                                                            <i class="bi bi-arrow-counterclockwise"></i> Restore
+                                                        </a>
+                                                    @else
+                                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#Editdatapengguna{{ $list->id }}">
+                                                            <i class="bi bi-pencil-square"></i> Edit
+                                                        </button>
+                                                        <button
+                                                            onclick="window.location='{{ route('user.wilayah', ['user_id' => $list->id]) }}'"
+                                                            class="bi bi-crosshair2"></button>
 
 
 
-                                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#hapuspengguna{{ $list->id }}">
-                                                        <i class="bi bi-trash"></i> Delete
-                                                    </button>
+                                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#hapuspengguna{{ $list->id }}">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

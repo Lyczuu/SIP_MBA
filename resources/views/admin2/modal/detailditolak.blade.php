@@ -36,9 +36,9 @@
                             {{-- end ditolak oleh --}}
                             <div class="col-12 col-md-6">
                                 <label for="alasan_penolakan" class="form-label">Alasan Penolakan</label>
-                                <input type="text" name="alasan_penolakan" id="alasan_penolakan" class="form-control" placeholder=""
-                                    value="{{ $list->alasan_penolakan }}" disabled>
+                                <textarea name="alasan_penolakan" id="alasan_penolakan" class="form-control" rows="3" placeholder="" disabled>{{ $list->alasan_penolakan }}</textarea>
                             </div>
+
                             {{-- end alasan penolakan--}}
 
 
@@ -216,7 +216,6 @@
                                                 value="{{ $list->wag_kordinasi_rekon }}" disabled>
                                         </div>
                                         {{-- end  Wag Kordinasi Rekon --}}
-
                                     </div>
                                 </div>
                             </div>

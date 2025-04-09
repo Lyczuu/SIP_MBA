@@ -16,9 +16,34 @@ class DatapengajuanintegrasiController extends Controller
      */
     public function index()
     {
-        $data['pengajuanintegrasi'] = PengajuanIntegrasi::orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
+        $data['pengajuanintegrasi'] = PengajuanIntegrasi::withTrashed()->orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
         return view('admin2.datapengajuanintegrasi', $data);
     }
+
+
+
+    public function restore($id)
+    {
+        $pengajuanintegrasi = PengajuanIntegrasi::withTrashed()->where('id', $id)->first();
+
+        if ($pengajuanintegrasi) {
+            $pengajuanintegrasi->restore(); // Mengembalikan data
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Dikembalikan.');
+        } else {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak ditemukan.');
+        }
+
+        return redirect()->back();
+    }
+
+
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -89,18 +114,7 @@ class DatapengajuanintegrasiController extends Controller
         ]);
 
         // Cari data mitra berdasarkan ID
-        $pengajuan_integrasi = pengajuanintegrasi::findOrFail($id);
-
-
-        // Cek data di tabel utama
-        $isUsed = paymentmba::where('pengajuan_integrasi_id', $pengajuan_integrasi->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak dapat diperbarui karena masih digunakan di tabel lain.'
-            ]);
-        }
+        $pengajuanintegrasi = pengajuanintegrasi::findOrFail($id);
 
 
         // Cek data agar tidak duplikat
@@ -118,7 +132,7 @@ class DatapengajuanintegrasiController extends Controller
         }
 
         // Update data mitra
-        $pengajuan_integrasi->update([
+        $pengajuanintegrasi->update([
             'nama_pengajuan_integrasi' => $validated['nama_pengajuan_integrasi'],
         ]);
 
@@ -132,20 +146,9 @@ class DatapengajuanintegrasiController extends Controller
      */
     public function destroy($id)
     {
-        $pengajuan_integrasi = pengajuanintegrasi::findOrFail($id);
+        $pengajuanintegrasi = pengajuanintegrasi::findOrFail($id);
 
-        // Cek data di tabel utama
-        $isUsed = paymentmba::where('pengajuan_integrasi_id', $pengajuan_integrasi->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak dapat dihapus karena masih digunakan di tabel lain.'
-            ]);
-        }
-
-
-        $pengajuan_integrasi->delete();
+        $pengajuanintegrasi->delete();
 
         Session::flash('status', 'success');
         Session::flash('message', 'Data Berhasil Dihapus');

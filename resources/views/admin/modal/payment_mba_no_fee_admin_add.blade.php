@@ -88,6 +88,7 @@
                     <div class="col-6">
                         <label for="wilayah" class="form-label">Nama Wilayah <span class="text-danger">*</span></label>
                         <select id="wilayah" name="wilayah_id" class="form-select" required>
+                            <option value="">-- Pilih wilayah --</option>
                             @foreach ($wilayah as $w)
                                 <option value="{{ $w->id }}" {{ old('wilayah_id') == $w->id ? 'selected' : '' }}>
                                     {{ $w->nama_wilayah }}
@@ -274,13 +275,12 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <label class="form-label">Telepon Payment Mitra <span class="r">*</span></label>
-                        <input type="number" name="telepon_payment_mitra" placeholder="Masukan Telepon Payment Mitra" id="telepon_payment_mitra"
-                            class="form-control no-spinner"
-                            value="{{ old('telepon_payment_mitra', $paymentMba->telepon_payment_mitra ?? '') }}"
-                             min="0"  required>
+                        <label for="telepon_payment_mitra" class="form-label">Telepon Payment Mitra <span class="r">*</span></label>
+                        <input type="text" name="telepon_payment_mitra" placeholder="Masukan Telepon Payment Mitra"
+                            id="telepon_payment_mitra" class="form-control" maxlength="15"
+                            value="{{ old('telepon_payment_mitra', $paymentMba->telepon_payment_mitra ?? '') }}" required>
                         <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
+                            Diperlukan. Hanya boleh angka (maksimal 15 digit)
                         </div>
                     </div>
 
@@ -304,11 +304,11 @@
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Telepon Rekon Mitra <span class="r">*</span></label>
-                        <input type="number" name="telepon_rekon_mitra" placeholder="Masukan Telepon Rekon Mitra" id="telepon_rekon_mitra"
-                            class="form-control no-spinner"
-                            value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}" min="0" required>
+                        <input type="text" name="telepon_rekon_mitra" placeholder="Masukan Telepon Rekon Mitra"
+                            id="telepon_rekon_mitra" class="form-control" maxlength="15" required
+                            value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}">
                         <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
+                            Diperlukan. Hanya boleh angka (maksimal 15 digit)
                         </div>
                     </div>
 
@@ -322,12 +322,13 @@
                         </div>
                     </div>
 
-                    <div class="col-4 mb-4">
-                        <label class="form-label">Telepon Dinas <span class="text-danger">*</span></label>
-                        <input type="number" name="telepon_dinas" placeholder="Masukan Telepon Dinas"  id="telepon_dinas" class="form-control no-spinner"
-                            value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}" min="0" required>
+                    <div class="col-4 mb-5">
+                        <label class="form-label">Telepon Dinas <span class="r">*</span></label>
+                        <input type="text" name="telepon_dinas" placeholder="Masukan Telepon Dinas"
+                            id="telepon_dinas" class="form-control" maxlength="15"
+                            value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}" required>
                         <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
+                            Diperlukan. Hanya boleh angka (maksimal 15 digit)
                         </div>
                     </div>
                 </div>

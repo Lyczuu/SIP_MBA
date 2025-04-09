@@ -204,7 +204,7 @@
                                                             <tr>
                                                                 <th>Kode Pengajuan</th>
                                                                 <th>
-                                                                    <b>N</b>ame
+                                                                    <b>N</b>ama
                                                                 </th>
                                                                 <th>Nama mitra</th>
                                                                 <th>Nama wilayah</th>

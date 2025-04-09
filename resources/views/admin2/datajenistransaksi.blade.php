@@ -100,21 +100,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($jenis_transaksi as $key => $list)
+                                    @foreach ($jenistransaksi as $key => $list)
                                         <tr>
                                             <td>{{ $list->nama_jenis_transaksi }}</td>
                                             <td>{{ $list->created_at->format('d-m-Y H:i') }}</td>
                                             <td>{{ $list->updated_at->format('d-m-Y H:i') }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
-                                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#Editjenistransaksi{{ $list->id }}">
-                                                        <i class="bi bi-pencil-square"></i> Edit
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#hapusjenistransaksi{{ $list->id }}">
-                                                        <i class="bi bi-trash"></i> Delete
-                                                    </button>
+                                                    @if ($list->deleted_at)
+                                                        <a href="{{ url('/jenistransaksi/restore/' . $list->id) }}"
+                                                            class="btn btn-success btn-sm">
+                                                            <i class="bi bi-arrow-counterclockwise"></i> Restore
+                                                        </a>
+                                                    @else
+                                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#Editjenistransaksi{{ $list->id }}">
+                                                            <i class="bi bi-pencil-square"></i> Edit
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                            data-bs-target="#hapusjenistransaksi{{ $list->id }}">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </td>
 

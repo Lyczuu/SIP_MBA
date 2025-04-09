@@ -12,8 +12,7 @@ class jenispajak extends Model
 
     protected $table = 'jenis_pajak';
     protected $fillable = [
-        'nama_jenis_pajak',
-        'status'
+        'nama_jenis_pajak'
     ];
 
     protected $dates = ['deleted_at'];

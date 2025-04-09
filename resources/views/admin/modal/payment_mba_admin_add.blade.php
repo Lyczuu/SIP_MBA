@@ -87,6 +87,7 @@
                     <div class="col-6">
                         <label for="wilayah" class="form-label">Nama Wilayah <span class="r">*</span></label>
                         <select id="wilayah" name="wilayah_id" class="form-select" required>
+                            <option value="">-- Pilih wilayah --</option>
                             @foreach ($wilayah as $w)
                                 <option value="{{ $w->id }}" {{ old('wilayah_id') == $w->id ? 'selected' : '' }}>
                                     {{ $w->nama_wilayah }}
@@ -122,8 +123,8 @@
 
                 <div class="row">
 
-                       {{-- aggregator --}}
-                       <div class="col-6" id="aggregator-input-container" style="display: none;">
+                    {{-- aggregator --}}
+                    <div class="col-6" id="aggregator-input-container" style="display: none;">
                         <label for="mitra_agg" class="form-label">Informasi Tambahan untuk AGGREGATOR <span
                                 class="r">*</span></label>
                         <select name="mitra_agg" id="mitra_agg" class="form-control">
@@ -234,8 +235,8 @@
                     <!-- Settlement -->
                     <div class="col-4">
                         <label class="form-label">Settlement <span class="r">*</span></label>
-                        <input type="time" class="form-control" name="settlement" placeholder="Masukan Settlement"
-                            required value="{{ old('settlement') }}">
+                        <input type="time" class="form-control" name="settlement"
+                            placeholder="Masukan Settlement" required value="{{ old('settlement') }}">
                         <div class="invalid-feedback">
                             Diperlukan. Hanya boleh berupa angka
                         </div>
@@ -256,37 +257,45 @@
 
 
 
+                <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.6.0/dist/autoNumeric.min.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const inputs = document.querySelectorAll('.autonumeric');
+                        inputs.forEach(input => {
+                            new AutoNumeric(input, {
+                                digitGroupSeparator: '.',
+                                decimalCharacter: ',',
+                                decimalPlaces: 0,
+                                unformatOnSubmit: true
+                            });
+                        });
+                    });
+                </script>
 
-                <!-- Skema Fee -->
                 <div class="row">
                     <label class="fees-label mb-3"><strong>Fees <span class="r">*</span></strong></label>
+
                     <div class="col-4">
                         <label class="form-label">Total Fee <span class="r">*</span></label>
-                        <input type="number" class="form-control no-spinner" name="total_fee" placeholder="Masukan Total fee"
-                          min="0"  required value="{{ old('total_fee') }}">
-                        <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
-                        </div>
+                        <input type="text" class="form-control no-spinner autonumeric" name="total_fee"
+                            placeholder="Masukan Total fee" required value="{{ old('total_fee') }}">
+                        <div class="invalid-feedback">Diperlukan. Hanya boleh berupa angka</div>
                     </div>
+
                     <div class="col-4">
                         <label class="form-label">Fee MBA <span class="r">*</span></label>
-                        <input type="number" class="form-control no-spinner" name="fee_mba" placeholder="Masukkan Fee MBA"
-                          min="0"  required value="{{ old('fee_mba') }}">
-                        <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
-                        </div>
+                        <input type="text" class="form-control no-spinner autonumeric" name="fee_mba"
+                            placeholder="Masukkan Fee MBA" required value="{{ old('fee_mba') }}">
+                        <div class="invalid-feedback">Diperlukan. Hanya boleh berupa angka</div>
                     </div>
+
                     <div class="col-4 mb-5">
                         <label class="form-label">Fee Mitra <span class="r">*</span></label>
-                        <input type="number" class="form-control no-spinner" name="fee_mitra" placeholder="Masukkan Fee Mitra"
-                           min="0" required value="{{ old('fee_mitra') }}">
-                        <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
-                        </div>
+                        <input type="text" class="form-control no-spinner autonumeric" name="fee_mitra"
+                            placeholder="Masukkan Fee Mitra" required value="{{ old('fee_mitra') }}">
+                        <div class="invalid-feedback">Diperlukan. Hanya boleh berupa angka</div>
                     </div>
                 </div>
-                {{-- end fees --}}
-
 
 
 
@@ -308,14 +317,12 @@
 
 
                     <div class="col-4">
-                        <label for="telepon_payment_mitra" class="form-label">Telepon Payment Mitra <span
-                                class="r">*</span></label>
-                        <input type="number" name="telepon_payment_mitra" placeholder="Masukan Telepon Payment Mitra" id="telepon_payment_mitra"
-                            class="form-control no-spinner"
-                            value="{{ old('telepon_payment_mitra', $paymentMba->telepon_payment_mitra ?? '') }}"
-                             min="0" required>
+                        <label for="telepon_payment_mitra" class="form-label">Telepon Payment Mitra <span class="r">*</span></label>
+                        <input type="text" name="telepon_payment_mitra" placeholder="Masukan Telepon Payment Mitra"
+                            id="telepon_payment_mitra" class="form-control" maxlength="15"
+                            value="{{ old('telepon_payment_mitra', $paymentMba->telepon_payment_mitra ?? '') }}" required>
                         <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
+                            Diperlukan. Hanya boleh angka (maksimal 15 digit)
                         </div>
                     </div>
 
@@ -339,13 +346,14 @@
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Telepon Rekon Mitra <span class="r">*</span></label>
-                        <input type="number" name="telepon_rekon_mitra" placeholder="Masukan Telepon Rekon Mitra" id="telepon_rekon_mitra"
-                            class="form-control no-spinner"
-                            value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}" min="0" required>
+                        <input type="text" name="telepon_rekon_mitra" placeholder="Masukan Telepon Rekon Mitra"
+                            id="telepon_rekon_mitra" class="form-control" maxlength="15" required
+                            value="{{ old('telepon_rekon_mitra', $paymentMba->telepon_rekon_mitra ?? '') }}">
                         <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
+                            Diperlukan. Hanya boleh angka (maksimal 15 digit)
                         </div>
                     </div>
+
 
                     <!-- PIC Dinas -->
                     <div class="col-4">
@@ -358,12 +366,12 @@
                     </div>
 
                     <div class="col-4 mb-5">
-
                         <label class="form-label">Telepon Dinas <span class="r">*</span></label>
-                        <input type="number" name="telepon_dinas" placeholder="Masukan Telepon Dinas" id="telepon_dinas" class="form-control no-spinner"
-                            value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}" min="0" required>
+                        <input type="text" name="telepon_dinas" placeholder="Masukan Telepon Dinas"
+                            id="telepon_dinas" class="form-control" maxlength="15"
+                            value="{{ old('telepon_dinas', $paymentMba->telepon_dinas ?? '') }}" required>
                         <div class="invalid-feedback">
-                            Diperlukan. Hanya boleh berupa angka
+                            Diperlukan. Hanya boleh angka (maksimal 15 digit)
                         </div>
                     </div>
                 </div>

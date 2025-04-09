@@ -15,10 +15,30 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $role = role::orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
+        $role = Role::withTrashed()->where('nama_role', '!=', 'Admin')->orderBy(DB::raw('GREATEST(created_at, updated_at)'), 'desc')->get();
 
         return view('admin2.datarole', compact('role'));
     }
+
+
+    public function restore($id)
+    {
+        $role = role::withTrashed()->where('id', $id)->first();
+
+        if ($role) {
+            $role->restore(); // Mengembalikan data
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Dikembalikan.');
+        } else {
+            Session::flash('status', 'danger');
+            Session::flash('message', 'Data tidak ditemukan.');
+        }
+
+        return redirect()->back();
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -86,16 +106,6 @@ class RoleController extends Controller
 
         $role = role::findOrfail($id);
 
-        //check data di tabel utama
-        $isUsed = Role::where('nama_role', $role->id)->exists() ||
-            User::where('role_id', $role->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak bisa diperbarui karena masih digunakan di tabel lain'
-            ]);
-        }
 
         //check data yang duplikat
         $existingData = role::where('nama_role', $validated['nama_role'])
@@ -127,25 +137,13 @@ class RoleController extends Controller
     {
         $role = role::findOrfail($id);
 
-        
+
         if ($role->nama_role === 'Admin') {
             return redirect()->back()->with([
                 'status' => 'danger',
                 'message' => 'Role "Admin" tidak dapat dihapus!'
             ]);
         }
-
-        //check data di tabel utama
-        $isUsed = Role::where('nama_role', $role->id)->exists() ||
-            User::where('role_id', $role->id)->exists();
-
-        if ($isUsed) {
-            return redirect()->back()->with([
-                'status' => 'danger',
-                'message' => 'Data tidak bisa dihapus karena masih digunakan di tabel lain'
-            ]);
-        }
-
 
         $role->delete();
 

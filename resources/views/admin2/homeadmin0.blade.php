@@ -174,9 +174,10 @@
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Kode Pengajuan</th>
-                                                        <th scope="col">Mitra</th>
-                                                        <th scope="col">Wilayah</th>
+                                                        <th scope="col">Nama Mitra</th>
+                                                        <th scope="col">Nama Wilayah</th>
                                                         <th scope="col">Jenis Pajak</th>
+                                                        <th scope="col">Jenis Transaksi</th>
                                                         <th scope="col">Status</th>
                                                         <th scope="col">Aksi</th>
                                                     </tr>
@@ -188,6 +189,7 @@
                                                         <td>{{ $list->mitra->nama_mitra }}</td>
                                                         <td>{{ $list->wilayah->nama_wilayah }}</td>
                                                         <td>{{ $list->jenis_pajak_nama }}</td>
+                                                        <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                         <td>
                                                             @if ($list->status == 0)
                                                                 <span class="badge bg-warning">Diajukan</span>

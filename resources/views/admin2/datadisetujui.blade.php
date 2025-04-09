@@ -53,11 +53,11 @@
 
                         <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
                             <li class="nav-item flex-fill" role="presentation">
-                                <a class="nav-link w-50 {{ Request::routeIs('admin.datadiajukan') ? 'active' : '' }}"
+                                <a class="nav-link w-50 {{ Request::routeIs('admin.diajukan') ? 'active' : '' }}"
                                     id="diajukan-tab" href="{{ route('admin.datadiajukan') }}" role="tab"
                                     aria-controls="diajukan"
                                     aria-selected="{{ Request::routeIs('admin.datadiajukan') ? 'true' : 'false' }}">
-                                    Diajukan
+                                    Diajukan <span id="diajukan-badge" class="badge bg-warning ms-1">0</span>
                                 </a>
                             </li>
                             <li class="nav-item flex-fill" role="presentation">
@@ -68,6 +68,7 @@
                                     Ditolak
                                 </a>
                             </li>
+
                             <li class="nav-item flex-fill" role="presentation">
                                 <a class="nav-link w-50 {{ Request::routeIs('data.disetujui') ? 'active' : '' }}"
                                     id="disetujui-tab" href="{{ route('data.disetujui') }}" role="tab"
@@ -83,7 +84,7 @@
 
 
 
-                            <button type="submit" class="btn btn-success">Cetak Excel</button>
+                            <button type="submit" class="btn btn-success">Cetak Form</button>
 
                             <div class="table-responsive">
                                 <table>
