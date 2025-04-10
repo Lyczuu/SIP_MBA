@@ -19,18 +19,14 @@
                                     placeholder="" value="{{ $list->kode_pengajuan }}" disabled>
                             </div>
                             {{-- end kode_pengajuan --}}
+
                             <div class="col-12 col-md-6">
-                                <label for="alasan_penolakan" class="form-label">Alasan Penolakan</label>
-                                <input type="text" name="alasan_penolakan" id="alasan_penolakan" class="form-control" placeholder=""
-                                    value="{{ $list->alasan_penolakan }}" disabled>
+                                <label for="username" class="form-label">Nama Am</label>
+                                <input type="text" name="username" id="username" class="form-control" placeholder=""
+                                    value="{{ $list->user->username }}" disabled>
                             </div>
-                            {{-- end alasan penolakan--}}
-                            <div class="col-12 col-md-6">
-                                <label for="ditolak_oleh" class="form-label">Ditolak Oleh</label>
-                                <input type="text" name="ditolak_oleh" id="ditolak_oleh" class="form-control" placeholder=""
-                                    value="{{ $list->ditolak_oleh }}" disabled>
-                            </div>
-                            {{-- end ditolak oleh --}}
+                            {{-- end username --}}
+
 
                             <div class="col-12 col-md-6">
                                 <label for="nama_mitra" class="form-label">Nama mitra</label>
@@ -203,7 +199,18 @@
                                                 value="{{ $list->wag_kordinasi_rekon }}" disabled>
                                         </div>
                                         {{-- end  Wag Kordinasi Rekon --}}
+                                        <div class="col-6 mb-3">
+                                            <label for="alasan_penolakan" class="form-label"><strong>Alasan Penolakan</strong></label>
+                                            <textarea name="alasan_penolakan" id="alasan_penolakan" class="form-control" rows="5" disabled>{{ $list->alasan_penolakan }}</textarea>
+                                        </div>
 
+                                        {{-- end alasan penolakan--}}
+                                        <div class="col-12 col-md-6">
+                                            <label for="ditolak_oleh" class="form-label">Ditolak Oleh</label>
+                                            <input type="text" name="ditolak_oleh" id="ditolak_oleh" class="form-control" placeholder=""
+                                                value="{{ $list->ditolak_oleh }}" disabled>
+                                        </div>
+                                        {{-- end ditolak oleh --}}
 
 
 

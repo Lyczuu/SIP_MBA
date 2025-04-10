@@ -364,8 +364,40 @@ setInterval(fetchAdminPaymentCounts, 5000);
 
 
 
+//validasi admin
 
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[id^="statusSelect"]').forEach(function (select) {
+        var id = select.id.replace("statusSelect", "");
+        var alasanContainer = document.getElementById('alasanContainer' + id);
+        var alasanInput = document.getElementById('alasan_penolakan' + id);
 
+        function toggleAlasan() {
+            if (select.value === "1") {
+                alasanContainer.style.display = "block";
+                alasanInput.required = true;
+            } else {
+                alasanContainer.style.display = "none";
+                alasanInput.required = false;
+            }
+        }
+
+        toggleAlasan();
+        select.addEventListener('change', toggleAlasan);
+    });
+
+    document.getElementById('selectAll').addEventListener('change', function () {
+        let checkboxes = document.querySelectorAll('input[name="ids[]"]');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+
+    
+
+});
+
+// end validasi admin
+
+//
 
 
 //notif am

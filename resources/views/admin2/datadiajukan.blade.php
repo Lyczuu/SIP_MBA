@@ -101,54 +101,86 @@
                         <br>
 
                         <!-- Table with stripped rows -->
-                        <div class="table-responsive">
-                            <table class="table datatable">
-                                <thead>
-                                    <tr>
-                                        <th>Kode Pengajuan</th>
-                                        <th>Nama Am</th>
-                                        <th>Nama mitra</th>
-                                        <th>Nama wilayah</th>
-                                        <th>Jenis pajak</th>
-                                        <th>Nama Jenis transaksi</th>
-                                        <th>Wag kordinasi payment</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($paymentmba->filter(function ($item) {
-            return $item->status == 0; // status belum divalidasi
-        }) as $key => $list)
+
+                        <form id="exportForm" method="POST" action="{{ route('payment.exportAdmindetail') }}">
+                            @csrf
+
+                            <!-- Tombol Ekspor dan Checkbox Select All -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <button type="submit" class="btn btn-primary">Cetak Excel</button>
+
+                            </div>
+                            <div class="table-responsive">
+                                <input type="checkbox" id="selectAll">
+                                <label class="form-check-label" for="selectAll">Select All</label>
+                            </div>
+
+                            <!-- Tabel Data -->
+                            <div class="table-responsive">
+                                <table class="table datatable">
+                                    <thead>
                                         <tr>
-                                            <td> {{ $list->kode_pengajuan }}</td>
-                                            <td> {{ $list->user->username }}</td>
-                                            <td> {{ $list->mitra->nama_mitra }}</td>
-                                            <td> {{ $list->wilayah->nama_wilayah }}</td>
-                                            <td> {{ $list->jenis_pajak_nama }}</td>
-                                            <td> {{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                                            <td> {{ $list->wag_kordinasi_payment }}</td>
-                                            <td>
-                                                @if ($list->status == 0)
-                                                    <span class="badge bg-warning">Diajukan</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="d-flex gap-2">
-                                                    <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#Editpayment{{ $list->id }}">
-                                                        <i class="bi bi-pencil-square"></i> Detail
-                                                    </button>
-                                                </div>
-                                            </td>
+                                            <th></th>
+                                            <th>ID</th>
+                                            <th>Kode Pengajuan</th>
+                                            <th>Nama AM</th>
+                                            <th>Nama Mitra</th>
+                                            <th>Wilayah</th>
+                                            <th>Jenis Pajak</th>
+                                            <th>Jenis Transaksi</th>
+                                            <th>WAG Kordinasi Payment</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
                                         </tr>
-                                        @include('admin2.modal.edit_detailpayment')
-                                    @endforeach
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($paymentmba->filter(fn($item) => $item->status == 0) as $list)
+                                            <tr>
+                                                <td><input type="checkbox" name="ids[]" value="{{ $list->id }}"></td>
+                                                <td>{{ $list->id }}</td>
+                                                <td>{{ $list->kode_pengajuan }}</td>
+                                                <td>{{ $list->user->username }}</td>
+                                                <td>{{ $list->mitra->nama_mitra }}</td>
+                                                <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                                <td>{{ $list->jenis_pajak_nama }}</td>
+                                                <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                                <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                <td>
+                                                    <span class="badge bg-warning">Diajukan</span>
+                                                </td>
+                                                <td id="action-col-{{ $list->id }}"></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+
+                        <!-- Tombol Detail dan Modal -->
+                        <!-- Tombol Detail dan Modal -->
+                        @foreach ($paymentmba->filter(fn($item) => $item->status == 0) as $list)
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const actionCol = document.getElementById('action-col-{{ $list->id }}');
+                                    if (actionCol) {
+                                        actionCol.innerHTML = `
+              <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#Editpayment{{ $list->id }}">
+    <i class="bi bi-pencil-square"></i> Detail
+</button>
+
+            `;
+                                    }
+                                });
+                            </script>
+
+                            @include('admin2.modal.edit_detailpayment', ['list' => $list])
+                        @endforeach
 
 
-                                </tbody>
-                            </table>
-                        </div>
+
+
+
+
                         <!-- End Table with stripped rows -->
 
                     </div>

@@ -39,7 +39,7 @@
         <h1>Data Disetujui</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('admin.utama')}}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.utama') }}">Home</a></li>
                 <li class="breadcrumb-item active">Disetujui</li>
             </ol>
         </nav>
@@ -78,21 +78,25 @@
                                 </a>
                             </li>
                         </ul>
-<br>
+                        <br>
                         <form id="exportForm" method="POST" action="{{ route('payment.exportAdmin') }}">
                             @csrf
 
-
-
+                            <!-- Tombol Cetak Form -->
                             <button type="submit" class="btn btn-success">Cetak Form</button>
 
-                            <div class="table-responsive">
+                            <!-- Tombol Cetak Excel -->
+                            <button type="button" class="btn btn-primary" id="exportExcelBtn">Cetak Excel</button>
+
+                            <div class="table-responsive mt-3">
                                 <table>
                                     <thead>
-                                        <th>
-                                            <input type="checkbox" id="selectAll">
-                                            <label for="selectAll">Select All</label>
-                                        </th>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" id="selectAll">
+                                                <label for="selectAll">Select All</label>
+                                            </th>
+                                        </tr>
                                     </thead>
                                 </table>
                             </div>
@@ -115,9 +119,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($paymentmba->filter(function ($item) {
-            return $item->status == 2;
-        }) as $key => $list)
+                                        @foreach ($paymentmba->filter(fn($item) => $item->status == 2) as $key => $list)
                                             <tr>
                                                 <td><input type="checkbox" name="ids[]" value="{{ $list->id }}"></td>
                                                 <td>{{ $list->id }}</td>
@@ -129,9 +131,8 @@
                                                 <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
                                                 <td>{{ $list->wag_kordinasi_payment }}</td>
                                                 <td>
-                                                    @if ($list->status == 2)
-                                                        <span class="badge bg-success">Disetujui</span>
-                                                    @endif
+                                                    <span class="badge bg-success">Disetujui</span>
+                                                </td>
                                                 <td>
                                                     <div class="col-3">
                                                         <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
@@ -147,25 +148,37 @@
                                 </table>
                             </div>
                         </form>
-
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
+                                // Modal Log
                                 document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
                                     button.addEventListener('click', function(event) {
-                                        event.preventDefault(); // Mencegah reload jika terjadi
+                                        event.preventDefault();
                                         let modalId = this.getAttribute('data-bs-target');
                                         console.log("Opening modal:", modalId);
                                     });
                                 });
 
-                                // Select/Deselect All Checkboxes
+                                // Select All Checkbox
                                 document.getElementById('selectAll').addEventListener('change', function() {
                                     let checkboxes = document.querySelectorAll('input[name="ids[]"]');
                                     checkboxes.forEach(checkbox => checkbox.checked = this.checked);
                                 });
+
+                                // Handle Export Excel
+                                document.getElementById('exportExcelBtn').addEventListener('click', function() {
+                                    let form = document.getElementById('exportForm');
+                                    let originalAction = form.action;
+
+                                    // Ganti action ke route Excel export
+                                    form.action = "{{ route('payment.exportAdmindetail') }}";
+                                    form.submit();
+
+                                    // Kembalikan ke action semula (biar tombol "Cetak Form" tetap jalan)
+                                    form.action = originalAction;
+                                });
                             });
                         </script>
-
 
                     </div>
                 </div>

@@ -78,15 +78,21 @@
                                         <form id="exportForm" method="POST" action="{{ route('payment.exportAM') }}">
                                             @csrf
 
+                                            <!-- Tombol Cetak Form -->
                                             <button type="submit" class="btn btn-success">Cetak Form</button>
 
-                                            <div class="table-responsive">
+                                            <!-- Tombol Cetak Excel -->
+                                            <button type="button" class="btn btn-primary" id="exportExcelBtn">Cetak Excel</button>
+
+                                            <div class="table-responsive mt-3">
                                                 <table>
                                                     <thead>
-                                                        <th>
-                                                            <input type="checkbox" id="selectAll">
-                                                            <label for="selectAll">Select All</label>
-                                                        </th>
+                                                        <tr>
+                                                            <th>
+                                                                <input type="checkbox" id="selectAll">
+                                                                <label for="selectAll">Select All</label>
+                                                            </th>
+                                                        </tr>
                                                     </thead>
                                                 </table>
                                             </div>
@@ -151,6 +157,7 @@
                                                             </td>
                                                             @include('admin.modal.detaildiajukan')
                                                         </tr>
+<<<<<<< HEAD
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -158,10 +165,74 @@
                                             <script>
                                                 $(document).ready(function () {
                                                   $('#myTable').DataTable();
+=======
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($paymentmba->filter(fn($item) => $item->status == 2) as $key => $list)
+                                                            <tr>
+                                                                <td><input type="checkbox" name="ids[]" value="{{ $list->id }}"></td>
+                                                                <td>{{ $list->id }}</td>
+                                                                <td>{{ $list->kode_pengajuan }}</td>
+                                                                <td>{{ $list->user->username }}</td>
+                                                                <td>{{ $list->mitra->nama_mitra }}</td>
+                                                                <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                                                <td>{{ $list->jenis_pajak_nama }}</td>
+                                                                <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                                                <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                                <td>
+                                                                    <span class="badge bg-success">Disetujui</span>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="col-3">
+                                                                        <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                                            data-bs-target="#Editpayment{{ $list->id }}">
+                                                                            <i class="bi bi-pencil-square"></i> Detail
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                                @include('admin.modal.detaildiajukan')
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                // Modal Log
+                                                document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
+                                                    button.addEventListener('click', function (event) {
+                                                        event.preventDefault();
+                                                        let modalId = this.getAttribute('data-bs-target');
+                                                        console.log("Opening modal:", modalId);
+                                                    });
+>>>>>>> 94e3996702f8189d618671831cd5fa9f71368714
                                                 });
                                               </script>
 
+<<<<<<< HEAD
+=======
+                                                // Select All Checkbox
+                                                document.getElementById('selectAll').addEventListener('change', function () {
+                                                    let checkboxes = document.querySelectorAll('input[name="ids[]"]');
+                                                    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                                                });
 
+                                                // Handle Export Excel
+                                                document.getElementById('exportExcelBtn').addEventListener('click', function () {
+                                                    let form = document.getElementById('exportForm');
+                                                    let originalAction = form.action;
+
+                                                    // Ganti action ke route Excel export
+                                                    form.action = "{{ route('payment.exportAMdetail') }}";
+                                                    form.submit();
+
+                                                    // Kembalikan ke action semula (biar tombol "Cetak Form" tetap jalan)
+                                                    form.action = originalAction;
+                                                });
+                                            });
+                                        </script>
+>>>>>>> 94e3996702f8189d618671831cd5fa9f71368714
 
                                     </div>
 

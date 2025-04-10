@@ -86,56 +86,92 @@
 
 
 
-                            <!-- Table with stripped rows -->
-                            <div class="table-responsive">
-                                <table id="table-ditolak" class="table datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>Kode Pengajuan</th>
-                                            <th>Nama Am</th>
-                                            <th>Nama mitra</th>
-                                            <th>Nama wilayah</th>
-                                            <th>Jenis pajak</th>
-                                            <th>Nama Jenis transaksi</th>
-                                            <th>Wag kordinasi payment</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
+                            <form id="exportForm" method="POST" action="{{ route('payment.exportAdmindetail') }}">
+                                @csrf
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($paymentmba->filter(function ($item) {
-                                                 return $item->status == 1; // Hanya filter berdasarkan status = 1
-                                           }) as $key => $list)
+                                <!-- Tombol Cetak Excel -->
+                                <button type="submit" class="btn btn-primary">Cetak Excel</button>
+
+                                <div class="table-responsive mt-3">
+                                    <table>
+                                        <thead>
                                             <tr>
-                                                <td> {{ $list->kode_pengajuan }}</td>
-                                                <td> {{ $list->user->username }}</td>
-                                                <td> {{ $list->mitra->nama_mitra }}</td>
-                                                <td> {{ $list->wilayah->nama_wilayah }}</td>
-                                                <td> {{ $list->jenis_pajak_nama }}</td>
-                                                <td> {{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                                                <td> {{ $list->wag_kordinasi_payment }}</td>
-                                                 <td>
-                                                    @if ($list->status == 1)
-                                                       <span class="badge bg-danger">Ditolak</span>
-                                                    @endif
-                                                </td>                                                <td>
-                                                    <div class="d-flex gap-2">
-                                                        <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
-                                                            data-bs-target="#Editpayment{{ $list->id }}">
-                                                            <i class="bi bi-pencil-square"></i> Detail
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                                <th>
+                                                    <input type="checkbox" id="selectAll">
+                                                    <label for="selectAll">Select All</label>
+                                                </th>
                                             </tr>
-                                            @include('admin2.modal.detailditolak')
-                                        @endforeach
+                                        </thead>
+                                    </table>
+                                </div>
 
+                                <div class="table-responsive">
+                                    <table class="table datatable">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>ID</th>
+                                                <th>Kode Pengajuan</th>
+                                                <th>Nama AM</th>
+                                                <th>Nama Mitra</th>
+                                                <th>Wilayah</th>
+                                                <th>Jenis Pajak</th>
+                                                <th>Jenis Transaksi</th>
+                                                <th>WAG Kordinasi Payment</th>
+                                                <th>Status</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($paymentmba->filter(fn($item) => $item->status == 1) as $key => $list)
+                                                <tr>
+                                                    <td><input type="checkbox" name="ids[]" value="{{ $list->id }}"></td>
+                                                    <td>{{ $list->id }}</td>
+                                                    <td>{{ $list->kode_pengajuan }}</td>
+                                                    <td>{{ $list->user->username }}</td>
+                                                    <td>{{ $list->mitra->nama_mitra }}</td>
+                                                    <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                                    <td>{{ $list->jenis_pajak_nama }}</td>
+                                                    <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                                    <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                    <td>
+                                                        <span class="badge bg-danger">ditolak</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-3">
+                                                            <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                                data-bs-target="#Editpayment{{ $list->id }}">
+                                                                <i class="bi bi-pencil-square"></i> Detail
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                    @include('admin.modal.detailditolak')
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
 
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    // Select All Checkbox
+                                    document.getElementById('selectAll').addEventListener('change', function () {
+                                        let checkboxes = document.querySelectorAll('input[name="ids[]"]');
+                                        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                                    });
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                    // Modal Log (opsional, bisa dihapus kalau tidak butuh log modal)
+                                    document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
+                                        button.addEventListener('click', function (event) {
+                                            event.preventDefault();
+                                            let modalId = this.getAttribute('data-bs-target');
+                                            console.log("Opening modal:", modalId);
+                                        });
+                                    });
+                                });
+                            </script>
+
                             <!-- End Table with stripped rows -->
 
                         </div>
