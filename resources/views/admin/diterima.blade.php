@@ -14,19 +14,11 @@
                 {{ Session::get('message') }}
             </div>
         @endif
-        <!DOCTYPE html>
-        <html lang="en">
-
-        <head>
-            <meta charset="utf-8">
-            <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-            <meta content="" name="description">
-            <meta content="" name="keywords">
-
-
-
-        </head>
+<head>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+</head>
 
         <body>
 
@@ -99,93 +91,133 @@
                                                 </table>
                                             </div>
 
-                                            <div class="table-responsive">
-                                                <table class="table datatable">
-                                                    <thead>
+
+
+                                            <table id="myTable" class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>ID</th>
+                                                        <th>Kode Pengajuan</th>
+                                                        <th>Nama AM</th>
+                                                        <th>Nama Mitra</th>
+                                                        <th>Wilayah</th>
+                                                        <th>Jenis Pajak</th>
+                                                        <th>Jenis Transaksi</th>
+                                                        <th>WAG Kordinasi Payment</th>
+                                                        <th>Status</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                        <th><input type="text" placeholder="Cari..." /></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($paymentmba-> filter(function ($item) {return $item->status == 2;}) as $key => $list)
                                                         <tr>
-                                                            <th></th>
-                                                            <th>ID</th>
-                                                            <th>Kode Pengajuan</th>
-                                                            <th>Nama AM</th>
-                                                            <th>Nama Mitra</th>
-                                                            <th>Wilayah</th>
-                                                            <th>Jenis Pajak</th>
-                                                            <th>Jenis Transaksi</th>
-                                                            <th>WAG Kordinasi Payment</th>
-                                                            <th>Status</th>
-                                                            <th>Aksi</th>
+                                                            <td><input type="checkbox" name="ids[]"
+                                                                    value="{{ $list->id }}"></td>
+                                                            <td>{{ $list->id }}</td>
+                                                            <td>{{ $list->kode_pengajuan }}</td>
+                                                            <td>{{ $list->user->username }}</td>
+                                                            <td>{{ $list->mitra->nama_mitra }}</td>
+                                                            <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                                            <td>{{ $list->jenis_pajak_nama }}</td>
+                                                            <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                                            <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                            <td>
+                                                                @if ($list->status == 2)
+                                                                    <span class="badge bg-success">Disetujui</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <div class="col-3">
+                                                                    <button class="btn btn-dark btn-sm"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#Editpayment{{ $list->id }}">
+                                                                        <i class="bi bi-pencil-square"></i> Detail
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                            @include('admin.modal.detaildiajukan')
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($paymentmba->filter(function ($item) {
-            return $item->status == 2;
-        }) as $key => $list)
-                                                            <tr>
-                                                                <td><input type="checkbox" name="ids[]"
-                                                                        value="{{ $list->id }}"></td>
-                                                                <td>{{ $list->id }}</td>
-                                                                <td>{{ $list->kode_pengajuan }}</td>
-                                                                <td>{{ $list->user->username }}</td>
-                                                                <td>{{ $list->mitra->nama_mitra }}</td>
-                                                                <td>{{ $list->wilayah->nama_wilayah }}</td>
-                                                                <td>{{ $list->jenis_pajak_nama }}</td>
-                                                                <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                                                                <td>{{ $list->wag_kordinasi_payment }}</td>
-                                                                <td>
-                                                                    @if ($list->status == 2)
-                                                                        <span class="badge bg-success">Disetujui</span>
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    <div class="col-3">
-                                                                        <button class="btn btn-dark btn-sm"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#Editpayment{{ $list->id }}">
-                                                                            <i class="bi bi-pencil-square"></i> Detail
-                                                                        </button>
-                                                                    </div>
-                                                                </td>
-                                                                @include('admin.modal.detaildiajukan')
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </form>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
 
-                                        <script>
-                                            document.addEventListener('DOMContentLoaded', function() {
-                                                document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
-                                                    button.addEventListener('click', function(event) {
-                                                        event.preventDefault(); // Mencegah reload jika terjadi
-                                                        let modalId = this.getAttribute('data-bs-target');
-                                                        console.log("Opening modal:", modalId);
-                                                    });
+                                            <script>
+                                                $(document).ready(function () {
+                                                  $('#myTable').DataTable();
                                                 });
+                                              </script>
 
-                                                // Select/Deselect All Checkboxes
-                                                document.getElementById('selectAll').addEventListener('change', function() {
-                                                    let checkboxes = document.querySelectorAll('input[name="ids[]"]');
-                                                    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-                                                });
-                                            });
-                                        </script>
 
 
                                     </div>
-                                    {{-- end card div --}}
+
+                                    </form>
+
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
+                                                button.addEventListener('click', function(event) {
+                                                    event.preventDefault(); // Mencegah reload jika terjadi
+                                                    let modalId = this.getAttribute('data-bs-target');
+                                                    console.log("Opening modal:", modalId);
+                                                });
+                                            });
+
+                                            // Select/Deselect All Checkboxes
+                                            document.getElementById('selectAll').addEventListener('change', function() {
+                                                let checkboxes = document.querySelectorAll('input[name="ids[]"]');
+                                                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                                            });
+                                        });
+
+
+
+                                        $(document).ready(function () {
+                                        var table = $('#myTable').DataTable();
+
+                                        $('#myTable thead tr:eq(1) th').each(function (i) {
+                                            $('input', this).on('input', function () {
+                                            table.column(i).search(this.value).draw();
+                                            });
+                                        });
+                                        });
+
+                                    </script>
+
+
+
 
                                 </div>
+                                {{-- end card div --}}
+
                             </div>
-                        </section>
+                    </div>
+            </section>
 
-                        </main><!-- End #main -->
+            </main><!-- End #main -->
 
 
-                        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-                                class="bi bi-arrow-up-short"></i></a>
+            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                    class="bi bi-arrow-up-short"></i></a>
+
+
+
         </body>
 
-        </html>
+
     </div>
 @endsection
