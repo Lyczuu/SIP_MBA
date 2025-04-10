@@ -9,7 +9,9 @@ use App\Models\paymentmba;
 use Illuminate\Http\Request;
 use App\Models\datadisetujui;
 use App\Exports\PaymentsExport;
+use App\Exports\paymentdetailExport;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class DatadisetujuiController extends Controller
 {
@@ -86,6 +88,31 @@ class DatadisetujuiController extends Controller
         }
 
         return response()->download($zipPath)->deleteFileAfterSend(true);
+    }
+
+
+    public function exportdetail(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!$ids) {
+            return redirect()->back()->with('error', 'Pilih minimal satu data untuk diekspor.');
+        }
+
+        // Kirim semua ID ke Export
+        $export = new paymentdetailExport($ids);
+
+        // Buat file Excel-nya
+        $spreadsheet = $export->generateExcelFile();
+        $writer = new Xlsx($spreadsheet);
+
+        // Simpan ke file sementara
+        $fileName = 'exported_payments_' . now()->format('Ymd_His') . '.xlsx';
+        $tempFilePath = storage_path('app/' . $fileName);
+        $writer->save($tempFilePath);
+
+        // Kembalikan file sebagai respons download
+        return response()->download($tempFilePath)->deleteFileAfterSend(true);
     }
 
     /**

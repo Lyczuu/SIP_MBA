@@ -115,9 +115,22 @@ Route::get('/nofeebelumvalidasi', [NofeebelumvalidasiController::class, 'index']
 
 //diterima hak AM
 Route::post('/payment/exportAM', [DiterimaController::class, 'export'])->name('payment.exportAM');
+//diterima hak AM
+Route::post('/payment/exportAMdetail', [DiterimaController::class, 'exportdetail'])->name('payment.exportAMdetail');
+
+Route::post('/payment/exportAMdetailditolak', [ditolakController::class, 'exportdetail'])->name('payment.exportAMdetailditolak');
+
+Route::post('/payment/exportAMdetaildiajukan', [BelumvalidasiController::class, 'exportdetail'])->name('payment.exportAMdetaildiajukan');
+
 
 //diterima hak admin
 Route::post('/payment/exportAdmin', [DatadisetujuiController::class, 'export'])->name('payment.exportAdmin');
+//diterima hak admin
+Route::post('/payment/exportAdmindetail', [DatadisetujuiController::class, 'exportdetail'])->name('payment.exportAdmindetail');
+
+Route::post('/payment/exportAdminditolak', [DataditolakController::class, 'exportdetail'])->name('payment.exportAdmindetailditolak');
+
+Route::post('/payment/exportAdmindiajukan', [DatadiajukanController::class, 'exportdetail'])->name('payment.exportAdmindetaildiajukan');
 
 
 

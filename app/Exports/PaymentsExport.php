@@ -80,7 +80,7 @@ class PaymentsExport
 
 
 
-            // Pastikan field jenis_pajak_id tidak null atau kosong
+            //  field jenis_pajak_id tidak null atau kosong
             $jenisPajakArray = $payment->jenis_pajak_id ? explode(',', $payment->jenis_pajak_id) : [];
 
             // Mapping ID ke nama jenis pajak
