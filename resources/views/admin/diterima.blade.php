@@ -157,7 +157,6 @@
                                                             </td>
                                                             @include('admin.modal.detaildiajukan')
                                                         </tr>
-<<<<<<< HEAD
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -165,7 +164,6 @@
                                             <script>
                                                 $(document).ready(function () {
                                                   $('#myTable').DataTable();
-=======
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($paymentmba->filter(fn($item) => $item->status == 2) as $key => $list)
@@ -206,7 +204,6 @@
                                                         let modalId = this.getAttribute('data-bs-target');
                                                         console.log("Opening modal:", modalId);
                                                     });
->>>>>>> 94e3996702f8189d618671831cd5fa9f71368714
                                                 });
                                               </script>
 
