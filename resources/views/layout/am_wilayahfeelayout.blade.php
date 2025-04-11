@@ -30,6 +30,18 @@
     <link href="{{ asset('V-TAX/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
     <link href="{{ asset('V-TAX/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('V-TAX/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.4/css/fixedColumns.bootstrap5.css">
+    {{-- datatable css --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@6/dist/style.css" rel="stylesheet">
+
+
+
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('V-TAX/css/style.css') }}" rel="stylesheet">
@@ -239,6 +251,28 @@
     <script src="{{ asset('V-TAX/vendor/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('V-TAX/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('V-TAX/vendor/php-email-form/validate.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" ></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js" ></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/dataTables.fixedColumns.js" ></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/fixedColumns.dataTables.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/dataTables.fixedColumns.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/fixedColumns.bootstrap5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@6" defer></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
+
+
 
     <!-- Template Main JS File -->
     <script src="{{ asset('V-TAX/js/main.js') }}"></script>
