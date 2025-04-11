@@ -257,7 +257,7 @@
 
 
 
-                <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.6.0/dist/autoNumeric.min.js"></script>
+               
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         const inputs = document.querySelectorAll('.autonumeric');

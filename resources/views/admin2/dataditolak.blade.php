@@ -86,25 +86,7 @@
 
 
 
-                            <form id="exportForm" method="POST" action="{{ route('payment.exportAdmindetail') }}">
-                                @csrf
-
-                                <!-- Tombol Cetak Excel -->
-                                <button type="submit" class="btn btn-primary">Cetak Excel</button>
-
-                                <div class="table-responsive mt-3">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    <input type="checkbox" id="selectAll">
-                                                    <label for="selectAll">Select All</label>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-
+                            
                                 <div class="table-responsive">
                                     <table class="table datatable">
                                         <thead>
@@ -153,24 +135,7 @@
                                 </div>
                             </form>
 
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    // Select All Checkbox
-                                    document.getElementById('selectAll').addEventListener('change', function () {
-                                        let checkboxes = document.querySelectorAll('input[name="ids[]"]');
-                                        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-                                    });
 
-                                    // Modal Log (opsional, bisa dihapus kalau tidak butuh log modal)
-                                    document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
-                                        button.addEventListener('click', function (event) {
-                                            event.preventDefault();
-                                            let modalId = this.getAttribute('data-bs-target');
-                                            console.log("Opening modal:", modalId);
-                                        });
-                                    });
-                                });
-                            </script>
 
                             <!-- End Table with stripped rows -->
 

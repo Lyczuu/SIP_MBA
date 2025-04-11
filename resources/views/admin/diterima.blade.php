@@ -75,7 +75,9 @@
                                         </ul>
 
                                         <br>
-                                        <form id="exportForm" method="POST" action="{{ route('payment.exportAM') }}">
+
+
+                                        <form id="exportForm" method="POST" action="{{ route('payment.exportAdmin') }}">
                                             @csrf
 
                                             <!-- Tombol Cetak Form -->
@@ -97,73 +99,22 @@
                                                 </table>
                                             </div>
 
-
-
-                                            <table id="myTable" class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>ID</th>
-                                                        <th>Kode Pengajuan</th>
-                                                        <th>Nama AM</th>
-                                                        <th>Nama Mitra</th>
-                                                        <th>Wilayah</th>
-                                                        <th>Jenis Pajak</th>
-                                                        <th>Jenis Transaksi</th>
-                                                        <th>WAG Kordinasi Payment</th>
-                                                        <th>Status</th>
-                                                        <th>Aksi</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                        <th><input type="text" placeholder="Cari..." /></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($paymentmba-> filter(function ($item) {return $item->status == 2;}) as $key => $list)
+                                            <div class="table-responsive">
+                                                <table class="table datatable">
+                                                    <thead>
                                                         <tr>
-                                                            <td><input type="checkbox" name="ids[]"
-                                                                    value="{{ $list->id }}"></td>
-                                                            <td>{{ $list->id }}</td>
-                                                            <td>{{ $list->kode_pengajuan }}</td>
-                                                            <td>{{ $list->user->username }}</td>
-                                                            <td>{{ $list->mitra->nama_mitra }}</td>
-                                                            <td>{{ $list->wilayah->nama_wilayah }}</td>
-                                                            <td>{{ $list->jenis_pajak_nama }}</td>
-                                                            <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                                                            <td>{{ $list->wag_kordinasi_payment }}</td>
-                                                            <td>
-                                                                @if ($list->status == 2)
-                                                                    <span class="badge bg-success">Disetujui</span>
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                <div class="col-3">
-                                                                    <button class="btn btn-dark btn-sm"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#Editpayment{{ $list->id }}">
-                                                                        <i class="bi bi-pencil-square"></i> Detail
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                            @include('admin.modal.detaildiajukan')
+                                                            <th></th>
+                                                            <th>ID</th>
+                                                            <th>Kode Pengajuan</th>
+                                                            <th>Nama AM</th>
+                                                            <th>Nama Mitra</th>
+                                                            <th>Wilayah</th>
+                                                            <th>Jenis Pajak</th>
+                                                            <th>Jenis Transaksi</th>
+                                                            <th>WAG Kordinasi Payment</th>
+                                                            <th>Status</th>
+                                                            <th>Aksi</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-
-                                            <script>
-                                                $(document).ready(function () {
-                                                  $('#myTable').DataTable();
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($paymentmba->filter(fn($item) => $item->status == 2) as $key => $list)
@@ -196,32 +147,29 @@
                                             </div>
                                         </form>
                                         <script>
-                                            document.addEventListener('DOMContentLoaded', function () {
+                                            document.addEventListener('DOMContentLoaded', function() {
                                                 // Modal Log
                                                 document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
-                                                    button.addEventListener('click', function (event) {
+                                                    button.addEventListener('click', function(event) {
                                                         event.preventDefault();
                                                         let modalId = this.getAttribute('data-bs-target');
                                                         console.log("Opening modal:", modalId);
                                                     });
                                                 });
-                                              </script>
 
-<<<<<<< HEAD
-=======
                                                 // Select All Checkbox
-                                                document.getElementById('selectAll').addEventListener('change', function () {
+                                                document.getElementById('selectAll').addEventListener('change', function() {
                                                     let checkboxes = document.querySelectorAll('input[name="ids[]"]');
                                                     checkboxes.forEach(checkbox => checkbox.checked = this.checked);
                                                 });
 
                                                 // Handle Export Excel
-                                                document.getElementById('exportExcelBtn').addEventListener('click', function () {
+                                                document.getElementById('exportExcelBtn').addEventListener('click', function() {
                                                     let form = document.getElementById('exportForm');
                                                     let originalAction = form.action;
 
                                                     // Ganti action ke route Excel export
-                                                    form.action = "{{ route('payment.exportAMdetail') }}";
+                                                    form.action = "{{ route('payment.exportAdmindetail') }}";
                                                     form.submit();
 
                                                     // Kembalikan ke action semula (biar tombol "Cetak Form" tetap jalan)
@@ -229,43 +177,6 @@
                                                 });
                                             });
                                         </script>
->>>>>>> 94e3996702f8189d618671831cd5fa9f71368714
-
-                                    </div>
-
-                                    </form>
-
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
-                                                button.addEventListener('click', function(event) {
-                                                    event.preventDefault(); // Mencegah reload jika terjadi
-                                                    let modalId = this.getAttribute('data-bs-target');
-                                                    console.log("Opening modal:", modalId);
-                                                });
-                                            });
-
-                                            // Select/Deselect All Checkboxes
-                                            document.getElementById('selectAll').addEventListener('change', function() {
-                                                let checkboxes = document.querySelectorAll('input[name="ids[]"]');
-                                                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-                                            });
-                                        });
-
-
-
-                                        $(document).ready(function () {
-                                        var table = $('#myTable').DataTable();
-
-                                        $('#myTable thead tr:eq(1) th').each(function (i) {
-                                            $('input', this).on('input', function () {
-                                            table.column(i).search(this.value).draw();
-                                            });
-                                        });
-                                        });
-
-                                    </script>
-
 
 
 

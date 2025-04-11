@@ -22,6 +22,8 @@
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
         rel="stylesheet">
 
+
+   
     <!-- Vendor CSS Files -->
     <link href="{{ asset('V-TAX/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('V-TAX/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
@@ -76,10 +78,11 @@
 
                 <li class="nav-item dropdown pe-3">
 
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
-                        data-bs-toggle="dropdown">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="d-none d-md-block dropdown-toggle ps-2">{{ auth()->user()->username }}</span>
-                    </a><!-- End Profile Iamge Icon -->
+                    </a>
+
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
@@ -251,10 +254,10 @@
     <script src="{{ asset('V-TAX/vendor/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('V-TAX/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('V-TAX/vendor/php-email-form/validate.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" ></script>
-    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js" ></script>
-    <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/dataTables.fixedColumns.js" ></script>
-    <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/fixedColumns.dataTables.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/dataTables.fixedColumns.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.4/js/fixedColumns.dataTables.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
