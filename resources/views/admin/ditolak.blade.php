@@ -87,18 +87,7 @@
                                 </ul>
                                 <br>
                                 <!-- Table with stripped rows -->
-                                <form id="exportForm" method="POST" action="{{ route('payment.exportAdmindetail') }}">
-                                    @csrf
 
-                                    <!-- Tombol Ekspor dan Checkbox Select All -->
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <button type="submit" class="btn btn-primary">Cetak Excel</button>
-
-                                    </div>
-                                        <div class="table-responsive">
-                                            <input type="checkbox"  id="selectAll">
-                                            <label class="form-check-label" for="selectAll">Select All</label>
-                                        </div>
 
                                     <!-- Tabel Data -->
                                     <div class="table-responsive">
@@ -133,7 +122,16 @@
                                                         <td>
                                                             <span class="badge bg-danger">Ditolak</span>
                                                         </td>
-                                                        <td id="action-col-{{ $list->id }}"></td>
+                                                        <td>
+                                                            <div class="col-3">
+                                                                <button class="btn btn-dark btn-sm"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#Editpaymentr{{ $list->id }}">
+                                                                    <i class="bi bi-pencil-square"></i> Detail
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                        @include('admin.modal.editditolak')
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -141,37 +139,7 @@
                                     </div>
                                 </form>
 
-                                <!-- Tombol Detail dan Modal -->
-                                @foreach ($paymentmba->filter(fn($item) => $item->status == 1) as $list)
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            const actionCol = document.getElementById('action-col-{{ $list->id }}');
-                                            if (actionCol) {
-                                                actionCol.innerHTML = `
-                            <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#Editpaymentr{{ $list->id }}">
-                              <i class="bi bi-pencil-square"></i> Detail
-                                       </button>
 
-                        `;
-                                            }
-                                        });
-                                    </script>
-
-                                    @include('admin.modal.editditolak', ['list' => $list])
-                                @endforeach
-
-
-
-                                <script>
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        // Select All Checkbox
-                                        document.getElementById('selectAll').addEventListener('change', function() {
-                                            let checkboxes = document.querySelectorAll('input[name="ids[]"]');
-                                            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-                                        });
-
-                                    });
-                                </script>
                                 {{--  --}}
                             </div>
 

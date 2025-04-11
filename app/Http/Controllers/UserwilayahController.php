@@ -21,7 +21,10 @@ class UserwilayahController extends Controller
 
         $selectedWilayah = DB::table('user_wilayah')->pluck('wilayah_id')->toArray();
         $wilayah = Wilayah::all(); // Ambil semua data wilayah
-        $user = user::all();
+        $user = User::whereHas('role', function ($query) {
+            $query->where('nama_role', '!=', 'admin');
+        })->get();
+
         $provinsi = provinsi::all();
         return view('admin2.datauserwilayah', compact('wilayah', 'user', 'provinsi', 'selectedWilayah'));
     }
