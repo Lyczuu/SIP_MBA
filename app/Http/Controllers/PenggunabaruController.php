@@ -98,14 +98,13 @@ class PenggunabaruController extends Controller
             'password'      => [
                 'required',
                 'string',
-                'min:6',
-                'max:8',
+                'min:8',
                 'confirmed'
             ],
             'role_id'       => 'required|exists:roles,id',
         ], [
-            'password.min' => 'Password harus minimal 6 karakter.',
-            'password.max' => 'Password tidak boleh lebih dari 8 karakter.',
+            'password.min' => 'Password harus minimal 8 karakter.',
+
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
