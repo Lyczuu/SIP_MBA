@@ -136,9 +136,8 @@
                                 <div class="d-flex justify-content-between">
                                     @foreach ($PengajuanIntegrasi as $pengajuan)
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio"
-                                                name="pengajuan_integrasi_id" id="pengajuan_{{ $pengajuan->id }}"
-                                                value="{{ $pengajuan->id }}"
+                                            <input class="form-check-input" type="radio" name="pengajuan_integrasi_id"
+                                                id="pengajuan_{{ $pengajuan->id }}" value="{{ $pengajuan->id }}"
                                                 {{ old('pengajuan_integrasi_id', $list->pengajuan_integrasi_id ?? '') == $pengajuan->id ? 'checked' : '' }}
                                                 required>
                                             <label class="form-check-label" for="pengajuan_{{ $pengajuan->id }}">
@@ -154,7 +153,7 @@
 
 
 
-                        
+
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
                                 const inputs = document.querySelectorAll('.autonumeric');
@@ -233,12 +232,13 @@
                                 placeholder="Masukan PIC Payment Mitra"
                                 value="{{ old('pic_payment_mitra', $list->pic_payment_mitra ?? '') }}" required>
                         </div>
+
                         <div class="col-4">
                             <label class="form-label"><strong>Telepon Payment Mitra <span
                                         class="text-danger">*</span></strong></label>
                             <input type="text" name="telepon_payment_mitra"
                                 placeholder="Masukan Telepon Payment Mitra" id="telepon_payment_mitra"
-                                class="form-control" maxlength="15"
+                                class="form-control" maxlength="12" pattern="[0-9]+"
                                 value="{{ old('telepon_payment_mitra', $list->telepon_payment_mitra ?? '') }}"
                                 required>
                             <div class="invalid-feedback">
@@ -257,12 +257,13 @@
                         <div class="col-4">
                             <label class="form-label"><strong>Telepon Rekon Mitra <span
                                         class="text-danger">*</span></strong></label>
-                                        <input type="text" name="telepon_rekon_mitra" placeholder="Masukan Telepon Rekon Mitra"
-                                        id="telepon_rekon_mitra" class="form-control" maxlength="15" required
-                                        value="{{ old('telepon_rekon_mitra', $list->telepon_rekon_mitra ?? '') }}">
-                                    <div class="invalid-feedback">
-                                        Diperlukan. Hanya boleh angka (maksimal 15 digit)
-                                    </div>
+                            <input type="text" name="telepon_rekon_mitra"
+                                placeholder="Masukan Telepon Rekon Mitra" id="telepon_rekon_mitra"
+                                class="form-control" maxlength="12" pattern="[0-9]+"
+                                value="{{ old('telepon_rekon_mitra', $list->telepon_rekon_mitra ?? '') }}" required>
+                            <div class="invalid-feedback">
+                                Diperlukan. Hanya boleh angka (maksimal 15 digit)
+                            </div>
                         </div>
 
                         <!-- PIC Dinas & Telepon Dinas -->
@@ -276,12 +277,12 @@
                         <div class="col-4 mb-5">
                             <label class="form-label"><strong>Telepon Dinas <span
                                         class="text-danger">*</span></strong></label>
-                                        <input type="text" name="telepon_dinas" placeholder="Masukan Telepon Dinas"
-                                        id="telepon_dinas" class="form-control" maxlength="15"
-                                        value="{{ old('telepon_dinas', $list->telepon_dinas ?? '') }}" required>
-                                    <div class="invalid-feedback">
-                                        Diperlukan. Hanya boleh angka (maksimal 15 digit)
-                                    </div>
+                            <input type="text" name="telepon_dinas" placeholder="Masukan Telepon Dinas"
+                                id="telepon_dinas" class="form-control" maxlength="12" pattern="[0-9]+"
+                                value="{{ old('telepon_dinas', $list->telepon_dinas ?? '') }}" required>
+                            <div class="invalid-feedback">
+                                Diperlukan. Hanya boleh angka (maksimal 15 digit)
+                            </div>
                         </div>
 
                         <!-- WAG Koordinasi Payment & Rekon -->
@@ -320,52 +321,54 @@
                         {{-- end ditolak oleh --}}
 
                         <div class="row">
-                            <!-- Script untuk menampilkan input tambahan aggregator dan filter dropdown mitra -->
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    const jenisTransaksiRadios = document.querySelectorAll('input[name="transaksi_id"]');
-                                    const mitraDropdown = document.getElementById('mitra');
-                                    const aggregatorInputContainer = document.getElementById('aggregator-input-container');
-                                    // Simpan semua opsi mitra (kecuali placeholder)
-                                    const allMitraOptions = Array.from(mitraDropdown.querySelectorAll('option')).slice(1);
 
-                                    function filterMitra() {
-                                        let selectedRadio = document.querySelector('input[name="transaksi_id"]:checked');
-                                        if (selectedRadio) {
-                                            let selectedType = selectedRadio.nextElementSibling.textContent.trim();
-                                            // Reset dropdown mitra
-                                            mitraDropdown.innerHTML = '<option value="">-- Pilih Mitra --</option>';
-                                            if (selectedType === 'AGGREGATOR') {
-                                                allMitraOptions.forEach(option => {
-                                                    if (option.dataset.flagBank == 1) {
-                                                        mitraDropdown.appendChild(option);
-                                                    }
-                                                });
-                                                aggregatorInputContainer.style.display = 'block';
-                                            } else {
-                                                allMitraOptions.forEach(option => {
-                                                    mitraDropdown.appendChild(option);
-                                                });
-                                                aggregatorInputContainer.style.display = 'none';
-                                            }
-                                        }
-                                    }
-
-                                    jenisTransaksiRadios.forEach(radio => {
-                                        radio.addEventListener('change', filterMitra);
-                                    });
-
-                                    // Panggil filter saat halaman pertama kali dimuat (misalnya jika ada nilai lama)
-                                    filterMitra();
-                                });
-                            </script>
-                            <!-- Footer Modal -->
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
                                     data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                             </div>
                 </form>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const jenisTransaksiRadios = document.querySelectorAll('input[name="transaksi_id"]');
+                        const mitraDropdown = document.getElementById('mitra');
+                        const aggregatorInputContainer = document.getElementById('aggregator-input-container');
+                        // Simpan semua opsi mitra (kecuali placeholder)
+                        const allMitraOptions = Array.from(mitraDropdown.querySelectorAll('option')).slice(1);
+
+                        function filterMitra() {
+                            let selectedRadio = document.querySelector('input[name="transaksi_id"]:checked');
+                            if (selectedRadio) {
+                                let selectedType = selectedRadio.nextElementSibling.textContent.trim();
+                                // Reset dropdown mitra
+                                mitraDropdown.innerHTML = '<option value="">-- Pilih Mitra --</option>';
+                                if (selectedType === 'AGGREGATOR') {
+                                    allMitraOptions.forEach(option => {
+                                        if (option.dataset.flagBank == 1) {
+                                            mitraDropdown.appendChild(option);
+                                        }
+                                    });
+                                    aggregatorInputContainer.style.display = 'block';
+                                } else {
+                                    allMitraOptions.forEach(option => {
+                                        mitraDropdown.appendChild(option);
+                                    });
+                                    aggregatorInputContainer.style.display = 'none';
+                                }
+                            }
+                        }
+
+                        jenisTransaksiRadios.forEach(radio => {
+                            radio.addEventListener('change', filterMitra);
+                        });
+
+                        // Panggil filter saat halaman pertama kali dimuat (misalnya jika ada nilai lama)
+                        filterMitra();
+                    });
+                </script>
+
+
+
             </div>
         </div>
         <br>

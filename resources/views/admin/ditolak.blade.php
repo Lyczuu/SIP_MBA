@@ -44,7 +44,11 @@
                                 {{ Session::get('message') }}
                             </div>
                         @endif
-
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <strong>Harap lengkapi semua inputan telepon yang wajib diisi!</strong>
+                            </div>
+                        @endif
                         <script>
                             // Hilangkan flash message setelah 3 detik (3000 ms)
                             setTimeout(() => {
@@ -89,54 +93,54 @@
                                 <!-- Table with stripped rows -->
 
 
-                                    <!-- Tabel Data -->
-                                    <div class="table-responsive">
-                                        <table class="table datatable">
-                                            <thead>
+                                <!-- Tabel Data -->
+                                <div class="table-responsive">
+                                    <table class="table datatable">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>ID</th>
+                                                <th>Kode Pengajuan</th>
+                                                <th>Nama AM</th>
+                                                <th>Nama Mitra</th>
+                                                <th>Wilayah</th>
+                                                <th>Jenis Pajak</th>
+                                                <th>Jenis Transaksi</th>
+                                                <th>WAG Kordinasi Payment</th>
+                                                <th>Status</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($paymentmba->filter(fn($item) => $item->status == 1) as $list)
                                                 <tr>
-                                                    <th></th>
-                                                    <th>ID</th>
-                                                    <th>Kode Pengajuan</th>
-                                                    <th>Nama AM</th>
-                                                    <th>Nama Mitra</th>
-                                                    <th>Wilayah</th>
-                                                    <th>Jenis Pajak</th>
-                                                    <th>Jenis Transaksi</th>
-                                                    <th>WAG Kordinasi Payment</th>
-                                                    <th>Status</th>
-                                                    <th>Aksi</th>
+                                                    <td><input type="checkbox" name="ids[]" value="{{ $list->id }}">
+                                                    </td>
+                                                    <td>{{ $list->id }}</td>
+                                                    <td>{{ $list->kode_pengajuan }}</td>
+                                                    <td>{{ $list->user->username }}</td>
+                                                    <td>{{ $list->mitra->nama_mitra }}</td>
+                                                    <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                                    <td>{{ $list->jenis_pajak_nama }}</td>
+                                                    <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                                    <td>{{ $list->wag_kordinasi_payment }}</td>
+                                                    <td>
+                                                        <span class="badge bg-danger">Ditolak</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-3">
+                                                            <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                                data-bs-target="#Editpaymentr{{ $list->id }}">
+                                                                <i class="bi bi-pencil-square"></i> Detail
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                    @include('admin.modal.editditolak')
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($paymentmba->filter(fn($item) => $item->status == 1) as $list)
-                                                    <tr>
-                                                        <td><input type="checkbox" name="ids[]" value="{{ $list->id }}"></td>
-                                                        <td>{{ $list->id }}</td>
-                                                        <td>{{ $list->kode_pengajuan }}</td>
-                                                        <td>{{ $list->user->username }}</td>
-                                                        <td>{{ $list->mitra->nama_mitra }}</td>
-                                                        <td>{{ $list->wilayah->nama_wilayah }}</td>
-                                                        <td>{{ $list->jenis_pajak_nama }}</td>
-                                                        <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                                                        <td>{{ $list->wag_kordinasi_payment }}</td>
-                                                        <td>
-                                                            <span class="badge bg-danger">Ditolak</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="col-3">
-                                                                <button class="btn btn-dark btn-sm"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#Editpaymentr{{ $list->id }}">
-                                                                    <i class="bi bi-pencil-square"></i> Detail
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                        @include('admin.modal.editditolak')
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                                 </form>
 
 
