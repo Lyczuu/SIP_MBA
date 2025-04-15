@@ -167,7 +167,7 @@ class PenggunabaruController extends Controller
             'phone_number' => 'nullable|string|max:15',
             'email'        => 'required|email|unique:users,email,' . $id,
             'role_id'      => 'required|exists:roles,id',
-            'password'     => 'nullable|min:6|confirmed',
+            'password'     => 'nullable|min:8|confirmed',
         ]);
 
 

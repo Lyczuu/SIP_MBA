@@ -12,6 +12,33 @@
 </head>
 
 <body>
+    @if (session('error'))
+    <div id="alert-error" class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if (session('status') == 'success')
+    <div id="alert-success" class="alert alert-success">
+        {{ session('message') }}
+    </div>
+@endif
+
+{{-- Script untuk sembunyikan alert setelah 5 detik --}}
+<script>
+    setTimeout(function() {
+        const alertError = document.getElementById('alert-error');
+        const alertSuccess = document.getElementById('alert-success');
+
+        if (alertError) {
+            alertError.style.display = 'none';
+        }
+        if (alertSuccess) {
+            alertSuccess.style.display = 'none';
+        }
+    }, 5000); // 5000 ms = 5 detik
+</script>
+
 
 
     <section class="section profile">
