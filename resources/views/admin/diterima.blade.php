@@ -15,10 +15,13 @@
             </div>
         @endif
 <head>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-</head>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
         <body>
 
@@ -100,7 +103,7 @@
                                             </div>
 
                                             <div class="table-responsive">
-                                                <table class="table datatable">
+                                                <table id="mken" class="table">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
@@ -115,6 +118,22 @@
                                                             <th>Status</th>
                                                             <th>Aksi</th>
                                                         </tr>
+                                                        <tr id="filterRow">
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+
+
+                                                        </tr>
+
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($paymentmba->filter(fn($item) => $item->status == 2) as $key => $list)
@@ -177,6 +196,75 @@
                                                 });
                                             });
                                         </script>
+
+
+                                <script>
+                                    $(document).ready(function () {
+                                    var table = $('#mken').DataTable();
+
+                                    // Hapus filterRow dulu biar gak dobel saat reload/refresh
+                                    $('#filterRow').empty();
+
+                                    // Tambahkan input + select ke setiap kolom
+                                    $('#mken thead tr:eq(0) th').each(function (i) {
+                                        // Hanya tampilkan filter untuk kolom yang punya nama (hindari kolom checkbox/aksi)
+                                        if ($(this).text().trim() !== '' && i !== 0 && i !== 9 && i !==10) { // sesuaikan indeks kolom jika perlu
+                                            $('#filterRow').append(`
+                                                <th>
+                                                    <input type="text" class="filter-input form-control mb-1" data-col="${i}" placeholder="Search..." style="width: 100%;" />
+                                                    <select class="filter-select form-select" data-col="${i}" style="width: 100%;">
+                                                        <option value="">-- Semua --</option>
+                                                    </select>
+                                                </th>
+                                            `);
+                                        } else {
+                                            $('#filterRow').append(`<th></th>`); // kolom kosong (aksi, checkbox, dll.)
+                                        }
+                                    });
+
+                                    // Isi select dengan data unik dari tiap kolom
+                                    table.columns().every(function (i) {
+                                        let column = this;
+                                        let select = $('.filter-select[data-col="' + i + '"]');
+
+                                        if (select.length) {
+                                            let uniqueData = column.data().unique().sort();
+                                            uniqueData.each(function (d) {
+                                                if (d && d !== '') {
+                                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                                }
+                                            });
+
+                                            // Aktifkan Select2 jika perlu
+                                            select.select2({
+                                                placeholder: 'Pilih...',
+                                                width: '100%',
+                                                allowClear: true
+                                            });
+                                        }
+                                    });
+
+                                    // Event untuk input search
+                                    $('.filter-input').on('keyup change', function () {
+                                        let col = $(this).data('col');
+                                        table.column(col).search(this.value).draw();
+                                    });
+
+                                    // Event untuk select dropdown
+                                    $('.filter-select').on('change', function () {
+                                        let col = $(this).data('col');
+                                        let val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                        table.column(col).search(val ? '^' + val + '$' : '', true, false).draw();
+                                    });
+                                });
+
+                                </script>
+
+
+
+
+
+
 
 
 
