@@ -90,21 +90,22 @@
                             <div class="row mt-3 justify-content-center">
                                 <div class="col-2 text-center">
                                     <select class="form-select" name="kode_pengajuan">
-    <option value="">Kode Pengajuan</option>
-    @foreach ($kode_pengajuan as $prefix)
-        <option value="{{ $prefix }}" {{ request('kode_pengajuan') == $prefix ? 'selected' : '' }}>
-            {{ $prefix }}
-        </option>
-    @endforeach
-</select>
+                                        <option value="">Kode Pengajuan</option>
+                                        @foreach ($kode_pengajuan as $prefix)
+                                            <option value="{{ $prefix }}"
+                                                {{ request('kode_pengajuan') == $prefix ? 'selected' : '' }}>
+                                                {{ $prefix }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="col-2 text-center">
                                     <select class="form-select" name="nama_mitra">
                                         <option value="">Nama Mitra</option>
                                         @foreach ($nama_mitra as $mitra)
-                                            <option value="{{ $mitra->nama_mitra }}"
-                                                {{ request('nama_mitra') == $mitra->nama_mitra ? 'selected' : '' }}>
+                                            <option value="{{ $mitra->id }}"
+                                                {{ request('nama_mitra') == $mitra->id ? 'selected' : '' }}>
                                                 {{ $mitra->nama_mitra }}
                                             </option>
                                         @endforeach

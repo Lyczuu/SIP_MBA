@@ -31,9 +31,7 @@ class DatadisetujuiController extends Controller
         }
 
         if ($request->nama_mitra) {
-            $query->whereHas('mitra_id', function ($q) use ($request) {
-                $q->where('nama_mitra', $request->nama_mitra);
-            });
+            $query->where('mitra_id', $request->nama_mitra);
         }
 
         if ($request->wilayah) {
@@ -52,7 +50,11 @@ class DatadisetujuiController extends Controller
         $paymentmba = $query->get()->map(function ($item) {
             $jenisPajakIds = explode(',', $item->jenis_pajak_id);
             $item->jenis_pajak_nama = JenisPajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
-            $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
+
+            // Jika ingin tetap menampilkan nama mitra, bisa gunakan relasi
+            $mitra = Mitra::find($item->mitra_id);
+            $item->nama_mitra_agg = $mitra ? $mitra->nama_mitra : '-';
+
             return $item;
         });
 
