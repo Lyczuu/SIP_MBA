@@ -10,6 +10,9 @@ use App\Models\datadiajukan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Exports\paymentdetailExport;
+use App\Models\jenistransaksi;
+use App\Models\mitra;
+use App\Models\wilayah;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -32,52 +35,16 @@ class DatadiajukanController extends Controller
         });
 
         $ditolak = ditolak::with('user')->get();
+
         $user = Auth::user();
 
         return view('admin2.datadiajukan', compact('paymentmba', 'user'));
     }
 
-
-   
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($datadiajukan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit( $datadiajukan)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'status' => 'required|in:1,2',
@@ -102,18 +69,10 @@ class DatadiajukanController extends Controller
                 );
             }
 
-            Session::flash('status','success');
-            Session::flash('message','Data Berhasil Di Validasi');
+            Session::flash('status', 'success');
+            Session::flash('message', 'Data Berhasil Di Validasi');
             return redirect('/datadiajukan');
 
         });
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy( $datadiajukan)
-    {
-        //
     }
 }

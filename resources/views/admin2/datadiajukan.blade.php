@@ -103,64 +103,63 @@
                         <!-- Table with stripped rows -->
 
 
-                            <div class="table-responsive">
-                                <input type="checkbox" id="selectAll">
-                                <label class="form-check-label" for="selectAll">Select All</label>
-                            </div>
+                        <div class="table-responsive">
+                            <input type="checkbox" id="selectAll">
+                            <label class="form-check-label" for="selectAll">Select All</label>
+                        </div>
 
-                            <!-- Tabel Data -->
-                            <div class="table-responsive">
-                                <table class="table datatable">
-                                    <thead>
+                        <!-- Tabel Data -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Kode Pengajuan</th>
+                                        <th>
+                                            <b>N</b>ame
+                                        </th>
+                                        <th>Nama mitra</th>
+                                        <th>Nama wilayah</th>
+                                        <th>Jenis pajak</th>
+                                        <th>Nama Jenis transaksi</th>
+                                        <th>Wag kordinasi payment</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($paymentmba->filter(function ($item) {
+            return $item->status == 0;
+        }) as $key => $list)
                                         <tr>
-                                            <th>Kode Pengajuan</th>
-                                            <th>
-                                                <b>N</b>ame
-                                            </th>
-                                            <th>Nama mitra</th>
-                                            <th>Nama wilayah</th>
-                                            <th>Jenis pajak</th>
-                                            <th>Nama Jenis transaksi</th>
-                                            <th>Wag kordinasi payment</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
+                                            <td>{{ $list->kode_pengajuan }}</td>
+                                            <td>{{ $list->user->username }}</td>
+                                            <td>{{ $list->mitra->nama_mitra }}</td>
+                                            <td>{{ $list->wilayah->nama_wilayah }}</td>
+                                            <td>{{ $list->jenis_pajak_nama }}</td>
+                                            <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
+                                            <td>{{ $list->wag_kordinasi_payment }}</td>
+                                            <td>
+                                                @if ($list->status == 0)
+                                                    <span class="badge bg-warning">Diajukan</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="col-3">
+                                                    <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#Editpayment{{ $list->id }}">
+                                                        <i class="bi bi-pencil-square"></i> Detail
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            @include('admin2.modal.edit_detailpayment')
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($paymentmba->filter(function ($item) {
-return $item->status == 0;
-}) as $key => $list)
-                                            <tr>
-                                                <td>{{ $list->kode_pengajuan }}</td>
-                                                <td>{{ $list->user->username }}</td>
-                                                <td>{{ $list->mitra->nama_mitra }}</td>
-                                                <td>{{ $list->wilayah->nama_wilayah }}</td>
-                                                <td>{{ $list->jenis_pajak_nama }}</td>
-                                                <td>{{ $list->jenis_transaksi->nama_jenis_transaksi }}</td>
-                                                <td>{{ $list->wag_kordinasi_payment }}</td>
-                                                <td>
-                                                    @if ($list->status == 0)
-                                                        <span class="badge bg-warning">Diajukan</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <div class="col-3">
-                                                        <button class="btn btn-dark btn-sm"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#Editpayment{{ $list->id }}">
-                                                            <i class="bi bi-pencil-square"></i> Detail
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                                @include('admin2.modal.edit_detailpayment')
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
+                                    @endforeach
+                                </tbody>
 
-                                </table>
-                                <!-- End Table with stripped rows -->
+                            </table>
+                            <!-- End Table with stripped rows -->
 
-                            </div>
+                        </div>
 
 
 

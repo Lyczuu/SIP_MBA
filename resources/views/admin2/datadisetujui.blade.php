@@ -35,12 +35,12 @@
 @endsection
 
 @section('content')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <div class="pagetitle">
         <h1>Data Disetujui</h1>
@@ -85,7 +85,71 @@
                                 </a>
                             </li>
                         </ul>
+
+                        <form method="get" action="">
+                            <div class="row mt-3 justify-content-center">
+                                <div class="col-2 text-center">
+                                    <select class="form-select" name="kode_pengajuan">
+    <option value="">Kode Pengajuan</option>
+    @foreach ($kode_pengajuan as $prefix)
+        <option value="{{ $prefix }}" {{ request('kode_pengajuan') == $prefix ? 'selected' : '' }}>
+            {{ $prefix }}
+        </option>
+    @endforeach
+</select>
+                                </div>
+
+                                <div class="col-2 text-center">
+                                    <select class="form-select" name="nama_mitra">
+                                        <option value="">Nama Mitra</option>
+                                        @foreach ($nama_mitra as $mitra)
+                                            <option value="{{ $mitra->nama_mitra }}"
+                                                {{ request('nama_mitra') == $mitra->nama_mitra ? 'selected' : '' }}>
+                                                {{ $mitra->nama_mitra }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-2 text-center">
+                                    <select class="form-select" name="wilayah">
+                                        <option value="">Wilayah</option>
+                                        @foreach ($wilayah as $w)
+                                            <option value="{{ $w->id }}"
+                                                {{ request('wilayah') == $w->id ? 'selected' : '' }}>
+                                                {{ $w->nama_wilayah }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-2 text-center">
+                                    <select class="form-select" name="jenis_transaksi">
+                                        <option value="">Jenis Transaksi</option>
+                                        @foreach ($jenis_transaksi as $jt)
+                                            <option value="{{ $jt->id }}"
+                                                {{ request('jenis_transaksi') == $jt->id ? 'selected' : '' }}>
+                                                {{ $jt->nama_jenis_transaksi }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-2 text-center">
+                                    <input type="date" class="form-control" name="tanggal"
+                                        value="{{ request('tanggal') }}">
+                                </div>
+
+                                <div class="col-1 text-center">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-funnel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
                         <br>
+
                         <form id="exportForm" method="POST" action="{{ route('payment.exportAdmin') }}">
                             @csrf
 
@@ -109,7 +173,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table id="mken" class="table">
+                                <table id="mken" class="table datatable">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -123,20 +187,6 @@
                                             <th>WAG Kordinasi Payment</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
-                                        </tr>
-                                        <tr id="filterRow">
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -166,99 +216,39 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-
-                                    <script>
-                                        $(document).ready(function () {
-                                        var table = $('#mken').DataTable();
-
-                                        // Hapus filterRow dulu biar gak dobel saat reload/refresh
-                                        $('#filterRow').empty();
-
-                                        // Tambahkan input + select ke setiap kolom
-                                        $('#mken thead tr:eq(0) th').each(function (i) {
-                                            // Hanya tampilkan filter untuk kolom yang punya nama (hindari kolom checkbox/aksi)
-                                            if ($(this).text().trim() !== '' && i !== 0 && i !== 9 && i !==10) { // sesuaikan indeks kolom jika perlu
-                                                $('#filterRow').append(`
-                                                    <th>
-                                                        <input type="text" class="filter-input form-control mb-1" data-col="${i}" placeholder="Search..." style="width: 100%;" />
-                                                        <select class="filter-select form-select" data-col="${i}" style="width: 100%;">
-                                                            <option value="">-- Semua --</option>
-                                                        </select>
-                                                    </th>
-                                                `);
-                                            } else {
-                                                $('#filterRow').append(`<th></th>`); // kolom kosong (aksi, checkbox, dll.)
-                                            }
-                                        });
-
-                                        // Isi select dengan data unik dari tiap kolom
-                                        table.columns().every(function (i) {
-                                            let column = this;
-                                            let select = $('.filter-select[data-col="' + i + '"]');
-
-                                            if (select.length) {
-                                                let uniqueData = column.data().unique().sort();
-                                                uniqueData.each(function (d) {
-                                                    if (d && d !== '') {
-                                                        select.append('<option value="' + d + '">' + d + '</option>');
-                                                    }
-                                                });
-
-                                                // Aktifkan Select2 jika perlu
-                                                select.select2({
-                                                    placeholder: 'Pilih...',
-                                                    width: '100%',
-                                                    allowClear: true
-                                                });
-                                            }
-                                        });
-
-                                        // Event untuk input search
-                                        $('.filter-input').on('keyup change', function () {
-                                            let col = $(this).data('col');
-                                            table.column(col).search(this.value).draw();
-                                        });
-
-                                        // Event untuk select dropdown
-                                        $('.filter-select').on('change', function () {
-                                            let col = $(this).data('col');
-                                            let val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                            table.column(col).search(val ? '^' + val + '$' : '', true, false).draw();
-                                        });
-                                    });
-
-                                    </script>
                                 </table>
                             </div>
                         </form>
+
                         <script>
-                            document.addEventListener('DOMContentLoaded', function() {
+                            $(document).ready(function() {
                                 // Modal Log
-                                document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
-                                    button.addEventListener('click', function(event) {
-                                        event.preventDefault();
-                                        let modalId = this.getAttribute('data-bs-target');
-                                        console.log("Opening modal:", modalId);
-                                    });
+                                $('button[data-bs-toggle="modal"]').click(function(event) {
+                                    event.preventDefault();
+                                    let modalId = $(this).attr('data-bs-target');
+                                    console.log("Opening modal:", modalId);
                                 });
 
                                 // Select All Checkbox
-                                document.getElementById('selectAll').addEventListener('change', function() {
-                                    let checkboxes = document.querySelectorAll('input[name="ids[]"]');
-                                    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                                $('#selectAll').change(function() {
+                                    $('input[name="ids[]"]').prop('checked', $(this).prop('checked'));
                                 });
 
                                 // Handle Export Excel
-                                document.getElementById('exportExcelBtn').addEventListener('click', function() {
-                                    let form = document.getElementById('exportForm');
-                                    let originalAction = form.action;
+                                $('#exportExcelBtn').click(function() {
+                                    let form = $('#exportForm');
+                                    let originalAction = form.attr('action');
 
                                     // Ganti action ke route Excel export
-                                    form.action = "{{ route('payment.exportAdmindetail') }}";
+                                    form.attr('action', "{{ route('payment.exportAdmindetail') }}");
                                     form.submit();
 
                                     // Kembalikan ke action semula (biar tombol "Cetak Form" tetap jalan)
-                                    form.action = originalAction;
+                                    form.attr('action', originalAction);
+                                });
+
+                                $('select, input[type="date"]').change(function() {
+                                    $(this).closest('form').submit();
                                 });
                             });
                         </script>

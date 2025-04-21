@@ -319,6 +319,7 @@ Route::get('/role/restore/{id}', [RoleController::class, 'restore']);
 
 //data dijukan
 Route::get('/datadiajukan', [DatadiajukanController::class, 'index'])->name('admin.datadiajukan')->middleware('auth');
+
 Route::put('/update_diajukan{id}', [DatadiajukanController::class, 'update'])->name('update.dijaukan');
 //ajax diajukan
 Route::get('/get-latest-payments', [DatadiajukanController::class, 'getLatestPayments'])->name('get.latest.payments');

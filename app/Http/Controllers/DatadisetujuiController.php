@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\mitra;
 use App\Models\ditolak;
+use App\Models\wilayah;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use Illuminate\Http\Request;
 use App\Models\datadisetujui;
+use App\Models\jenistransaksi;
 use App\Exports\PaymentsExport;
 use App\Exports\paymentdetailExport;
 use Illuminate\Support\Facades\Auth;
@@ -18,24 +21,66 @@ class DatadisetujuiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $paymentmba = PaymentMba::all()->map(function ($item) {
+        $query = PaymentMba::query();
+
+        // FILTERING
+        if ($request->kode_pengajuan) {
+            $query->where('kode_pengajuan', 'like', $request->kode_pengajuan . '%');
+        }
+
+        if ($request->nama_mitra) {
+            $query->whereHas('mitra_id', function ($q) use ($request) {
+                $q->where('nama_mitra', $request->nama_mitra);
+            });
+        }
+
+        if ($request->wilayah) {
+            $query->where('wilayah_id', $request->wilayah);
+        }
+
+        if ($request->jenis_transaksi) {
+            $query->where('transaksi_id', $request->jenis_transaksi);
+        }
+
+        if ($request->tanggal) {
+            $query->whereDate('created_at', $request->tanggal);
+        }
+
+
+        $paymentmba = $query->get()->map(function ($item) {
             $jenisPajakIds = explode(',', $item->jenis_pajak_id);
             $item->jenis_pajak_nama = JenisPajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
-
-            // Tambahkan nama mitra dari mitraAgg yang memiliki flag_agg = 1
             $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
-
             return $item;
         });
 
-        $ditolak = Ditolak::with('user')->get();
         $user = Auth::user();
+
         $paymentmbafee = PaymentMBA::where('user_id', $user->id)->get();
 
-        return view('admin2.datadisetujui', compact('paymentmba', 'paymentmbafee', 'user', 'ditolak'));
+        $kode_pengajuan = PaymentMba::select('kode_pengajuan')
+            ->get()
+            ->map(function ($item) {
+                // This will extract specific prefixes like AM1, AM2, etc.
+                if (preg_match('/^([A-Z]{2}\d*)/', $item->kode_pengajuan, $matches)) {
+                    return $matches[1];
+                }
+                return substr($item->kode_pengajuan, 0, 3); // Fallback to first 3 chars
+            })
+            ->unique()
+            ->values();
 
+        $nama_mitra = Mitra::all();
+
+        $wilayah = Wilayah::all();
+
+        $jenis_transaksi = JenisTransaksi::all();
+
+        $ditolak = Ditolak::with('user')->get();
+
+        return view('admin2.datadisetujui', compact('paymentmba', 'paymentmbafee', 'user', 'ditolak', 'kode_pengajuan', 'nama_mitra', 'wilayah', 'jenis_transaksi'));
     }
 
     public function export(Request $request)
@@ -53,7 +98,8 @@ class DatadisetujuiController extends Controller
                 ->with(['User', 'mitra', 'wilayah', 'jenis_transaksi', 'PengajuanIntegrasi', 'fees'])
                 ->first();
 
-            if (!$payment) continue;
+            if (!$payment)
+                continue;
 
             // **Buat instance PaymentsExport**
             $export = new PaymentsExport([$id]); // Kirim ID sebagai array
@@ -134,7 +180,7 @@ class DatadisetujuiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show( $datadisetujui)
+    public function show($datadisetujui)
     {
         //
     }
@@ -158,7 +204,7 @@ class DatadisetujuiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $datadisetujui)
+    public function destroy($datadisetujui)
     {
         //
     }
