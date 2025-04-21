@@ -98,10 +98,73 @@
                                 </a>
                             </li>
                         </ul>
+
                         <br>
 
-                        <!-- Table with stripped rows -->
+                        <form method="get" action="">
+                            <div class="row mt-3 justify-content-center mb-5">
+                                <div class="col-2 text-center">
+                                    <select class="form-select" name="kode_pengajuan">
+                                        <option value="">Kode Pengajuan</option>
+                                        @foreach ($kode_pengajuan as $prefix)
+                                            <option value="{{ $prefix }}"
+                                                {{ request('kode_pengajuan') == $prefix ? 'selected' : '' }}>
+                                                {{ $prefix }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
+                                <div class="col-2 text-center">
+                                    <select class="form-select" name="nama_mitra">
+                                        <option value="">Nama Mitra</option>
+                                        @foreach ($nama_mitra as $mitra)
+                                            <option value="{{ $mitra->id }}"
+                                                {{ request('nama_mitra') == $mitra->id ? 'selected' : '' }}>
+                                                {{ $mitra->nama_mitra }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-2 text-center">
+                                    <select class="form-select" name="wilayah">
+                                        <option value="">Wilayah</option>
+                                        @foreach ($wilayah as $w)
+                                            <option value="{{ $w->id }}"
+                                                {{ request('wilayah') == $w->id ? 'selected' : '' }}>
+                                                {{ $w->nama_wilayah }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-2 text-center">
+                                    <select class="form-select" name="jenis_transaksi">
+                                        <option value="">Jenis Transaksi</option>
+                                        @foreach ($jenis_transaksi as $jt)
+                                            <option value="{{ $jt->id }}"
+                                                {{ request('jenis_transaksi') == $jt->id ? 'selected' : '' }}>
+                                                {{ $jt->nama_jenis_transaksi }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-2 text-center">
+                                    <input type="date" class="form-control" name="tanggal"
+                                        value="{{ request('tanggal') }}">
+                                </div>
+
+                                <div class="col-1 text-center">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-funnel"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Table with stripped rows -->
 
                         <div class="table-responsive">
                             <input type="checkbox" id="selectAll">
@@ -161,10 +224,6 @@
 
                         </div>
 
-
-
-
-
                         <!-- End Table with stripped rows -->
 
                     </div>
@@ -173,4 +232,12 @@
             </div>
         </div>
     </section>
+
+    <script>
+        $(document).ready(function() {
+            $('select, input[type="date"]').change(function() {
+                $(this).closest('form').submit();
+            });
+        });
+    </script>
 @endsection

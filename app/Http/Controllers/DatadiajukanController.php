@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\mitra;
 use App\Models\ditolak;
+use App\Models\wilayah;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\datadiajukan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Exports\paymentdetailExport;
 use App\Models\jenistransaksi;
-use App\Models\mitra;
-use App\Models\wilayah;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Exports\paymentdetailExport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -22,9 +23,37 @@ class DatadiajukanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // Controller data diajukan
+    public function index(Request $request)
     {
-        $paymentmba = PaymentMba::all()->map(function ($item) {
+        $query = PaymentMba::query();
+
+        // Tambahkan filter status=0 di query utama
+        $query->where('status', 0);
+
+        // FILTERING
+        if ($request->kode_pengajuan) {
+            $query->where('kode_pengajuan', 'like', $request->kode_pengajuan . '%');
+        }
+
+        if ($request->nama_mitra) {
+            // Filter berdasarkan mitra_id
+            $query->where('mitra_id', $request->nama_mitra);
+        }
+
+        if ($request->wilayah) {
+            $query->where('wilayah_id', $request->wilayah);
+        }
+
+        if ($request->jenis_transaksi) {
+            $query->where('transaksi_id', $request->jenis_transaksi);
+        }
+
+        if ($request->tanggal) {
+            $query->whereDate('created_at', $request->tanggal);
+        }
+
+        $paymentmba = $query->get()->map(function ($item) {
             $jenisPajakIds = explode(',', $item->jenis_pajak_id);
             $item->jenis_pajak_nama = JenisPajak::whereIn('id', $jenisPajakIds)->pluck('nama_jenis_pajak')->implode(', ');
 
@@ -34,11 +63,32 @@ class DatadiajukanController extends Controller
             return $item;
         });
 
-        $ditolak = ditolak::with('user')->get();
+        $ditolak = Ditolak::with('user')->get();
 
         $user = Auth::user();
 
-        return view('admin2.datadiajukan', compact('paymentmba', 'user'));
+        // Get the unique prefixes for the dropdown
+        $kode_pengajuan = PaymentMba::select('kode_pengajuan')
+            ->get()
+            ->map(function ($item) {
+                // Extract specific prefixes like AM1, AM2, etc.
+                if (preg_match('/^([A-Z]{2}\d*)/', $item->kode_pengajuan, $matches)) {
+                    return $matches[1];
+                }
+                return substr($item->kode_pengajuan, 0, 3); // Fallback to first 3 chars
+            })
+            ->unique()
+            ->values();
+
+        // Get data for other dropdowns
+        $nama_mitra = Mitra::all();
+        $wilayah = Wilayah::all();
+        $jenis_transaksi = JenisTransaksi::all();
+
+        // Tambahkan debug untuk melihat parameter request
+        Log::info('Request parameters:', $request->all());
+
+        return view('admin2.datadiajukan', compact('paymentmba', 'user', 'ditolak', 'kode_pengajuan', 'nama_mitra', 'wilayah', 'jenis_transaksi'));
     }
 
     /**
