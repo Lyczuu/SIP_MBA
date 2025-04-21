@@ -20,7 +20,7 @@ class DataditolakController extends Controller
     {
         $allJenisPajak = JenisPajak::pluck('nama_jenis_pajak', 'id');
 
-        $paymentmba = PaymentMba::with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees','mitraAgg'])->get()->map(function ($item) use ($allJenisPajak) {
+        $paymentmba = PaymentMba::with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees', 'mitraAgg'])->get()->map(function ($item) use ($allJenisPajak) {
             // Ubah jenis_pajak_id (string "1,2,3") menjadi array [1, 2, 3]
             $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
 
@@ -45,13 +45,12 @@ class DataditolakController extends Controller
 
             return $item;
         });
+
         return view('admin2.dataditolak', compact('paymentmba'));
-
-
     }
 
 
-   
+
 
     /**
      * Show the form for creating a new resource.
