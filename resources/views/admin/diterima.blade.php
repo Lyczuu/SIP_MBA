@@ -14,13 +14,14 @@
                 {{ Session::get('message') }}
             </div>
         @endif
-<head>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <head>
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
         <body>
@@ -77,9 +78,59 @@
                                             </li>
                                         </ul>
 
+
+                                        <form method="get" action="">
+                                            <div class="row mt-3 justify-content-center">
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="nama_mitra">
+                                                        <option value="">Nama Mitra</option>
+                                                        @foreach ($nama_mitra as $mitra)
+                                                            <option value="{{ $mitra->id }}"
+                                                                {{ request('nama_mitra') == $mitra->id ? 'selected' : '' }}>
+                                                                {{ $mitra->nama_mitra }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="wilayah">
+                                                        <option value="">Wilayah</option>
+                                                        @foreach ($wilayah as $w)
+                                                            <option value="{{ $w->id }}"
+                                                                {{ request('wilayah') == $w->id ? 'selected' : '' }}>
+                                                                {{ $w->nama_wilayah }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="jenis_transaksi">
+                                                        <option value="">Jenis Transaksi</option>
+                                                        @foreach ($jenis_transaksi as $jt)
+                                                            <option value="{{ $jt->id }}"
+                                                                {{ request('jenis_transaksi') == $jt->id ? 'selected' : '' }}>
+                                                                {{ $jt->nama_jenis_transaksi }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <input type="date" class="form-control" name="tanggal"
+                                                        value="{{ request('tanggal') }}">
+                                                </div>
+
+                                                <div class="col-1 text-center">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="bi bi-funnel"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
                                         <br>
-
-
                                         <form id="exportForm" method="POST" action="{{ route('payment.exportAdmin') }}">
                                             @csrf
 
@@ -87,7 +138,8 @@
                                             <button type="submit" class="btn btn-success">Cetak Form</button>
 
                                             <!-- Tombol Cetak Excel -->
-                                            <button type="button" class="btn btn-primary" id="exportExcelBtn">Cetak Excel</button>
+                                            <button type="button" class="btn btn-primary" id="exportExcelBtn">Cetak
+                                                Excel</button>
 
                                             <div class="table-responsive mt-3">
                                                 <table>
@@ -103,7 +155,7 @@
                                             </div>
 
                                             <div class="table-responsive">
-                                                <table id="mken" class="table">
+                                                <table class="table datatable">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
@@ -118,27 +170,13 @@
                                                             <th>Status</th>
                                                             <th>Aksi</th>
                                                         </tr>
-                                                        <tr id="filterRow">
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-
-
-                                                        </tr>
 
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($paymentmba->filter(fn($item) => $item->status == 2) as $key => $list)
                                                             <tr>
-                                                                <td><input type="checkbox" name="ids[]" value="{{ $list->id }}"></td>
+                                                                <td><input type="checkbox" name="ids[]"
+                                                                        value="{{ $list->id }}"></td>
                                                                 <td>{{ $list->id }}</td>
                                                                 <td>{{ $list->kode_pengajuan }}</td>
                                                                 <td>{{ $list->user->username }}</td>
@@ -152,7 +190,8 @@
                                                                 </td>
                                                                 <td>
                                                                     <div class="col-3">
-                                                                        <button class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                                        <button class="btn btn-dark btn-sm"
+                                                                            data-bs-toggle="modal"
                                                                             data-bs-target="#Editpayment{{ $list->id }}">
                                                                             <i class="bi bi-pencil-square"></i> Detail
                                                                         </button>
@@ -198,88 +237,18 @@
                                         </script>
 
 
-                                <script>
-                                    $(document).ready(function () {
-                                    var table = $('#mken').DataTable();
-
-                                    // Hapus filterRow dulu biar gak dobel saat reload/refresh
-                                    $('#filterRow').empty();
-
-                                    // Tambahkan input + select ke setiap kolom
-                                    $('#mken thead tr:eq(0) th').each(function (i) {
-                                        // Hanya tampilkan filter untuk kolom yang punya nama (hindari kolom checkbox/aksi)
-                                        if ($(this).text().trim() !== '' && i !== 0 && i !== 9 && i !==10) { // sesuaikan indeks kolom jika perlu
-                                            $('#filterRow').append(`
-                                                <th>
-                                                    <input type="text" class="filter-input form-control mb-1" data-col="${i}" placeholder="Search..." style="width: 100%;" />
-                                                    <select class="filter-select form-select" data-col="${i}" style="width: 100%;">
-                                                        <option value="">-- Semua --</option>
-                                                    </select>
-                                                </th>
-                                            `);
-                                        } else {
-                                            $('#filterRow').append(`<th></th>`); // kolom kosong (aksi, checkbox, dll.)
-                                        }
-                                    });
-
-                                    // Isi select dengan data unik dari tiap kolom
-                                    table.columns().every(function (i) {
-                                        let column = this;
-                                        let select = $('.filter-select[data-col="' + i + '"]');
-
-                                        if (select.length) {
-                                            let uniqueData = column.data().unique().sort();
-                                            uniqueData.each(function (d) {
-                                                if (d && d !== '') {
-                                                    select.append('<option value="' + d + '">' + d + '</option>');
-                                                }
-                                            });
-
-                                            // Aktifkan Select2 jika perlu
-                                            select.select2({
-                                                placeholder: 'Pilih...',
-                                                width: '100%',
-                                                allowClear: true
-                                            });
-                                        }
-                                    });
-
-                                    // Event untuk input search
-                                    $('.filter-input').on('keyup change', function () {
-                                        let col = $(this).data('col');
-                                        table.column(col).search(this.value).draw();
-                                    });
-
-                                    // Event untuk select dropdown
-                                    $('.filter-select').on('change', function () {
-                                        let col = $(this).data('col');
-                                        let val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                        table.column(col).search(val ? '^' + val + '$' : '', true, false).draw();
-                                    });
-                                });
-
-                                </script>
-
-
-
-
-
-
-
-
+                                    </div>
+                                    {{-- end card div --}}
 
                                 </div>
-                                {{-- end card div --}}
-
                             </div>
-                    </div>
-            </section>
+                        </section>
 
-            </main><!-- End #main -->
+                        </main><!-- End #main -->
 
 
-            <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-                    class="bi bi-arrow-up-short"></i></a>
+                        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                                class="bi bi-arrow-up-short"></i></a>
 
 
 

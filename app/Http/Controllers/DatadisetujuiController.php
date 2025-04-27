@@ -55,6 +55,10 @@ class DatadisetujuiController extends Controller
             $mitra = Mitra::find($item->mitra_id);
             $item->nama_mitra_agg = $mitra ? $mitra->nama_mitra : '-';
 
+            $item->total_fee = $item->fees ? $item->fees->total_fee : '-';
+            $item->fee_mba = $item->fees ? $item->fees->fee_mba : '-';
+            $item->fee_mitra = $item->fees ? $item->fees->fee_mitra : '-';
+
             return $item;
         });
 
@@ -80,9 +84,8 @@ class DatadisetujuiController extends Controller
 
         $jenis_transaksi = JenisTransaksi::all();
 
-        $ditolak = Ditolak::with('user')->get();
 
-        return view('admin2.datadisetujui', compact('paymentmba', 'paymentmbafee', 'user', 'ditolak', 'kode_pengajuan', 'nama_mitra', 'wilayah', 'jenis_transaksi'));
+        return view('admin2.datadisetujui', compact('paymentmba', 'paymentmbafee', 'user',  'kode_pengajuan', 'nama_mitra', 'wilayah', 'jenis_transaksi'));
     }
 
     public function export(Request $request)

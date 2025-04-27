@@ -16,54 +16,74 @@ use Illuminate\Support\Facades\Session;
 
 class DitolakController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $userId = Auth::id(); // Mendapatkan ID user yang sedang login
 
-        // Ambil daftar nama jenis pajak berdasarkan ID
+        // Mulai query dengan user_id
+        $query = PaymentMba::where('user_id', $userId)->with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees', 'mitraAgg']);
+
+        // FILTERING
+        if ($request->kode_pengajuan) {
+            $query->where('kode_pengajuan', 'like', $request->kode_pengajuan . '%');
+        }
+
+        if ($request->nama_mitra) {
+            $query->where('mitra_id', $request->nama_mitra);
+        }
+
+        if ($request->wilayah) {
+            $query->where('wilayah_id', $request->wilayah);
+        }
+
+        if ($request->jenis_transaksi) {
+            $query->where('transaksi_id', $request->jenis_transaksi); // Pastikan ini nama kolomnya benar
+        }
+
+        if ($request->tanggal) {
+            $query->whereDate('created_at', $request->tanggal);
+        }
+
         $allJenisPajak = JenisPajak::pluck('nama_jenis_pajak', 'id');
 
-        // Ambil data PaymentMba dengan filter berdasarkan user yang login
-        $paymentmba = PaymentMba::where('user_id', $userId)
-            ->with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees', 'mitraAgg'])
-            ->get()
-            ->map(function ($item) use ($allJenisPajak) {
-                // Ubah jenis_pajak_id (string "1,2,3") menjadi array [1, 2, 3]
-                $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
+        // Ambil hasil query dan modifikasi datanya
+        $paymentmba = $query->get()->map(function ($item) use ($allJenisPajak) {
+            $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
+            $item->jenis_pajak_nama = collect($jenisPajakIds)
+                ->map(fn($id) => $allJenisPajak[$id] ?? null)
+                ->filter()
+                ->implode(', ') ?: '-';
 
-                // Ambil nama jenis pajak berdasarkan ID
-                $item->jenis_pajak_nama = collect($jenisPajakIds)
-                    ->map(fn($id) => $allJenisPajak[$id] ?? null)
-                    ->filter()
-                    ->implode(', ') ?: '-';
+            $item->alasan_penolakan = $item->ditolak?->alasan_penolakan ?? '-';
+            $item->ditolak_oleh = $item->ditolak?->User?->username ?? '-';
+            $item->nama_pengajuan_integrasi = $item->pengajuanIntegrasi?->nama_pengajuan_integrasi ?? '-';
+            $item->nama_mitra = $item->mitra?->nama_mitra ?? '-';
+            $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
+            $item->total_fee = $item->fees?->total_fee ?? '-';
+            $item->fee_mba = $item->fees?->fee_mba ?? '-';
+            $item->fee_mitra = $item->fees?->fee_mitra ?? '-';
 
-                // Tambahkan properti alasan_penolakan dari relasi ditolak
-                $item->alasan_penolakan = $item->ditolak?->alasan_penolakan ?? '-';
-                $item->ditolak_oleh = $item->ditolak?->User?->username ?? '-';
+            return $item;
+        });
 
-                // Tambahkan properti nama_pengajuan_integrasi dari relasi pengajuanIntegrasi
-                $item->nama_pengajuan_integrasi = $item->pengajuanIntegrasi?->nama_pengajuan_integrasi ?? '-';
 
-                //  nama mitra
-                $item->nama_mitra = $item->mitra?->nama_mitra ?? '-';
-                $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
-                // Tambahkan properti total_fee, fee_mba, dan fee_mitra dari relasi fees
-                $item->total_fee = $item->fees?->total_fee ?? '-';
-                $item->fee_mba = $item->fees?->fee_mba ?? '-';
-                $item->fee_mitra = $item->fees?->fee_mitra ?? '-';
-
-                return $item;
-            });
-
-        $wilayah = wilayah::all();
-        $jenistransaksi = jenistransaksi::all();
-        $jenispajak = jenispajak::all();
-        $mitra = mitra::all();
+        $wilayah = Wilayah::all();
+        $jenistransaksi = JenisTransaksi::all();
+        $jenispajak = JenisPajak::all();
+        $mitra = Mitra::all();
         $mitras = Mitra::where('flag_agg', 1)->get();
         $PengajuanIntegrasi = PengajuanIntegrasi::all();
-        return view('admin.ditolak', compact('paymentmba', 'wilayah', 'jenistransaksi', 'jenispajak', 'mitras', 'mitra', 'PengajuanIntegrasi'));
-    }
 
+        return view('admin.ditolak', compact(
+            'paymentmba',
+            'wilayah',
+            'jenistransaksi',
+            'jenispajak',
+            'mitras',
+            'mitra',
+            'PengajuanIntegrasi'
+        ));
+    }
 
 
 

@@ -473,7 +473,10 @@ fetch('/api/get-payment-ditolak-am')
     });
 
 
-
+//sricpt untuk filter khusus data di tabel
+$('select, input[type="date"]').change(function() {
+    $(this).closest('form').submit();
+});
 
 
 
@@ -650,3 +653,4 @@ function onlyAllowNumbers(inputId, minLength = 10) {
 onlyAllowNumbers('telepon_payment_mitra');
 onlyAllowNumbers('telepon_dinas');
 onlyAllowNumbers('telepon_rekon_mitra');
+

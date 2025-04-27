@@ -179,9 +179,84 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Terakhir <span>| Diajukan</span></h5>
 
+                                        <form method="get" action="">
+                                            <div class="row mt-3 justify-content-center">
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="kode_pengajuan">
+                                                        <option value="">Kode Pengajuan</option>
+                                                        @foreach ($kode_pengajuan as $prefix)
+                                                            <option value="{{ $prefix }}"
+                                                                {{ request('kode_pengajuan') == $prefix ? 'selected' : '' }}>
+                                                                {{ $prefix }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="nama_mitra">
+                                                        <option value="">Nama Mitra</option>
+                                                        @foreach ($nama_mitra as $mitra)
+                                                            <option value="{{ $mitra->id }}"
+                                                                {{ request('nama_mitra') == $mitra->id ? 'selected' : '' }}>
+                                                                {{ $mitra->nama_mitra }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="wilayah">
+                                                        <option value="">Wilayah</option>
+                                                        @foreach ($wilayah as $w)
+                                                            <option value="{{ $w->id }}"
+                                                                {{ request('wilayah') == $w->id ? 'selected' : '' }}>
+                                                                {{ $w->nama_wilayah }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="jenis_transaksi">
+                                                        <option value="">Jenis Transaksi</option>
+                                                        @foreach ($jenis_transaksi as $jt)
+                                                            <option value="{{ $jt->id }}"
+                                                                {{ request('jenis_transaksi') == $jt->id ? 'selected' : '' }}>
+                                                                {{ $jt->nama_jenis_transaksi }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <input type="date" class="form-control" name="tanggal"
+                                                        value="{{ request('tanggal') }}">
+                                                </div>
+
+                                                <div class="col-1 text-center">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="bi bi-funnel"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         <!-- Table with stripped rows -->
                                         <div class="table-responsive">
-                                            <table id="mken" class="table">
+                                            <table class="table datatable">
                                                 <thead>
                                                     <tr>
                                                         <th>Kode Pengajuan</th>
@@ -192,15 +267,7 @@
                                                         <th>Status</th>
                                                         <th>Aksi</th>
                                                     </tr>
-                                                    <tr id="filterRow">
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                    </tr>
+
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($paymentmba as $key => $list)
@@ -232,67 +299,7 @@
                                                     @endforeach
                                                 </tbody>
 
-                                                <script>
-                                                    $(document).ready(function () {
-                                                    var table = $('#mken').DataTable();
 
-                                                    // Hapus filterRow dulu biar gak dobel saat reload/refresh
-                                                    $('#filterRow').empty();
-
-                                                    // Tambahkan input + select ke setiap kolom
-                                                    $('#mken thead tr:eq(0) th').each(function (i) {
-                                                        // Hanya tampilkan filter untuk kolom yang punya nama (hindari kolom checkbox/aksi)
-                                                        if ($(this).text().trim() !== '' && i !== 5 && i !== 6) { // sesuaikan indeks kolom jika perlu
-                                                            $('#filterRow').append(`
-                                                                <th>
-                                                                    <input type="text" class="filter-input form-control mb-1" data-col="${i}" placeholder="Search..." style="width: 100%;" />
-                                                                    <select class="filter-select form-select" data-col="${i}" style="width: 100%;">
-                                                                        <option value="">-- Semua --</option>
-                                                                    </select>
-                                                                </th>
-                                                            `);
-                                                        } else {
-                                                            $('#filterRow').append(`<th></th>`); // kolom kosong (aksi, checkbox, dll.)
-                                                        }
-                                                    });
-
-                                                    // Isi select dengan data unik dari tiap kolom
-                                                    table.columns().every(function (i) {
-                                                        let column = this;
-                                                        let select = $('.filter-select[data-col="' + i + '"]');
-
-                                                        if (select.length) {
-                                                            let uniqueData = column.data().unique().sort();
-                                                            uniqueData.each(function (d) {
-                                                                if (d && d !== '') {
-                                                                    select.append('<option value="' + d + '">' + d + '</option>');
-                                                                }
-                                                            });
-
-                                                            // Aktifkan Select2 jika perlu
-                                                            select.select2({
-                                                                placeholder: 'Pilih...',
-                                                                width: '100%',
-                                                                allowClear: true
-                                                            });
-                                                        }
-                                                    });
-
-                                                    // Event untuk input search
-                                                    $('.filter-input').on('keyup change', function () {
-                                                        let col = $(this).data('col');
-                                                        table.column(col).search(this.value).draw();
-                                                    });
-
-                                                    // Event untuk select dropdown
-                                                    $('.filter-select').on('change', function () {
-                                                        let col = $(this).data('col');
-                                                        let val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                                        table.column(col).search(val ? '^' + val + '$' : '', true, false).draw();
-                                                    });
-                                                });
-
-                                                </script>
                                             </table>
                                             <!-- End Table with stripped rows -->
 

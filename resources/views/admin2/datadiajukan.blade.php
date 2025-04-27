@@ -99,10 +99,9 @@
                             </li>
                         </ul>
 
-                        <br>
 
                         <form method="get" action="">
-                            <div class="row mt-3 justify-content-center mb-5">
+                            <div class="row mt-3 justify-content-center">
                                 <div class="col-2 text-center">
                                     <select class="form-select" name="kode_pengajuan">
                                         <option value="">Kode Pengajuan</option>
@@ -163,27 +162,24 @@
                                 </div>
                             </div>
                         </form>
-
+                        <br>
                         <!-- Table with stripped rows -->
 
-                        <div class="table-responsive">
-                            <input type="checkbox" id="selectAll">
-                            <label class="form-check-label" for="selectAll">Select All</label>
-                        </div>
 
                         <!-- Tabel Data -->
                         <div class="table-responsive">
                             <table class="table datatable">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Kode Pengajuan</th>
                                         <th>
-                                            <b>N</b>ame
+                                            Nama AM
                                         </th>
                                         <th>Nama mitra</th>
                                         <th>Nama wilayah</th>
                                         <th>Jenis pajak</th>
-                                        <th>Nama Jenis transaksi</th>
+                                        <th>Jenis transaksi</th>
                                         <th>Wag kordinasi payment</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
@@ -194,6 +190,7 @@
             return $item->status == 0;
         }) as $key => $list)
                                         <tr>
+                                            <td>{{ $key + 1 }}</td>
                                             <td>{{ $list->kode_pengajuan }}</td>
                                             <td>{{ $list->user->username }}</td>
                                             <td>{{ $list->mitra->nama_mitra }}</td>

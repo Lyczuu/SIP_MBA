@@ -96,6 +96,61 @@
                                             </li>
                                         </ul>
 
+
+                                        <form method="get" action="">
+                                            <div class="row mt-3 justify-content-center">
+                                                
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="nama_mitra">
+                                                        <option value="">Nama Mitra</option>
+                                                        @foreach ($mitra as $m)
+                                                            <option value="{{ $m->id }}"
+                                                                {{ request('nama_mitra') == $m->id ? 'selected' : '' }}>
+                                                                {{ $m->nama_mitra }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="wilayah">
+                                                        <option value="">Wilayah</option>
+                                                        @foreach ($wilayah as $w)
+                                                            <option value="{{ $w->id }}"
+                                                                {{ request('wilayah') == $w->id ? 'selected' : '' }}>
+                                                                {{ $w->nama_wilayah }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <select class="form-select" name="jenis_transaksi">
+                                                        <option value="">Jenis Transaksi</option>
+                                                        @foreach ($jenistransaksi as $jt)
+                                                            <option value="{{ $jt->id }}"
+                                                                {{ request('jenis_transaksi') == $jt->id ? 'selected' : '' }}>
+                                                                {{ $jt->nama_jenis_transaksi }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-2 text-center">
+                                                    <input type="date" class="form-control" name="tanggal"
+                                                        value="{{ request('tanggal') }}">
+                                                </div>
+
+                                                <div class="col-1 text-center">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="bi bi-funnel"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+
                                         <!-- Table with stripped rows -->
                                         <div class="table-responsive">
                                             <table class="table datatable">
@@ -103,12 +158,12 @@
                                                     <tr>
                                                         <th>Kode Pengajuan</th>
                                                         <th>
-                                                            <b>N</b>ame
+                                                         Nama AM
                                                         </th>
                                                         <th>Nama mitra</th>
                                                         <th>Nama wilayah</th>
                                                         <th>Jenis pajak</th>
-                                                        <th>Nama Jenis transaksi</th>
+                                                        <th>Jenis transaksi</th>
                                                         <th>Wag kordinasi payment</th>
                                                         <th>Status</th>
                                                         <th>Aksi</th>

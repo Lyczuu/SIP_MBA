@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\mitra;
+use App\Models\ditolak;
+use App\Models\wilayah;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use Illuminate\Http\Request;
+use App\Models\jenistransaksi;
 use App\Exports\PaymentsExport;
 use App\Exports\paymentdetailExport;
 use Illuminate\Support\Facades\Auth;
@@ -16,33 +20,67 @@ class DiterimaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $userId = Auth::id(); // Ambil ID user yang sedang login
+        $userId = Auth::id();
 
-        // Ambil daftar semua jenis pajak dalam bentuk [id => nama]
+        // Mulai query dengan user login dan relasi penting
+        $query = PaymentMBA::with(['user', 'mitra', 'wilayah', 'jenis_transaksi', 'mitraAgg', 'fees'])
+            ->where('user_id', $userId);
+
+        // FILTERING
+        if ($request->kode_pengajuan) {
+            $query->where('kode_pengajuan', 'like', $request->kode_pengajuan . '%');
+        }
+
+        if ($request->nama_mitra) {
+            $query->where('mitra_id', $request->nama_mitra);
+        }
+
+        if ($request->wilayah) {
+            $query->where('wilayah_id', $request->wilayah);
+        }
+
+        if ($request->jenis_transaksi) {
+            $query->where('transaksi_id', $request->jenis_transaksi);
+        }
+
+        if ($request->tanggal) {
+            $query->whereDate('created_at', $request->tanggal);
+        }
+
         $allJenisPajak = JenisPajak::pluck('nama_jenis_pajak', 'id');
 
-        // Ambil hanya data yang sesuai dengan user yang login
-        $paymentmba = PaymentMBA::where('user_id', $userId)
-            ->with(['user', 'mitra', 'wilayah', 'jenis_transaksi', 'mitraAgg']) // Tambah relasi mitraAgg
-            ->get()
-            ->map(function ($item) use ($allJenisPajak) {
-                // Mengonversi jenis_pajak_id (format CSV) menjadi array
-                $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
+        $paymentmba = $query->get()->map(function ($item) use ($allJenisPajak) {
+            $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
+            $item->jenis_pajak_nama = collect($jenisPajakIds)
+                ->map(fn($id) => $allJenisPajak[$id] ?? null)
+                ->filter()
+                ->implode(', ') ?: '-';
 
-                // Mapping ID jenis pajak ke nama
-                $item->jenis_pajak_nama = collect($jenisPajakIds)
-                    ->map(fn($id) => $allJenisPajak[$id] ?? null)
-                    ->filter()
-                    ->implode(', ') ?: '-';
+            $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
+            $item->total_fee = $item->fees?->total_fee ?? '-';
+            $item->fee_mba = $item->fees?->fee_mba ?? '-';
+            $item->fee_mitra = $item->fees?->fee_mitra ?? '-';
 
-                // Menambahkan nama_mitra dari mitraAgg yang memiliki flag_agg = 1
-                $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
+            return $item;
+        });
 
-                return $item;
-            });
-        return view('admin.diterima', compact('paymentmba'));
+
+        $nama_mitra = mitra::all();
+        $wilayah = wilayah::all();
+        $jenis_transaksi = jenistransaksi::all();
+        $ditolak = ditolak::with('user')->get();
+        $user = Auth::user();
+
+        return view('admin.diterima', compact(
+            'paymentmba',
+            'user',
+            'nama_mitra',
+            'wilayah',
+            'jenis_transaksi',
+            'ditolak'
+        ));
     }
 
     public function export(Request $request)

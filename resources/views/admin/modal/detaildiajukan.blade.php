@@ -95,33 +95,27 @@
                                     disabled>
                             </div>
 
-                            @if ($list->fees->total_fee != 0)
-                                <div class="col-12 col-md-6">
-                                    <label for="total_fee" class="form-label">Total Fee</label>
-                                    <input type="text" name="total_fee" id="total_fee" class="form-control"
-                                        placeholder="" value="{{ $list->fees->total_fee }}" disabled>
-                                </div>
-                            @endif
+                            <div class="col-12 col-md-6">
+                                <label for="total_fee" class="form-label">Total Fee</label>
+                                <input type="text" name="total_fee" id="total_fee" class="form-control"
+                                    placeholder="" value="{{ $list->fees->total_fee }}" disabled>
+                            </div>
                             {{-- end  total fee --}}
 
-                            @if ($list->fees->fee_mba != 0)
-                                <div class="col-12 col-md-6">
-                                    <label for="fee_mba" class="form-label">Fee Mba</label>
-                                    <input type="text" name="fee_mba" id="fee_mba" class="form-control"
-                                        placeholder="" value="{{ $list->fees->fee_mba }}" disabled>
-                                </div>
-                            @endif
+                            <div class="col-12 col-md-6">
+                                <label for="fee_mba" class="form-label">Fee Mba</label>
+                                <input type="text" name="fee_mba" id="fee_mba" class="form-control" placeholder=""
+                                    value="{{ $list->fees->fee_mba }}" disabled>
+                            </div>
                             {{-- end  fee mba --}}
 
-                            @if ($list->fees->fee_mitra != 0)
-                                <div class="col-12 col-md-6">
-                                    <label for="fee_mitra" class="form-label">Fee Mba</label>
-                                    <input type="text" name="fee_mitra" id="fee_mitra" class="form-control"
-                                        placeholder="" value="{{ $list->fees->fee_mitra }}" disabled>
-                                </div>
-                            @endif
+                            <div class="col-12 col-md-6">
+                                <label for="fee_mitra" class="form-label">Fee Mba</label>
+                                <input type="text" name="fee_mitra" id="fee_mitra" class="form-control"
+                                    placeholder="" value="{{ $list->fees->fee_mitra }}" disabled>
+                            </div>
                             {{-- end  fee mitra --}}
-
+                            
                             <div class="col-12 col-md-6">
                                 <label for="status" class="form-label">Status</label>
                                 <input type="text" name="status" id="status" class="form-control"

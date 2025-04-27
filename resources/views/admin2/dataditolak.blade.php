@@ -80,9 +80,8 @@
                             </li>
                         </ul>
 
-                        <br>
 
-                        {{-- <form method="get" action="">
+                        <form method="get" action="">
                             <div class="row mt-3 justify-content-center">
                                 <div class="col-2 text-center">
                                     <select class="form-select" name="kode_pengajuan">
@@ -143,18 +142,18 @@
                                     </button>
                                 </div>
                             </div>
-                        </form> --}}
+                        </form>
+<br>
 
                         <div class="table-responsive">
                             <table class="table datatable">
                                 <thead>
                                     <tr>
-                                        <th></th>
                                         <th>ID</th>
                                         <th>Kode Pengajuan</th>
                                         <th>Nama AM</th>
                                         <th>Nama Mitra</th>
-                                        <th>Wilayah</th>
+                                        <th>Nama Wilayah</th>
                                         <th>Jenis Pajak</th>
                                         <th>Jenis Transaksi</th>
                                         <th>WAG Kordinasi Payment</th>
@@ -165,7 +164,7 @@
                                 <tbody>
                                     @foreach ($paymentmba->filter(fn($item) => $item->status == 1) as $key => $list)
                                         <tr>
-                                            <td><input type="checkbox" name="ids[]" value="{{ $list->id }}"></td>
+
                                             <td>{{ $list->id }}</td>
                                             <td>{{ $list->kode_pengajuan }}</td>
                                             <td>{{ $list->user->username }}</td>

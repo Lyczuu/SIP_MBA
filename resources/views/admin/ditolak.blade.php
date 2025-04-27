@@ -89,6 +89,65 @@
                                         </a>
                                     </li>
                                 </ul>
+
+
+                                <form method="get" action="">
+                                    <div class="row mt-3 justify-content-center">
+                                       
+
+                                        <div class="col-2 text-center">
+                                            <select class="form-select" name="nama_mitra">
+                                                <option value="">Nama Mitra</option>
+                                                @foreach ($mitra as $m)
+                                                    <option value="{{ $m->id }}"
+                                                        {{ request('nama_mitra') == $m->id ? 'selected' : '' }}>
+                                                        {{ $m->nama_mitra }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-2 text-center">
+                                            <select class="form-select" name="wilayah">
+                                                <option value="">Wilayah</option>
+                                                @foreach ($wilayah as $w)
+                                                    <option value="{{ $w->id }}"
+                                                        {{ request('wilayah') == $w->id ? 'selected' : '' }}>
+                                                        {{ $w->nama_wilayah }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-2 text-center">
+                                            <select class="form-select" name="jenis_transaksi">
+                                                <option value="">Jenis Transaksi</option>
+                                                @foreach ($jenistransaksi as $jt)
+                                                    <option value="{{ $jt->id }}"
+                                                        {{ request('jenis_transaksi') == $jt->id ? 'selected' : '' }}>
+                                                        {{ $jt->nama_jenis_transaksi }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-2 text-center">
+                                            <input type="date" class="form-control" name="tanggal"
+                                                value="{{ request('tanggal') }}">
+                                        </div>
+
+                                        <div class="col-1 text-center">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="bi bi-funnel"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+
+
+
                                 <br>
                                 <!-- Table with stripped rows -->
 
@@ -98,7 +157,7 @@
                                     <table class="table datatable">
                                         <thead>
                                             <tr>
-                                                <th></th>
+
                                                 <th>ID</th>
                                                 <th>Kode Pengajuan</th>
                                                 <th>Nama AM</th>
@@ -114,8 +173,6 @@
                                         <tbody>
                                             @foreach ($paymentmba->filter(fn($item) => $item->status == 1) as $list)
                                                 <tr>
-                                                    <td><input type="checkbox" name="ids[]" value="{{ $list->id }}">
-                                                    </td>
                                                     <td>{{ $list->id }}</td>
                                                     <td>{{ $list->kode_pengajuan }}</td>
                                                     <td>{{ $list->user->username }}</td>
@@ -152,27 +209,6 @@
             </section>
 
             </main><!-- End #main -->
-
-            {{-- <script>
-                function updateNotifDitolak() {
-                    var table = document.getElementById("table-ditolak");
-                    if (table) {
-                        var rowCount = table.getElementsByTagName("tr").length - 1; // Kurangi header jika ada
-                        var prevCount = localStorage.getItem("countDitolak");
-
-                        // Update localStorage hanya jika ada perubahan
-                        if (rowCount != prevCount) {
-                            localStorage.setItem("countDitolak", rowCount);
-                        }
-                    }
-                }
-
-                // Jalankan fungsi setiap 2 detik untuk update otomatis
-                setInterval(updateNotifDitolak, 2000);
-
-                // Jalankan saat halaman dimuat pertama kali
-                document.addEventListener("DOMContentLoaded", updateNotifDitolak);
-            </script> --}}
 
 
 

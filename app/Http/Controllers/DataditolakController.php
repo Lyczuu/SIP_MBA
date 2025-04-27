@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\mitra;
+use App\Models\ditolak;
+use App\Models\wilayah;
 use App\Models\jenispajak;
 use App\Models\paymentmba;
 use App\Models\dataditolak;
 use Illuminate\Http\Request;
+use App\Models\jenistransaksi;
 use App\Exports\paymentdetailExport;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +20,36 @@ class DataditolakController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Ambil semua jenis pajak untuk digunakan dalam mapping
+    {
+        $query = PaymentMba::with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees', 'mitraAgg']);
+
+        // FILTERING
+        if ($request->kode_pengajuan) {
+            $query->where('kode_pengajuan', 'like', $request->kode_pengajuan . '%');
+        }
+
+        if ($request->nama_mitra) {
+            $query->where('mitra_id', $request->nama_mitra);
+        }
+
+        if ($request->wilayah) {
+            $query->where('wilayah_id', $request->wilayah);
+        }
+
+        if ($request->jenis_transaksi) {
+            $query->where('transaksi_id', $request->jenis_transaksi);
+        }
+
+        if ($request->tanggal) {
+            $query->whereDate('created_at', $request->tanggal);
+        }
+
         $allJenisPajak = JenisPajak::pluck('nama_jenis_pajak', 'id');
 
-        $paymentmba = PaymentMba::with(['ditolak.User', 'pengajuanIntegrasi', 'mitra', 'fees', 'mitraAgg'])->get()->map(function ($item) use ($allJenisPajak) {
+        $paymentmba = $query->get()->map(function ($item) use ($allJenisPajak) {
             // Ubah jenis_pajak_id (string "1,2,3") menjadi array [1, 2, 3]
             $jenisPajakIds = array_filter(array_map('trim', explode(',', $item->jenis_pajak_id ?? '')));
 
@@ -34,9 +63,7 @@ class DataditolakController extends Controller
             $item->alasan_penolakan = $item->ditolak?->alasan_penolakan ?? '-';
             $item->ditolak_oleh = $item->ditolak?->User?->username ?? '-';
 
-
             $item->nama_mitra_agg = $item->mitraAgg?->nama_mitra ?? '-';
-            // Tambahkan properti nama_pengajuan_integrasi dari relasi pengajuanIntegrasi
             $item->nama_pengajuan_integrasi = $item->pengajuanIntegrasi?->nama_pengajuan_integrasi ?? '-';
             $item->nama_mitra = $item->mitra?->nama_mitra ?? '-';
             $item->total_fee = $item->fees?->total_fee ?? '-';
@@ -46,9 +73,28 @@ class DataditolakController extends Controller
             return $item;
         });
 
-        return view('admin2.dataditolak', compact('paymentmba'));
+        $user = Auth::user();
+
+        $kode_pengajuan = PaymentMba::select('kode_pengajuan')
+            ->get()
+            ->map(function ($item) {
+                if (preg_match('/^([A-Z]{2}\d*)/', $item->kode_pengajuan, $matches)) {
+                    return $matches[1];
+                }
+                return substr($item->kode_pengajuan, 0, 3);
+            })
+            ->unique()
+            ->values();
+
+        $nama_mitra = mitra::all();
+        $wilayah = wilayah::all();
+        $jenis_transaksi = jenistransaksi::all();
+        $ditolak = ditolak::with('user')->get();
+
+        return view('admin2.dataditolak', compact('paymentmba', 'user', 'ditolak', 'kode_pengajuan', 'nama_mitra', 'wilayah', 'jenis_transaksi'));
     }
 
+    }
 
 
 
